@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>DNA Lab | Collaborative Chat & Message Board - Online</title>
-  <!-- Bootstrap 5 + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <!-- Firebase SDKs -->
+  
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  
   <style>
     :root {
       --bg-dark: #0f121c;
@@ -23,29 +23,21 @@
       --warning: #ffb347;
       --purple: #c084fc;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Outfit', sans-serif;
       background: var(--bg-dark);
       color: var(--text-light);
       overflow-x: hidden;
     }
-    /* navbar */
     .chat-navbar {
       background: var(--surface) !important;
       border-bottom: 1px solid rgba(0,229,160,0.3);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .brand-dna {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      letter-spacing: -0.5px;
       color: var(--accent) !important;
-      font-size: 1.4rem;
     }
     .btn-primary-lab {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -54,49 +46,12 @@
       font-weight: 700;
       padding: 8px 24px;
       border-radius: 40px;
-      transition: 0.2s;
-      box-shadow: 0 2px 8px rgba(0,229,160,0.3);
     }
-    .btn-primary-lab:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,229,160,0.4);
-      color: #0a0e1a;
-    }
-    .btn-outline-lab {
-      background: transparent;
-      border: 1.5px solid rgba(0,229,160,0.5);
-      color: var(--accent);
-      font-weight: 600;
-      border-radius: 40px;
-      padding: 6px 18px;
-      transition: 0.2s;
-    }
-    .btn-outline-lab:hover {
-      background: rgba(0,229,160,0.1);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .btn-danger-outline {
-      background: transparent;
-      border: 1.5px solid var(--danger);
-      color: var(--danger);
-      font-weight: 600;
-      border-radius: 40px;
-      padding: 6px 18px;
-      transition: 0.2s;
-    }
-    .btn-danger-outline:hover {
-      background: rgba(255,94,126,0.15);
-      border-color: var(--danger);
-      color: var(--danger);
-    }
-    /* chat container */
     .chat-main-card {
       background: var(--surface);
       border-radius: 28px;
       border: 1px solid rgba(0,229,160,0.15);
       overflow: hidden;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
     }
     .chat-messages-area {
       background: var(--surface2);
@@ -110,104 +65,26 @@
       padding: 0.9rem 1.2rem;
       margin-bottom: 1rem;
       border-left: 4px solid var(--accent);
-      transition: all 0.2s;
-      animation: fadeInUp 0.2s ease;
-    }
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .chat-message:hover {
-      background: #212838;
-      transform: translateX(3px);
-    }
-    .msg-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
     }
     .msg-author {
       font-weight: 800;
       color: var(--accent);
-      font-size: 0.95rem;
-      letter-spacing: -0.2px;
       background: rgba(0,229,160,0.12);
       padding: 2px 10px;
       border-radius: 30px;
-      display: inline-block;
-    }
-    .msg-time {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      font-family: monospace;
-    }
-    .msg-text {
-      font-size: 0.95rem;
-      line-height: 1.45;
-      margin: 8px 0 8px 0;
-      word-break: break-word;
-      white-space: pre-wrap;
-      color: var(--text-light);
-    }
-    .msg-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .msg-actions button {
-      background: none;
-      border: none;
-      font-size: 0.7rem;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-weight: 500;
-      transition: 0.15s;
-    }
-    .edit-btn {
-      color: var(--accent2);
-    }
-    .edit-btn:hover {
-      background: rgba(0,184,212,0.15);
-      color: #00e5ff;
-    }
-    .delete-btn {
-      color: var(--danger);
-    }
-    .delete-btn:hover {
-      background: rgba(255,94,126,0.15);
-    }
-    .chat-input-panel {
-      background: var(--surface);
-      padding: 1.2rem;
-      border-top: 1px solid rgba(0,229,160,0.15);
     }
     .form-control-custom {
       background: #0b0f18;
       border: 1px solid #2a3448;
       color: white;
       border-radius: 40px;
-      padding: 10px 18px;
     }
-    .form-control-custom:focus {
-      background: #0f1420;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(0,229,160,0.2);
-      color: white;
-    }
-    .badge-counter {
-      background: var(--surface2);
-      border-radius: 30px;
-      padding: 6px 14px;
-      font-size: 0.75rem;
-      font-weight: 600;
+    .online-status {
+      width: 100px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      display: inline-block;
     }
     .toast-custom {
       position: fixed;
@@ -218,117 +95,57 @@
       border: 1px solid var(--accent);
       padding: 10px 24px;
       border-radius: 50px;
-      font-weight: 500;
       transition: transform 0.25s ease;
       z-index: 1100;
-      backdrop-filter: blur(8px);
-      font-size: 0.85rem;
     }
-    .toast-custom.show {
-      transform: translateX(-50%) translateY(0);
-    }
-    .online-status {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--accent);
-      display: inline-block;
-      margin-right: 6px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.2); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    footer {
-      background: #090c14;
-      font-size: 0.7rem;
-    }
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--surface2);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 5px;
-    }
-    @media (max-width: 768px) {
-      .chat-messages-area { height: 420px; }
-      .msg-header { flex-direction: column; gap: 4px; }
-    }
+    .toast-custom.show { transform: translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 
 <div class="d-flex flex-column min-vh-100">
-  <!-- navbar with lab context -->
   <nav class="navbar chat-navbar px-3 py-2">
     <div class="container-fluid">
-      <a class="navbar-brand brand-dna" href="#">
-        <span class="me-1">🧬</span> DNA Lab | Online Chat Hub
-      </a>
+      <a class="navbar-brand brand-dna" href="#">🧬 DNA Lab | Online Chat</a>
       <div class="d-flex gap-2 align-items-center">
-        <span class="badge-counter" id="totalMsgBadge">💬 0 messages</span>
-        <span class="badge-counter" id="connectionStatus">
-          <span class="online-status"></span> Connecting...
-        </span>
-        <a href="../main.html" class="btn-outline-lab" style="text-decoration: none;">← Back to Lab</a>
+        <span class="badge bg-dark" id="totalMsgBadge">💬 0 messages</span>
+        <span class="badge bg-dark" id="connectionStatus">🟡 Connecting...</span>
       </div>
     </div>
   </nav>
 
   <div class="container my-4 flex-grow-1">
     <div class="chat-main-card">
-      <!-- header with tools -->
-      <div class="d-flex justify-content-between align-items-center p-3 border-bottom" style="border-color: rgba(0,229,160,0.15);">
-        <div>
-          <h4 class="m-0" style="color: var(--accent);">💬 Live Collaboration</h4>
-          <small class="text-secondary">Real-time chat with friends! Messages sync instantly across all devices.</small>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn-danger-outline btn-sm" id="clearAllChatBtn" title="Delete all messages (admin only)">🗑️ Clear All</button>
-        </div>
+      <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+        <h4 class="m-0" style="color: var(--accent);">💬 Live Collaboration</h4>
+        <button class="btn btn-outline-danger btn-sm" id="clearAllChatBtn">Clear All</button>
       </div>
 
-      <!-- messages container -->
       <div id="messagesContainer" class="chat-messages-area">
-        <div class="text-center text-secondary py-5">Loading messages from cloud...</div>
+        <div class="text-center text-secondary py-5">Loading messages...</div>
       </div>
 
-      <!-- input area -->
-      <div class="chat-input-panel">
-        <div class="row g-2 align-items-end">
+      <div class="chat-input-panel p-3">
+        <div class="row g-2">
           <div class="col-md-3">
-            <label class="small text-secondary mb-1">Your name</label>
-            <input type="text" id="authorNameInput" class="form-control form-control-custom" placeholder="e.g., Alex, Student 01" value="Participant">
+            <input type="text" id="authorNameInput" class="form-control form-control-custom" placeholder="Name" value="Participant">
           </div>
           <div class="col-md-7">
-            <label class="small text-secondary mb-1">Message</label>
-            <input type="text" id="messageInput" class="form-control form-control-custom" placeholder="Write something... (everyone sees it instantly!)">
+            <input type="text" id="messageInput" class="form-control form-control-custom" placeholder="Type a message...">
           </div>
           <div class="col-md-2">
-            <button id="sendMsgBtn" class="btn-primary-lab w-100">✈️ Send</button>
+            <button id="sendMsgBtn" class="btn-primary-lab w-100">Send</button>
           </div>
-        </div>
-        <div class="mt-3 d-flex justify-content-between align-items-center">
-          <small class="text-secondary">💡 Tip: Messages are saved online! You can ✏️ edit or 🗑️ delete your own messages. All changes sync live with friends.</small>
-          <span class="badge-counter" id="onlineHint">🌐 real-time cloud</span>
         </div>
       </div>
     </div>
   </div>
-
-  <footer class="text-center py-3">
-    🧬 DNA Virtual Lab — Real-time collaborative chat | Powered by Firebase
-  </footer>
 </div>
 
 <div id="dynamicToast" class="toast-custom"></div>
+
 <script>
-  // Your unique Firebase configuration
+  // YOUR CONFIGURATION
   const firebaseConfig = {
     apiKey: "AIzaSyC_75CGGv9CfrpTGV3Bs04JBUykhSBcWr8",
     authDomain: "dna-lab-ab585.firebaseapp.com",
@@ -336,401 +153,74 @@
     projectId: "dna-lab-ab585",
     storageBucket: "dna-lab-ab585.firebasestorage.app",
     messagingSenderId: "1013587010369",
-    appId: "1:1013587010369:web:355dfd33e2a478601337c0",
-    measurementId: "G-LCJQ5TPZBR"
+    appId: "1:1013587010369:web:355dfd33e2a478601337c0"
   };
 
-  // Initialize Firebase using the "Compat" method
+  // 1. INITIALIZE
   firebase.initializeApp(firebaseConfig);
-</script>
-<script>
-  // Initialize Firebase
-  let database;
-  let messagesRef;
-  let isFirebaseConnected = false;
-  let currentUserId = null;
-  
-  // Generate a unique user ID for this session
-  function generateUserId() {
-    let userId = localStorage.getItem('dna_user_id');
-    if (!userId) {
-      userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('dna_user_id', userId);
-    }
-    return userId;
-  }
-  
-  // Try to initialize Firebase
-  try {
-    if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-      firebase.initializeApp(firebaseConfig);
-      database = firebase.database();
-      messagesRef = database.ref('chat-messages');
-      currentUserId = generateUserId();
-      isFirebaseConnected = true;
-      console.log('✅ Firebase connected successfully!');
+  const database = firebase.database();
+  const messagesRef = database.ref('chat-messages');
+  const currentUserId = 'user_' + Math.random().toString(36).substr(2, 9);
+
+  // 2. CONNECTION STATUS
+  database.ref('.info/connected').on('value', (snap) => {
+    const status = document.getElementById('connectionStatus');
+    if (snap.val() === true) {
+      status.innerHTML = "🟢 Connected";
+      status.style.color = "var(--accent)";
     } else {
-      console.warn('⚠️ Firebase not configured. Please add your Firebase config.');
-      showToast('⚠️ Firebase not configured! Please add your Firebase config to enable online chat.', true);
+      status.innerHTML = "🔴 Offline";
+      status.style.color = "var(--danger)";
     }
-  } catch (error) {
-    console.error('❌ Firebase initialization error:', error);
-    showToast('❌ Failed to connect to chat server. Please check configuration.', true);
-  }
-  
-  // Helper: show toast
-  function showToast(msg, isError = false) {
-    let toastDiv = document.getElementById('dynamicToast');
-    if (!toastDiv) {
-      toastDiv = document.createElement('div');
-      toastDiv.id = 'dynamicToast';
-      toastDiv.className = 'toast-custom';
-      document.body.appendChild(toastDiv);
-    }
-    toastDiv.textContent = msg;
-    toastDiv.style.borderColor = isError ? 'var(--danger)' : 'var(--accent)';
-    toastDiv.classList.add('show');
-    setTimeout(() => toastDiv.classList.remove('show'), 2500);
-  }
-  
-  // Play subtle feedback sound
-  function playPing() {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.value = 660;
-      gain.gain.value = 0.08;
-      osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
-      osc.stop(audioCtx.currentTime + 0.2);
-    } catch(e) { /* silent fallback */ }
-  }
-  
-  // Update connection status UI
-  function updateConnectionStatus(connected) {
-    const statusSpan = document.getElementById('connectionStatus');
-    if (statusSpan) {
-      if (connected) {
-        statusSpan.innerHTML = '<span class="online-status"></span> Connected';
-        statusSpan.style.color = 'var(--accent)';
-      } else {
-        statusSpan.innerHTML = '⚠️ Offline';
-        statusSpan.style.color = 'var(--danger)';
-      }
-    }
-  }
-  
-  // Listen for Firebase connection status
-  if (isFirebaseConnected && database) {
-    const connectedRef = database.ref('.info/connected');
-    connectedRef.on('value', (snap) => {
-      if (snap.val() === true) {
-        updateConnectionStatus(true);
-        showToast('🟢 Connected to chat server!');
-      } else {
-        updateConnectionStatus(false);
-        showToast('🔴 Disconnected from chat server', true);
-      }
-    });
-  }
-  
-  // Format timestamp nicely
-  function formatTime(isoString) {
-    const date = new Date(isoString);
-    return date.toLocaleString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' });
-  }
-  
-  // Escape HTML
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
-    });
-  }
-  
-  // Render all messages from Firebase data
-  function renderMessages(messagesData) {
+  });
+
+  // 3. RENDER LOGIC
+  function renderMessages(data) {
     const container = document.getElementById('messagesContainer');
-    if (!container) return;
-    
-    if (!messagesData || Object.keys(messagesData).length === 0) {
-      container.innerHTML = `<div class="text-center text-secondary py-5">💬 No messages yet. Start the conversation!</div>`;
-      document.getElementById('totalMsgBadge').innerHTML = '💬 0 messages';
+    if (!data) {
+      container.innerHTML = '<div class="text-center text-secondary py-5">No messages yet.</div>';
       return;
     }
     
-    // Convert Firebase object to array and sort by timestamp
-    const messagesArray = Object.entries(messagesData).map(([key, value]) => ({
-      id: key,
-      ...value
-    })).sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-    
-    document.getElementById('totalMsgBadge').innerHTML = `💬 ${messagesArray.length} message${messagesArray.length !== 1 ? 's' : ''}`;
-    
-    container.innerHTML = messagesArray.map(msg => `
-      <div class="chat-message" data-msg-id="${msg.id}">
-        <div class="msg-header">
-          <div>
-            <span class="msg-author">${escapeHtml(msg.author)}</span>
-          </div>
-          <span class="msg-time">${formatTime(msg.timestamp)}</span>
+    const messages = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+    document.getElementById('totalMsgBadge').innerText = `💬 ${messages.length} messages`;
+
+    container.innerHTML = messages.map(msg => `
+      <div class="chat-message">
+        <div class="d-flex justify-content-between small mb-1">
+          <span class="msg-author">${msg.author}</span>
+          <span class="text-muted">${new Date(msg.timestamp).toLocaleTimeString()}</span>
         </div>
-        <div class="msg-text" id="msg-text-${msg.id}">${escapeHtml(msg.text)}</div>
-        ${msg.userId === currentUserId ? `
-          <div class="msg-actions">
-            <button class="edit-btn" onclick="editMessageHandler('${msg.id}')">✏️ Edit</button>
-            <button class="delete-btn" onclick="deleteMessageHandler('${msg.id}')">🗑️ Delete</button>
-          </div>
-        ` : '<div class="mt-1"><small class="text-secondary" style="font-size:0.65rem;">📝 message from peer</small></div>'}
+        <div>${msg.text}</div>
       </div>
     `).join('');
-    
-    // auto-scroll to bottom
     container.scrollTop = container.scrollHeight;
   }
-  
-  // Add new message to Firebase
-  function addMessage(author, text) {
-    if (!isFirebaseConnected || !messagesRef) {
-      showToast("❌ Not connected to chat server. Please check Firebase configuration.", true);
-      return false;
-    }
-    
-    if (!text || !text.trim()) {
-      showToast("Cannot send empty message.", true);
-      return false;
-    }
-    if (!author || !author.trim()) author = "Anonymous";
-    
-    const newMsg = {
-      author: author.trim().substring(0, 30),
-      text: text.trim(),
-      timestamp: new Date().toISOString(),
-      userId: currentUserId,
-      editable: true
-    };
-    
-    messagesRef.push(newMsg).then(() => {
-      showToast(`✅ Message sent to cloud`);
-      playPing();
-    }).catch((error) => {
-      console.error('Error sending message:', error);
-      showToast("❌ Failed to send message. Check your connection.", true);
-    });
-    
-    return true;
-  }
-  
-  // Edit message in Firebase
-  function editMessage(messageId, newText) {
-    if (!isFirebaseConnected || !messagesRef) {
-      showToast("❌ Not connected to chat server.", true);
-      return false;
-    }
-    
-    if (!newText || !newText.trim()) {
-      showToast("Message cannot be empty.", true);
-      return false;
-    }
-    
-    const messageRef = messagesRef.child(messageId);
-    messageRef.once('value').then((snapshot) => {
-      const msg = snapshot.val();
-      if (!msg) {
-        showToast("Message not found.", true);
-        return false;
-      }
-      if (msg.userId !== currentUserId) {
-        showToast("You can only edit your own messages.", true);
-        return false;
-      }
-      
-      messageRef.update({
-        text: newText.trim(),
-        timestamp: new Date().toISOString(),
-        edited: true
-      }).then(() => {
-        showToast("✏️ Message updated in cloud.");
-      }).catch((error) => {
-        console.error('Error editing message:', error);
-        showToast("❌ Failed to edit message.", true);
+
+  // 4. SEND LOGIC
+  document.getElementById('sendMsgBtn').onclick = () => {
+    const author = document.getElementById('authorNameInput').value;
+    const text = document.getElementById('messageInput').value;
+    if (text.trim()) {
+      messagesRef.push({
+        author: author || "Anonymous",
+        text: text,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        userId: currentUserId
       });
-    });
-    
-    return true;
-  }
-  
-  // Delete message from Firebase
-  function deleteMessage(messageId) {
-    if (!isFirebaseConnected || !messagesRef) {
-      showToast("❌ Not connected to chat server.", true);
-      return false;
-    }
-    
-    const messageRef = messagesRef.child(messageId);
-    messageRef.once('value').then((snapshot) => {
-      const msg = snapshot.val();
-      if (!msg) {
-        showToast("Message not found.", true);
-        return false;
-      }
-      if (msg.userId !== currentUserId) {
-        showToast("You can only delete your own messages.", true);
-        return false;
-      }
-      
-      messageRef.remove().then(() => {
-        showToast("🗑️ Message deleted from cloud.");
-      }).catch((error) => {
-        console.error('Error deleting message:', error);
-        showToast("❌ Failed to delete message.", true);
-      });
-    });
-    
-    return true;
-  }
-  
-  // Clear all messages (admin only - can be password protected)
-  function clearAllMessages() {
-    if (!isFirebaseConnected || !messagesRef) {
-      showToast("❌ Not connected to chat server.", true);
-      return;
-    }
-    
-    const password = prompt("Enter admin password to clear ALL messages:", "");
-    if (password === "dnalab2024") {  // Simple admin password - change this!
-      if (confirm("⚠️ DELETE ALL MESSAGES? This will remove the entire chat history for everyone. This action cannot be undone.")) {
-        messagesRef.remove().then(() => {
-          showToast("🧹 All messages cleared from cloud.");
-        }).catch((error) => {
-          console.error('Error clearing messages:', error);
-          showToast("❌ Failed to clear messages.", true);
-        });
-      }
-    } else if (password !== null) {
-      showToast("❌ Incorrect password. Clear cancelled.", true);
-    }
-  }
-  
-  // Listen for real-time updates from Firebase
-  function listenForMessages() {
-    if (!isFirebaseConnected || !messagesRef) {
-      console.warn('Firebase not ready, cannot listen for messages');
-      return;
-    }
-    
-    messagesRef.on('value', (snapshot) => {
-      const messages = snapshot.val();
-      renderMessages(messages);
-    }, (error) => {
-      console.error('Error listening for messages:', error);
-      showToast('⚠️ Lost connection to chat server', true);
-    });
-  }
-  
-  // Global handler functions
-  window.editMessageHandler = function(msgId) {
-    if (!isFirebaseConnected) {
-      showToast("Not connected to chat server", true);
-      return;
-    }
-    
-    messagesRef.child(msgId).once('value').then((snapshot) => {
-      const msg = snapshot.val();
-      if (!msg) return;
-      const currentText = msg.text;
-      const newText = prompt("Edit your message:", currentText);
-      if (newText !== null && newText.trim() !== "") {
-        editMessage(msgId, newText);
-      } else if (newText !== null && newText.trim() === "") {
-        showToast("Message cannot be empty.", true);
-      }
-    });
-  };
-  
-  window.deleteMessageHandler = function(msgId) {
-    if (confirm("Delete this message? It will be removed for everyone.")) {
-      deleteMessage(msgId);
+      document.getElementById('messageInput').value = "";
     }
   };
-  
-  // Event listeners
-  function bindUIEvents() {
-    const sendBtn = document.getElementById('sendMsgBtn');
-    const msgInput = document.getElementById('messageInput');
-    const authorInput = document.getElementById('authorNameInput');
-    const clearBtn = document.getElementById('clearAllChatBtn');
-    
-    if (sendBtn) {
-      sendBtn.addEventListener('click', () => {
-        const author = authorInput ? authorInput.value : "Participant";
-        const text = msgInput ? msgInput.value : "";
-        if (addMessage(author, text)) {
-          if (msgInput) msgInput.value = "";
-          msgInput?.focus();
-        }
-      });
+
+  // Listen for real-time updates
+  messagesRef.on('value', (snapshot) => renderMessages(snapshot.val()));
+
+  // Admin Clear All (Password: dnalab2024)
+  document.getElementById('clearAllChatBtn').onclick = () => {
+    if (prompt("Admin Password?") === "dnalab2024") {
+      messagesRef.remove();
     }
-    
-    if (msgInput) {
-      msgInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendBtn?.click();
-        }
-      });
-    }
-    
-    if (clearBtn) clearBtn.addEventListener('click', clearAllMessages);
-    
-    // Load default author name from localStorage
-    const savedAuthor = localStorage.getItem('dna_chat_author');
-    if (savedAuthor && authorInput) authorInput.value = savedAuthor;
-    if (authorInput) {
-      authorInput.addEventListener('change', () => {
-        localStorage.setItem('dna_chat_author', authorInput.value);
-      });
-    }
-  }
-  
-  // Initialize everything
-  function init() {
-    bindUIEvents();
-    
-    if (isFirebaseConnected && messagesRef) {
-      listenForMessages();
-      showToast("🟢 Connected to online chat! Share this link with friends.");
-    } else {
-      document.getElementById('messagesContainer').innerHTML = `
-        <div class="text-center py-5" style="color: var(--danger);">
-          <h5>⚠️ Firebase Not Configured</h5>
-          <p class="mt-3">To enable online chat with friends, you need to:</p>
-          <ol style="text-align: left; display: inline-block;">
-            <li>Go to <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
-            <li>Create a new project</li>
-            <li>Add a Realtime Database</li>
-            <li>Copy your config and replace the placeholder in the code</li>
-          </ol>
-        </div>
-      `;
-    }
-    
-    setTimeout(() => {
-      const inp = document.getElementById('messageInput');
-      if (inp) inp.focus();
-    }, 200);
-  }
-  
-  // start
-  init();
+  };
 </script>
 </body>
 </html>
