@@ -1,0 +1,32 @@
+mutation CreateSeedData @transaction @auth(level: USER, insecureReason: "This mutation is for seeding initial data and should be restricted to authenticated users during development or specific admin operations.") {
+  user_insertMany(data: [
+    {
+      id: "user-123",
+      username: "AliceSmith",
+      email: "alice.smith@example.com",
+      createdAt: "2023-01-01T10:00:00Z"
+    },
+    {
+      id: "user-456",
+      username: "BobJohnson",
+      email: "bob.johnson@example.com",
+      createdAt: "2023-01-02T11:30:00Z"
+    }
+  ])
+  product_insertMany(data: [
+    {
+      id: "prod-A",
+      name: "Awesome Gadget",
+      price: 99.99,
+      description: "A fantastic gadget for everyday use.",
+      createdByUserId: "user-123"
+    },
+    {
+      id: "prod-B",
+      name: "Super Widget",
+      price: 14.50,
+      description: "Boost your productivity with this widget.",
+      createdByUserId: "user-456"
+    }
+  ])
+}

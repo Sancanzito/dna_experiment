@@ -1,0 +1,40 @@
+type User @table {
+  displayName: String!
+  role: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+}
+
+type LabSimulation @table {
+  title: String!
+  instructions: String!
+  createdAt: Timestamp!
+  description: String
+  expectedOutcomes: String
+  instructor: User
+}
+
+type LabSession @table {
+  startedAt: Timestamp!
+  completedAt: Timestamp
+  student: User
+  labSimulation: LabSimulation
+}
+
+type ChatMessage @table {
+  content: String!
+  sentAt: Timestamp!
+  isFeedback: Boolean
+  referencedMessageId: UUID
+  sender: User
+  labSession: LabSession
+}
+
+type Question @table {
+  questionText: String!
+  order: Int!
+  expectedAnswer: String
+  answerType: String
+  labSimulation: LabSimulation
+}

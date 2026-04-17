@@ -1,0 +1,30 @@
+query listAllLocations @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  locations {
+    id
+    name
+    address
+  }
+}
+
+query getUserProfile @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  users(where: { uid: { eq_expr: "auth.uid" } }) {
+    uid
+    username
+    email
+  }
+}
+
+mutation updateUserName($newName: String!) @auth(level: USER) {
+  user_update(
+    key: { uid: { eq_expr: "auth.uid" } }
+    data: { username: $newName }
+  ) {
+    uid
+  }
+}
+
+mutation createNewLocation($name: String!, $address: String!) @auth(expr: "auth.token.admin == true") {
+  location_insert(data: { name: $name, address: $address }) {
+    id
+  }
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>DNA Lab Studio | Onion Extraction + Integrated Chat</title>
+  <title>DNA Lab Studio | Optimized Onion Extraction + Smart Chat</title>
   <!-- Bootstrap 5 + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,34 +115,31 @@
       text-align: center;
       transition: all 0.2s;
     }
-    .glow-box {
+    .protocol-card {
+      background: rgba(0,229,160,0.05);
+      border-radius: 24px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-left: 4px solid var(--accent);
+      text-align: left;
+    }
+    .glow-box, .clickable-mortar {
       display: inline-block;
       padding: 20px 30px;
       border-radius: 60px;
       background: rgba(0,229,160,0.08);
       border: 2px solid var(--accent);
-      box-shadow: 0 0 15px rgba(0,229,160,0.6), 0 0 5px rgba(0,229,160,0.8);
+      box-shadow: 0 0 15px rgba(0,229,160,0.6);
       transition: 0.1s;
       cursor: pointer;
       animation: pulseGlow 1.2s infinite;
     }
-    .glow-box:active { transform: scale(0.96); background: rgba(0,229,160,0.2); }
+    .clickable-mortar { animation: softGlow 0.9s infinite alternate; border-color: var(--accent2); background: rgba(0,184,212,0.1);}
+    .glow-box:active, .clickable-mortar:active { transform: scale(0.96); background: rgba(0,229,160,0.2); }
     @keyframes pulseGlow {
-      0% { box-shadow: 0 0 5px rgba(0,229,160,0.4), 0 0 8px rgba(0,229,160,0.6); border-color: var(--accent); }
-      100% { box-shadow: 0 0 18px rgba(0,229,160,0.9), 0 0 12px var(--accent2); border-color: var(--accent2); }
+      0% { box-shadow: 0 0 5px rgba(0,229,160,0.4); border-color: var(--accent); }
+      100% { box-shadow: 0 0 18px rgba(0,229,160,0.9); border-color: var(--accent2); }
     }
-    .clickable-mortar {
-      display: inline-block;
-      padding: 18px 28px;
-      border-radius: 80px;
-      background: rgba(0,184,212,0.1);
-      border: 2px solid var(--accent2);
-      box-shadow: 0 0 12px rgba(0,184,212,0.7);
-      cursor: pointer;
-      transition: 0.05s linear;
-      animation: softGlow 0.9s infinite alternate;
-    }
-    .clickable-mortar:active { transform: scale(0.94); background: rgba(0,184,212,0.3); }
     @keyframes softGlow {
       from { box-shadow: 0 0 5px rgba(0,184,212,0.5); border-color: var(--accent2); }
       to { box-shadow: 0 0 20px rgba(0,229,160,0.8); border-color: var(--accent); }
@@ -155,12 +152,13 @@
       margin-top: 16px;
       font-size: 0.85rem;
     }
-    .progress-ring {
-      background: var(--bg-dark);
-      border-radius: 60px;
-      padding: 6px 16px;
-      font-family: monospace;
-      font-weight: bold;
+    .success-badge {
+      background: rgba(0,229,160,0.2);
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--accent);
     }
     .quiz-option {
       background: var(--surface2);
@@ -200,7 +198,6 @@
       backdrop-filter: blur(4px);
     }
     .toast-custom.show { transform: translateX(-50%) translateY(0); }
-    footer { background: #090c14; }
     .embedded-chat-preview {
       background: var(--surface2);
       border-radius: 24px;
@@ -231,7 +228,9 @@
       border-radius: 16px;
       border-left: 3px solid var(--accent);
     }
-    .glove-active { background: rgba(0,229,160,0.3); border-color: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .ingredient-grid { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+    .ingredient-chip { background: var(--surface2); border-radius: 100px; padding: 8px 18px; cursor: pointer; transition: 0.1s; border: 1px solid rgba(0,229,160,0.3);}
+    .ingredient-chip.added { background: var(--accent); color: #0a0e1a; border-color: var(--accent); font-weight: bold; }
     @media (max-width: 768px) { .lab-card { padding: 1.3rem; } .step-title { font-size: 1.4rem; } }
   </style>
 </head>
@@ -246,14 +245,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarExtra">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/instructions.html" target="_blank">📓 Notes Panel</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Questions</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/chatbox.html" target="_blank">💬 Chat</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showProtocolGuide">📖 Optimized Protocol</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Certification Quiz</a></li>
           <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="backToGatekeeper">🔒 Back to Gatekeeper</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetSimulation">🔄 Reset Simulation</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetSimulation">🔄 Reset Lab</a></li>
         </ul>
         <div class="d-flex gap-3 align-items-center">
-          <span class="badge-mini" id="stepDisplay">🧅 Step 1: Onion Extraction Sim</span>
+          <span class="badge-mini" id="stepDisplay">🧪 Optimized Onion Extraction</span>
         </div>
       </div>
     </div>
@@ -261,19 +259,19 @@
 
   <div class="container my-4 flex-grow-1">
     <div class="lab-card mx-auto" style="max-width: 1100px;">
-      <div class="step-badge">🧪 REALISTIC SIMULATION • ONION DNA PROTOCOL</div>
-      <div class="step-title">🧅 Onion DNA Extraction</div>
+      <div class="step-badge">⚡ OPTIMIZED PROTOCOL • DNASE-FREE TECHNIQUE</div>
+      <div class="step-title">🧅 High-Yield Onion DNA Extraction</div>
       
       <div class="simulation-panel" id="simulationZone">
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-          <h5 class="fw-bold mb-0">🔬 Lab Bench (Click glowing objects)</h5>
-          <span class="progress-ring" id="actionCounter">⚡ Phase: Preparation</span>
+          <h5 class="fw-bold mb-0">🔬 Active Lab Bench (click to perform steps)</h5>
+          <span class="progress-ring" id="actionCounter">🧪 Phase: Lysis Buffer</span>
         </div>
-        <div id="dynamicSimContent" class="interactive-area" style="min-height: 380px;"></div>
+        <div id="dynamicSimContent" class="interactive-area" style="min-height: 420px;"></div>
         <div id="videoReference" class="mt-3 text-center" style="display: none;">
           <div class="ratio ratio-16x9" style="max-width: 500px; margin: 0 auto;">
             <video controls style="border-radius: 20px;" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='100%25' height='100%25' fill='%23181e2c'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2300e5a0' font-family='monospace' font-size='14'%3E📹 Demo: Onion DNA%3C/text%3E%3C/svg%3E">
-              <source src="onion_demo.mp4" type="video/mp4">
+              <source src="../../videos/dna extraction from onion.mp4" type="video/mp4">
               Your browser does not support video.
             </video>
           </div>
@@ -281,97 +279,97 @@
       </div>
       
       <div id="contaminationTip" class="contamination-warning mb-3" style="display: none;">
-        <strong>⚠️ CONTAMINATION RISK!</strong> <span id="contamMsg"></span>
+        <strong>⚠️ CONTAMINATION / TECHNIQUE ALERT</strong> <span id="contamMsg"></span>
       </div>
       
       <div id="quizSection" style="display: none;" class="mt-4">
         <div class="instruction-card mb-3" style="border-left: 4px solid var(--accent2); background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 20px;">
-          <h5 class="fw-bold">📝 Check Your Understanding</h5>
-          <p class="small">Answer questions to unlock Step 2. Share answers to lab chat!</p>
+          <h5 class="fw-bold">📝 Molecular Mastery Quiz</h5>
+          <p class="small">Answer correctly to unlock the gatekeeper for advanced precipitation.</p>
         </div>
         <div class="mb-4">
-          <p class="fw-semibold mb-2">1️⃣ Why is meat tenderizer (protease) included in the lysis buffer for onion extraction?</p>
+          <p class="fw-semibold mb-2">1️⃣ Why is a 60°C incubation (heat treatment) recommended after blending?</p>
           <div id="q1Options">
-            <div class="quiz-option" data-q="1" data-val="a">A) To break down cell wall cellulose</div>
-            <div class="quiz-option" data-q="1" data-val="b">B) To digest histone proteins and release DNA from chromatin</div>
-            <div class="quiz-option" data-q="1" data-val="c">C) To dissolve the nuclear membrane</div>
-            <div class="quiz-option" data-q="1" data-val="d">D) To precipitate DNA immediately</div>
+            <div class="quiz-option" data-q="1" data-val="a">A) To evaporate water and concentrate DNA</div>
+            <div class="quiz-option" data-q="1" data-val="b">B) To denature DNase enzymes and protect DNA integrity</div>
+            <div class="quiz-option" data-q="1" data-val="c">C) To melt the cell wall completely</div>
+            <div class="quiz-option" data-q="1" data-val="d">D) To activate the detergent</div>
           </div>
         </div>
         <div class="mb-4">
-          <p class="fw-semibold mb-2">2️⃣ What is the most critical safety/sterility step before squeezing filtered onion pulp through cheesecloth?</p>
+          <p class="fw-semibold mb-2">2️⃣ During cold precipitation, why must the alcohol be layered slowly without mixing?</p>
           <div id="q2Options">
-            <div class="quiz-option" data-q="2" data-val="a">A) Wearing gloves to prevent DNase and oil contamination</div>
-            <div class="quiz-option" data-q="2" data-val="b">B) Heating the solution to 70°C</div>
-            <div class="quiz-option" data-q="2" data-val="c">C) Adding extra detergent</div>
-            <div class="quiz-option" data-q="2" data-val="d">D) Using plastic spoon only</div>
+            <div class="quiz-option" data-q="2" data-val="a">A) To prevent shearing of DNA and allow strands to interface precipitate</div>
+            <div class="quiz-option" data-q="2" data-val="b">B) To dissolve the onion pigments</div>
+            <div class="quiz-option" data-q="2" data-val="c">C) To sterilize the solution</div>
+            <div class="quiz-option" data-q="2" data-val="d">D) To increase the pH</div>
           </div>
         </div>
         <div class="text-center mt-3">
-          <button id="submitQuizBtn" class="btn-primary-lab" disabled>✅ Submit & Unlock Step 2</button>
-          <button id="shareQuizToChatBtn" class="btn-outline-lab ms-2" style="display: none;">💬 Share My Answers to Chat</button>
+          <button id="submitQuizBtn" class="btn-primary-lab" disabled>✅ Validate & Unlock Gatekeeper</button>
+          <button id="shareQuizToChatBtn" class="btn-outline-lab ms-2" style="display: none;">💬 Share to Lab Chat</button>
         </div>
         <div id="quizFeedback" class="small text-center mt-2"></div>
       </div>
       
       <div id="step2Gatekeeper" style="display: none;" class="mt-5 pt-3 border-top">
-        <h5 class="fw-bold text-center">🔐 Step 2 Gatekeeper</h5>
+        <h5 class="fw-bold text-center">🔐 Step 2 Access: Cold Precipitation Vault</h5>
         <div class="text-center mt-3">
           <div class="d-flex flex-column align-items-center gap-3">
             <input type="text" id="step2Passcode" class="passcode-input" placeholder="Enter passcode" maxlength="20">
-            <button id="unlockStep2Btn" class="btn-outline-lab">🔓 Unlock Step 2</button>
-            <div class="small text-secondary">💡 Hint: The cold liquid that makes DNA appear (5 letters) A _ _ _ _ L</div>
+            <button id="unlockStep2Btn" class="btn-outline-lab">🔓 Unlock Advanced Module</button>
+            <div class="small text-secondary">💡 Hint: The cold solvent that forces DNA out of solution (7 letters) A _ _ _ _ _ _ L</div>
           </div>
-          <a href="#" id="continueStep2Link" class="btn-primary-lab mt-3" style="pointer-events: none; opacity:0.5; text-decoration:none; display:inline-block;">➡ Continue to Step 2: DNA Precipitation</a>
+          <a href="#" id="continueStep2Link" class="btn-primary-lab mt-3" style="pointer-events: none; opacity:0.5; text-decoration:none; display:inline-block;">➡ Enter Step 2: DNA Spooling & Analysis</a>
         </div>
       </div>
       
       <div id="openEndedSection" style="display: none;" class="mt-4 pt-3">
-        <div class="instruction-card">
-          <h5 class="fw-bold">🧪 Reflection: Aseptic Technique & Blender Hygiene</h5>
-          <p class="small">Why is it important to sanitize the blender before onion homogenization? How can DNases affect your yield?</p>
-          <textarea id="labReflection" class="form-control" rows="3" style="background:var(--surface2); border:1px solid var(--accent); color:white; border-radius:20px;" placeholder="Write your reflection about contamination prevention..."></textarea>
-          <button id="shareChatboxBtn" class="btn-outline-lab mt-3">💬 Send Reflection to Lab Chat</button>
+        <div class="protocol-card">
+          <h5 class="fw-bold">🧼 Sterility Reflection: Blender Hygiene & DNase Control</h5>
+          <p class="small">Explain why sanitizing the blender with ethanol and using cold temperatures are critical for high molecular weight DNA. How do nucleases affect your experiment?</p>
+          <textarea id="labReflection" class="form-control" rows="3" style="background:var(--surface2); border:1px solid var(--accent); color:white; border-radius:20px;" placeholder="Write your aseptic technique insights..."></textarea>
+          <button id="shareChatboxBtn" class="btn-outline-lab mt-3">📡 Send Reflection to Lab Chat</button>
           <div id="shareFeedback" class="small text-secondary mt-2"></div>
         </div>
       </div>
 
       <div class="embedded-chat-preview mt-4">
         <div class="chat-preview-header">
-          <span>💬 Live Lab Chat (editable messages)</span>
-          <button id="refreshChatPreviewBtn" class="btn-outline-lab btn-sm" style="padding: 2px 12px;">↻ Refresh</button>
+          <span>💬 Collaborative Lab Notebook (editable)</span>
+          <button id="refreshChatPreviewBtn" class="btn-outline-lab btn-sm" style="padding: 2px 12px;">↻ Sync</button>
         </div>
         <div id="chatPreviewMessages" class="mini-message-list">
-          <div class="text-secondary p-2">Loading chat...</div>
+          <div class="text-secondary p-2">Loading collaborative chat...</div>
         </div>
         <div class="p-2 d-flex gap-2" style="background: var(--surface); border-top: 1px solid rgba(0,229,160,0.2);">
-          <input type="text" id="quickChatMsg" class="form-control form-control-sm" placeholder="Quick message..." style="background:#0b0f18; border-color:var(--accent); color:white;">
-          <button id="quickSendChatBtn" class="btn-primary-lab btn-sm">Send</button>
+          <input type="text" id="quickChatMsg" class="form-control form-control-sm" placeholder="Quick lab note..." style="background:#0b0f18; border-color:var(--accent); color:white;">
+          <button id="quickSendChatBtn" class="btn-primary-lab btn-sm">Post</button>
         </div>
       </div>
     </div>
   </div>
-  <footer class="text-center py-3 small text-secondary"><span>🧬 DNA Lab Studio — Onion extraction: mechanical disruption + protease lysis</span></footer>
+  <footer class="text-center py-3 small text-secondary"><span>🧬 Optimized onion extraction: cold alcohol + protease + DNase inactivation — best yield</span></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // ========== GLOBAL CHAT UTILITIES (shared localStorage) ==========
+  // --- Chat & persistence (unchanged but integrated)
   const STORAGE_KEY = 'dna_lab_chat_messages';
   function getChatMessages() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try { let msgs = JSON.parse(saved); msgs = msgs.filter(m => m && typeof m.text === 'string'); return msgs; } catch(e) { return []; }
     }
-    return [{ id: Date.now(), author: '🧬 DNA Lab Bot', text: '✨ Onion lab chat: share homogenization tips and quiz results.', timestamp: new Date().toISOString(), editable: false }];
+    return [{ id: Date.now(), author: '🧬 DNA Lab Bot', text: '🧅 Optimized onion protocol: always pre-chill alcohol, sanitize blender, and wear gloves.', timestamp: new Date().toISOString(), editable: false }];
   }
-  function saveChatMessages(messages) { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY, newValue: JSON.stringify(messages) })); updateChatPreview(); }
+  function saveChatMessages(messages) { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); updateChatPreview(); }
   function addChatMessage(author, text, editable = true) {
     if (!text || !text.trim()) return false;
     const messages = getChatMessages();
     messages.push({ id: Date.now(), author: author.trim().substring(0, 35), text: text.trim(), timestamp: new Date().toISOString(), editable: editable });
     saveChatMessages(messages);
-    showToast(`💬 "${author}" posted to chat`, false);
+    showToast(`💬 "${author}" posted`, false);
     playBeep(520, 100);
     return true;
   }
@@ -383,9 +381,9 @@
     if (messages.length === 0) { container.innerHTML = '<div class="text-secondary p-2">✨ No messages yet</div>'; return; }
     container.innerHTML = messages.map(msg => `
       <div class="mini-message" data-msg-id="${msg.id}">
-        <div class="d-flex justify-content-between"><strong style="color: var(--accent); font-size:0.75rem;">${escapeHtml(msg.author)}</strong><span class="text-secondary" style="font-size:0.6rem;">${new Date(msg.timestamp).toLocaleTimeString()}</span></div>
+        <div class="d-flex justify-content-between"><strong style="color: var(--accent);">${escapeHtml(msg.author)}</strong><span class="text-secondary" style="font-size:0.6rem;">${new Date(msg.timestamp).toLocaleTimeString()}</span></div>
         <div class="small mt-1">${escapeHtml(msg.text)}</div>
-        ${msg.editable ? `<div class="mt-1"><button class="edit-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--accent2); font-size:0.6rem;">✏️ edit</button> <button class="del-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--danger); font-size:0.6rem;">🗑️ delete</button></div>` : '<span class="text-secondary" style="font-size:0.6rem;">🔒 system</span>'}
+        ${msg.editable ? `<div class="mt-1"><button class="edit-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--accent2);">✏️ edit</button> <button class="del-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--danger);">🗑️ delete</button></div>` : '<span class="text-secondary" style="font-size:0.6rem;">🔒 system note</span>'}
       </div>
     `).join('');
     document.querySelectorAll('.edit-mini-btn').forEach(btn => btn.addEventListener('click', (e) => { const msgId = parseInt(btn.getAttribute('data-id')); editChatMessage(msgId); }));
@@ -397,85 +395,91 @@
   function showToast(msg, isError = false) { let toastDiv = document.querySelector('.toast-custom'); if(!toastDiv) { toastDiv = document.createElement('div'); toastDiv.className = 'toast-custom'; document.body.appendChild(toastDiv); } toastDiv.textContent = msg; toastDiv.style.borderColor = isError ? "var(--danger)" : "var(--accent)"; toastDiv.classList.add('show'); setTimeout(() => toastDiv.classList.remove('show'), 2700); }
   function playBeep(freq, duration) { try { const audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value = freq; gain.gain.value = 0.08; osc.start(); gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000); osc.stop(audioCtx.currentTime + duration/1000); } catch(e) {} }
 
-  // ========== ONION SIMULATION STATE ==========
-  let simPhase = "bufferPrep";  // bufferPrep -> blend -> filtration -> precipitation
-  let bufferIngredients = { water: false, salt: false, detergent: false, tenderizer: false };
+  // ========== REFINED SIMULATION (Optimized protocol + contamination logic) ==========
+  let simPhase = "bufferPrep";  // bufferPrep -> blend -> heatInactivation -> filtration -> proteaseAdd -> precipitation
+  let bufferMix = { water: false, salt: false, detergent: false };
   let blenderSanitized = false;
   let glovesEquipped = false;
+  let heatIncubationDone = false;
+  let proteaseAdded = false;
   let extractionComplete = false;
   let quizPassed = false;
   let selectedQ1 = null, selectedQ2 = null;
+
   const dynamicContainer = document.getElementById('dynamicSimContent');
   const actionCounterSpan = document.getElementById('actionCounter');
-  const quizSection = document.getElementById('quizSection');
-  const step2Gatekeeper = document.getElementById('step2Gatekeeper');
+  const quizSectionDiv = document.getElementById('quizSection');
+  const step2GatekeeperDiv = document.getElementById('step2Gatekeeper');
   const openEndedDiv = document.getElementById('openEndedSection');
   const videoRefDiv = document.getElementById('videoReference');
   const contaminationTipDiv = document.getElementById('contaminationTip');
   const contamMsgSpan = document.getElementById('contamMsg');
 
-  function updateUI() {
-    if(simPhase === "bufferPrep") {
-      let allDone = bufferIngredients.water && bufferIngredients.salt && bufferIngredients.detergent && bufferIngredients.tenderizer;
-      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="mixBufferBtn"><span style="font-size: 3rem;">🧪🥄</span><p class="mt-2 fw-bold">Prepare Lysis Buffer</p><small>Click each ingredient to add: Water, Salt, Detergent, Meat Tenderizer</small><div class="mt-2">✅ Water: ${bufferIngredients.water ? '✔️' : '❌'} &nbsp; 🧂 Salt: ${bufferIngredients.salt ? '✔️' : '❌'}<br>🧼 Detergent: ${bufferIngredients.detergent ? '✔️' : '❌'} &nbsp; 🥩 Tenderizer: ${bufferIngredients.tenderizer ? '✔️' : '❌'}</div>${allDone ? '<div class="mt-3 text-success fw-bold">✨ Buffer complete! Click to proceed.</div>' : ''}</div></div>`;
-      actionCounterSpan.innerText = "⚗️ Mixing Lysis Buffer";
-      const mixDiv = document.getElementById('mixBufferBtn');
-      if(mixDiv) mixDiv.onclick = () => {
-        if(!bufferIngredients.water) { bufferIngredients.water = true; showToast("💧 Water added", false); playBeep(400, 80); updateUI(); return; }
-        if(!bufferIngredients.salt) { bufferIngredients.salt = true; showToast("🧂 Non-iodized salt added", false); playBeep(440, 80); updateUI(); return; }
-        if(!bufferIngredients.detergent) { bufferIngredients.detergent = true; showToast("🧼 Dish detergent added", false); playBeep(480, 80); updateUI(); return; }
-        if(!bufferIngredients.tenderizer) { bufferIngredients.tenderizer = true; showToast("🥩 Meat tenderizer (protease) added", false); playBeep(520, 100); updateUI(); return; }
-        if(bufferIngredients.water && bufferIngredients.salt && bufferIngredients.detergent && bufferIngredients.tenderizer) {
-          showToast("🧴 Lysis buffer mixed! Now add onion and sanitize blender.", false);
-          simPhase = "blend";
-          contaminationTipDiv.style.display = "none";
-          updateUI();
-        }
-      };
+  function renderUI() {
+    if (simPhase === "bufferPrep") {
+      let allMixed = bufferMix.water && bufferMix.salt && bufferMix.detergent;
+      dynamicContainer.innerHTML = `<div><div class="fw-bold mb-3">🧪 STEP 1: OPTIMIZED LYSIS BUFFER (100mL water, 10g salt, 5mL dish soap)</div><div class="ingredient-grid" id="ingredientGrid"><div class="ingredient-chip ${bufferMix.water ? 'added' : ''}" data-ing="water">💧 Water</div><div class="ingredient-chip ${bufferMix.salt ? 'added' : ''}" data-ing="salt">🧂 Salt (10g)</div><div class="ingredient-chip ${bufferMix.detergent ? 'added' : ''}" data-ing="detergent">🧼 Detergent</div></div>${allMixed ? '<div class="success-badge mt-3">✓ Buffer ready — click "Proceed to Blend"</div><button id="proceedBlendBtn" class="btn-primary-lab mt-3">🔪 Proceed to Onion Maceration</button>' : ''}</div>`;
+      document.querySelectorAll('.ingredient-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          let ing = chip.getAttribute('data-ing');
+          if (!bufferMix[ing]) { bufferMix[ing] = true; showToast(`✔ ${ing.toUpperCase()} added to lysis buffer`, false); playBeep(400, 80); renderUI(); }
+        });
+      });
+      const proceed = document.getElementById('proceedBlendBtn');
+      if(proceed) proceed.onclick = () => { if(bufferMix.water && bufferMix.salt && bufferMix.detergent) { simPhase = "blend"; renderUI(); } };
+      actionCounterSpan.innerText = "🧪 Lysis Buffer Prep";
     } 
-    else if(simPhase === "blend") {
-      dynamicContainer.innerHTML = `<div class="text-center"><div class="clickable-mortar" id="blenderGlow"><span style="font-size: 3rem;">🧅 + 🧴 → 🥤🔄</span><p class="mt-2 fw-bold">Click to pulse blender (15 pulses)</p><small>${blenderSanitized ? "✅ Blender sanitized!" : "⚠️ Need to sanitize blender first!"}</small><div>${!blenderSanitized ? '<button id="sanitizeBlenderBtn" class="btn-outline-lab mt-2" style="font-size:0.8rem;">🧼 Sanitize Blender</button>' : '<span class="badge-mini">🔬 Homogenization ready</span>'}</div></div></div>`;
-      actionCounterSpan.innerText = "🔄 Mechanical Disruption";
-      const blenderDiv = document.getElementById('blenderGlow');
-      if(blenderDiv) blenderDiv.onclick = () => {
-        if(!blenderSanitized) { showToast("❌ Blender not sanitized! Risk of foreign DNA contamination.", true); contaminationTipDiv.style.display = "block"; contamMsgSpan.innerHTML = "⚠️ Blender residue introduces nucleases and foreign DNA! Sanitize with hot water and ethanol."; return; }
-        showToast("🧅 Onion + buffer pulsed 15 times → thick pulp obtained.", false);
-        playBeep(600, 200);
-        simPhase = "filtration";
-        updateUI();
+    else if (simPhase === "blend") {
+      dynamicContainer.innerHTML = `<div><div class="clickable-mortar" id="blendAction"><span style="font-size:3rem;">🧅➕🥤</span><p class="fw-bold mt-2">Pulse blender 3–5 short pulses</p>${!blenderSanitized ? '<div class="mt-2"><button id="sanitizeBlender" class="btn-outline-lab">🧼 Sanitize Blender (Ethanol 70%)</button></div>' : '<span class="success-badge">✅ Blender sterilized → DNase free</span>'}</div></div>`;
+      if(!blenderSanitized) document.getElementById('sanitizeBlender')?.addEventListener('click', () => { blenderSanitized = true; showToast("Blender sanitized with ethanol! Nucleases destroyed.", false); renderUI(); contaminationTipDiv.style.display = "none"; });
+      const blendDiv = document.getElementById('blendAction');
+      if(blendDiv) blendDiv.onclick = () => {
+        if(!blenderSanitized) { showToast("❌ CRITICAL: Unsanitized blender adds DNases! DNA will degrade.", true); contaminationTipDiv.style.display = "block"; contamMsgSpan.innerHTML = "Blender not sanitized! Foreign DNA & nucleases contaminate sample. Sanitize first."; return; }
+        showToast("✅ Onion homogenized – fine macerate ready for heat treatment.", false); playBeep(600, 150);
+        simPhase = "heatInactivation"; renderUI();
       };
-      const sanitizeBtn = document.getElementById('sanitizeBlenderBtn');
-      if(sanitizeBtn) sanitizeBtn.onclick = () => { blenderSanitized = true; showToast("🧴 Blender sterilized with ethanol/water. Safe for extraction.", false); updateUI(); contaminationTipDiv.style.display = "none"; };
+      actionCounterSpan.innerText = "🔄 Mechanical Maceration";
     }
-    else if(simPhase === "filtration") {
-      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="cheeseclothArea"><span style="font-size: 3rem;">🧻🧅🥤</span><p class="mt-2 fw-bold">Strain pulp through cheesecloth</p><div>${!glovesEquipped ? '<button id="wearGlovesBtn" class="btn-outline-lab mt-2">🧤 Equip Gloves (Prevent DNase)</button>' : '<span class="text-success">✅ Gloves on — sterile technique</span>'}</div><div id="squeezeAction" style="margin-top:15px;">${glovesEquipped ? '<button id="squeezeBtn" class="btn-primary-lab">💪 Squeeze cheesecloth to extract juice</button>' : '⚠️ Put on gloves first to avoid skin oils/DNases'}</div></div></div>`;
-      actionCounterSpan.innerText = "🧻 Filtration + squeezing";
-      const wearBtn = document.getElementById('wearGlovesBtn');
-      if(wearBtn) wearBtn.onclick = () => { glovesEquipped = true; showToast("🧤 Gloves equipped! DNase contamination risk reduced.", false); updateUI(); };
-      const squeeze = document.getElementById('squeezeBtn');
-      if(squeeze) squeeze.onclick = () => { if(glovesEquipped) { showToast("💧 Onion filtrate collected. Clear liquid ready for precipitation.", false); playBeep(560, 180); simPhase = "precipitation"; updateUI(); } else { showToast("⚠️ Contamination: bare hands introduce DNases! Simulation halted.", true); contaminationTipDiv.style.display = "block"; contamMsgSpan.innerHTML = "❌ You used bare hands! Skin oils & nucleases degrade DNA. Wear gloves next time."; } };
+    else if (simPhase === "heatInactivation") {
+      dynamicContainer.innerHTML = `<div class="glow-box" id="heatStep"><span style="font-size:2.5rem;">🔥🌡️</span><p class="fw-bold mt-2">60°C Water Bath Incubation (15 min)</p><small>Inactivates DNases, preserves DNA integrity</small><div>${heatIncubationDone ? '<span class="success-badge">✔ Incubation complete</span>' : '<button id="doHeat" class="btn-primary-lab mt-2">Start Heat Treatment</button>'}</div></div>`;
+      if(!heatIncubationDone) document.getElementById('doHeat')?.addEventListener('click', () => { heatIncubationDone = true; showToast("60°C incubation finished — DNase enzymes denatured. Proceed to filtration.", false); playBeep(500, 200); renderUI(); });
+      else {
+        const nextBtn = document.createElement('button'); nextBtn.className = "btn-primary-lab mt-3"; nextBtn.innerText = "🧻 Proceed to Filtration"; nextBtn.onclick = () => { simPhase = "filtration"; renderUI(); };
+        dynamicContainer.querySelector('.glow-box')?.appendChild(nextBtn);
+      }
+      actionCounterSpan.innerText = "🔥 DNase Inactivation";
     }
-    else if(simPhase === "precipitation") {
-      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="alcoholPrecip"><span style="font-size: 3rem;">❄️🍸🧬</span><p class="mt-2 fw-bold">Pour ice-cold alcohol down the side</p><small>Slowly add 1/3 cup chilled isopropyl alcohol</small><div id="alcoholResult"></div></div></div>`;
-      actionCounterSpan.innerText = "🧬 Precipitation ready";
-      const precipDiv = document.getElementById('alcoholPrecip');
-      if(precipDiv) precipDiv.onclick = () => {
-        if(!extractionComplete) {
-          extractionComplete = true;
-          showToast("🧬 White, snot-like DNA strands visible in alcohol layer! Extraction success.", false);
-          playBeep(880, 400);
-          videoRefDiv.style.display = "block";
-          dynamicContainer.innerHTML = `<div class="text-center"><span style="font-size:3rem;">🧬✅</span><p class="fw-bold mt-2">Onion DNA Precipitated!</p><p class="small">Strands of genomic DNA visible.</p></div>`;
-          actionCounterSpan.innerText = "✅ Extraction Complete!";
-          quizSection.style.display = "block";
-          attachQuizListeners();
-          contaminationTipDiv.style.display = "block";
-          contamMsgSpan.innerHTML = "🧊 Success! Ice-cold alcohol is essential for DNA precipitation. Great technique.";
-        }
+    else if (simPhase === "filtration") {
+      dynamicContainer.innerHTML = `<div><div class="clickable-mortar" id="filterArea"><span style="font-size:2.5rem;">🧻🧅💧</span><p class="fw-bold">Filter through cheesecloth / coffee filter</p>${!glovesEquipped ? '<button id="wearGlovesFilter" class="btn-outline-lab mt-2">🧤 Equip Gloves (Prevent skin DNases)</button>' : '<span class="success-badge">✅ Gloves on — aseptic</span>'}<div>${glovesEquipped ? '<button id="squeezeFilter" class="btn-primary-lab mt-3">💧 Collect Filtrate</button>' : '<small class="text-warning">⚠️ Put on gloves to avoid contamination</small>'}</div></div></div>`;
+      document.getElementById('wearGlovesFilter')?.addEventListener('click', () => { glovesEquipped = true; showToast("Nitrile gloves on! Skin oils & DNases blocked.", false); renderUI(); });
+      document.getElementById('squeezeFilter')?.addEventListener('click', () => { if(glovesEquipped) { showToast("Clear onion filtrate obtained. Adding protease next.", false); simPhase = "proteaseAdd"; renderUI(); } else { showToast("Contamination: bare hands introduced nucleases!", true); contaminationTipDiv.style.display="block"; contamMsgSpan.innerHTML="Bare skin contains DNases that shred DNA. Always wear gloves."; } });
+      actionCounterSpan.innerText = "🧻 Filtration & Squeeze";
+    }
+    else if (simPhase === "proteaseAdd") {
+      dynamicContainer.innerHTML = `<div class="glow-box" id="proteaseBtn"><span style="font-size:2.5rem;">🥩🧬</span><p class="fw-bold">Add meat tenderizer (protease)</p><small>Digests histones → unwinds DNA for visibility</small>${proteaseAdded ? '<div class="success-badge mt-2">Protease added ✔</div><button id="goPrecipitate" class="btn-primary-lab mt-3">❄️ Proceed to Cold Precipitation</button>' : '<button id="addProteaseAction" class="btn-primary-lab mt-2">➕ Add Protease</button>'}</div>`;
+      if(!proteaseAdded) document.getElementById('addProteaseAction')?.addEventListener('click', () => { proteaseAdded = true; showToast("Meat tenderizer (protease) added — histones digested.", false); playBeep(450, 120); renderUI(); });
+      else document.getElementById('goPrecipitate')?.addEventListener('click', () => { simPhase = "precipitation"; renderUI(); });
+      actionCounterSpan.innerText = "🧬 Protease Digestion";
+    }
+    else if (simPhase === "precipitation") {
+      dynamicContainer.innerHTML = `<div class="glow-box" id="alcoholPrecipFinal"><span style="font-size:3rem;">❄️🍸🧬</span><p class="fw-bold">Slowly layer ice-cold 91% isopropyl alcohol</p><small>Do NOT mix — let DNA precipitate at interface</small><div id="precipResult"></div></div>`;
+      const precipDiv = document.getElementById('alcoholPrecipFinal');
+      if(precipDiv && !extractionComplete) precipDiv.onclick = () => {
+        extractionComplete = true;
+        showToast("🧬 White, fibrous DNA strands visible! High molecular weight extraction success.", false);
+        playBeep(880, 500);
+        videoRefDiv.style.display = "block";
+        dynamicContainer.innerHTML = `<div><span style="font-size:3rem;">🧬✅🧅</span><p class="fw-bold mt-2">Onion DNA Precipitated!</p><p class="small">Spoolable DNA at alcohol-aqueous interface.</p></div>`;
+        actionCounterSpan.innerText = "✨ EXTRACTION COMPLETE";
+        quizSectionDiv.style.display = "block";
+        attachQuizListeners();
+        contaminationTipDiv.style.display = "block";
+        contamMsgSpan.innerHTML = "✔ Perfect cold alcohol layering! DNA successfully precipitated.";
       };
+      actionCounterSpan.innerText = "🧊 Cold Precipitation";
     }
   }
-  
+
   function attachQuizListeners() {
     document.querySelectorAll('.quiz-option[data-q="1"]').forEach(opt => opt.addEventListener('click', quizHandler));
     document.querySelectorAll('.quiz-option[data-q="2"]').forEach(opt => opt.addEventListener('click', quizHandler));
@@ -495,55 +499,56 @@
     const correct2 = (selectedQ2 === 'a');
     if(correct1 && correct2) {
       quizPassed = true;
-      document.getElementById('quizFeedback').innerHTML = "✅ Perfect! Step 2 gatekeeper unlocked.";
-      showToast("Quiz passed! Unlock Step 2 with passcode: ALCOHOL", false);
+      document.getElementById('quizFeedback').innerHTML = "✅ Excellent! Gatekeeper unlocked. Passcode hint: ALCOHOL";
+      showToast("Quiz passed! Use passcode: ALCOHOL", false);
       playBeep(660, 180);
-      step2Gatekeeper.style.display = "block";
+      step2GatekeeperDiv.style.display = "block";
       openEndedDiv.style.display = "block";
       document.getElementById('submitQuizBtn').disabled = true;
     } else {
-      document.getElementById('quizFeedback').innerHTML = "❌ Not quite. Protease digests histones; gloves prevent DNase contamination. Try again!";
-      showToast("Incorrect answers. Review science.", true);
+      document.getElementById('quizFeedback').innerHTML = "❌ Incorrect. Heat inactivates DNases; layering prevents shearing. Try again!";
+      showToast("Review protocol: 60°C for DNase, gentle alcohol layering.", true);
       playBeep(330, 200);
     }
   });
   document.getElementById('shareQuizToChatBtn')?.addEventListener('click', () => {
-    let q1text = (selectedQ1 === 'b') ? "Protease digests histone proteins → releases DNA" : "Incorrect answer";
-    let q2text = (selectedQ2 === 'a') ? "Gloves prevent DNase/skin oil contamination" : "Incorrect answer";
-    addChatMessage("🧅 Onion Lab Student", `Quiz reflection: Q1: ${q1text}. Q2: ${q2text}.`, true);
+    let q1exp = (selectedQ1 === 'b') ? "60°C inactivates DNases" : "Review heat treatment";
+    let q2exp = (selectedQ2 === 'a') ? "Layering prevents mixing & shears DNA" : "Cold alcohol layer crucial";
+    addChatMessage("🧅 Lab Trainee", `Quiz insight: ${q1exp} | ${q2exp}`, true);
   });
   function unlockStep2() {
     const entered = document.getElementById('step2Passcode')?.value.trim().toUpperCase() || "";
     if(entered === "ALCOHOL" && quizPassed) {
-      showToast("🔓 Step 2 unlocked! You may continue.", false);
+      showToast("🔓 Step 2 unlocked: DNA Spooling module ready.", false);
       const continueLink = document.getElementById('continueStep2Link');
-      if(continueLink) { continueLink.style.pointerEvents = "auto"; continueLink.style.opacity = "1"; continueLink.setAttribute('href', 'step2_precipitation_onion.html'); continueLink.innerHTML = "🧪 Continue to Step 2: DNA Precipitation →"; }
+      if(continueLink) { continueLink.style.pointerEvents = "auto"; continueLink.style.opacity = "1"; continueLink.setAttribute('href', 'step2_precipitation_onion.html'); continueLink.innerHTML = "🧪 Enter Step 2: DNA Spooling →"; }
       document.getElementById('unlockStep2Btn').disabled = true;
       playBeep(523, 150);
-    } else if(!quizPassed) showToast("⚠️ Pass the quiz first.", true);
-    else showToast("❌ Incorrect passcode. Hint: cold liquid (ALCOHOL)", true);
+    } else if(!quizPassed) showToast("⚠️ Complete the quiz first.", true);
+    else showToast("❌ Incorrect passcode. Hint: COLD SOLVENT (ALCOHOL)", true);
   }
   document.getElementById('unlockStep2Btn')?.addEventListener('click', unlockStep2);
   document.getElementById('step2Passcode')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlockStep2(); });
   document.getElementById('shareChatboxBtn')?.addEventListener('click', () => {
     const reflection = document.getElementById('labReflection')?.value.trim();
-    if(!reflection) { document.getElementById('shareFeedback').innerHTML = "Write a reflection first."; return; }
-    addChatMessage("🧅 Lab Researcher", `Reflection: ${reflection}`, true);
-    document.getElementById('shareFeedback').innerHTML = "✅ Reflection sent to chat!";
+    if(!reflection) { document.getElementById('shareFeedback').innerHTML = "Write reflection first."; return; }
+    addChatMessage("🧬 Researcher", `Sterility note: ${reflection}`, true);
+    document.getElementById('shareFeedback').innerHTML = "✅ Sent to chat.";
     document.getElementById('labReflection').value = "";
   });
   document.getElementById('quickSendChatBtn')?.addEventListener('click', () => {
     const quickMsg = document.getElementById('quickChatMsg')?.value.trim();
-    if(quickMsg) { addChatMessage("Participant", quickMsg, true); document.getElementById('quickChatMsg').value = ""; } else showToast("Enter a message", true);
+    if(quickMsg) { addChatMessage("Participant", quickMsg, true); document.getElementById('quickChatMsg').value = ""; } else showToast("Enter message", true);
   });
   document.getElementById('refreshChatPreviewBtn')?.addEventListener('click', () => updateChatPreview());
-  document.getElementById('showQuestionsBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("❓ Meat tenderizer (protease) digests histones. Cold alcohol precipitates DNA. Always sanitize blender."); });
+  document.getElementById('showProtocolGuide')?.addEventListener('click', (e) => { e.preventDefault(); showToast("📖 Optimized: 60°C DNase kill + protease + ice-cold alcohol layering", false); });
+  document.getElementById('showQuestionsBtn')?.addEventListener('click', (e) => { e.preventDefault(); if(extractionComplete) quizSectionDiv.scrollIntoView({behavior:'smooth'}); else showToast("Complete extraction first to unlock quiz.", true); });
   document.getElementById('resetSimulation')?.addEventListener('click', (e) => { e.preventDefault(); localStorage.removeItem('dna_lab_selected_sample'); location.reload(); });
   document.getElementById('backToGatekeeper')?.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'step1.html'; });
   
-  window.addEventListener('storage', (e) => { if(e.key === STORAGE_KEY) updateChatPreview(); });
+  window.addEventListener('storage', () => updateChatPreview());
   setInterval(() => updateChatPreview(), 4000);
-  updateUI();
+  renderUI();
   updateChatPreview();
 </script>
 <div class="toast-custom"></div>
