@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>DNA Lab Studio | Strawberry Extraction + Integrated Chat</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f121c;
+      --surface: #181e2c;
+      --surface2: #1f2537;
+      --accent: #00e5a0;
+      --accent2: #00b8d4;
+      --text-light: #eef2ff;
+      --text-dim: #8d9bb0;
+      --danger: #ff5e7e;
+      --warning: #ffb347;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+    .lab-navbar {
+      background: var(--surface) !important;
+      border-bottom: 1px solid rgba(0,229,160,0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .brand-dna {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent) !important;
+    }
+    .nav-link-custom {
+      color: var(--text-dim) !important;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-link-custom:hover { color: var(--accent) !important; }
+    .badge-mini {
+      background: var(--surface2);
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,160,0.12);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
+    }
+    .step-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .step-title {
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+    .btn-primary-lab {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #0a0e1a;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 40px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,229,160,0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-lab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,229,160,0.4);
+      color: #0a0e1a;
+    }
+    .btn-outline-lab {
+      background: transparent;
+      border: 1.5px solid rgba(0,229,160,0.4);
+      color: var(--accent);
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 8px 20px;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .simulation-panel {
+      background: var(--surface2);
+      border-radius: 28px;
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+      border: 1px solid rgba(0,229,160,0.2);
+    }
+    .interactive-area {
+      background: #0b0f18;
+      border-radius: 32px;
+      padding: 1.8rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .glow-box {
+      display: inline-block;
+      padding: 20px 30px;
+      border-radius: 60px;
+      background: rgba(0,229,160,0.08);
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 15px rgba(0,229,160,0.6), 0 0 5px rgba(0,229,160,0.8);
+      transition: 0.1s;
+      cursor: pointer;
+      animation: pulseGlow 1.2s infinite;
+    }
+    .glow-box:active { transform: scale(0.96); background: rgba(0,229,160,0.2); }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 5px rgba(0,229,160,0.4), 0 0 8px rgba(0,229,160,0.6); border-color: var(--accent); }
+      100% { box-shadow: 0 0 18px rgba(0,229,160,0.9), 0 0 12px var(--accent2); border-color: var(--accent2); }
+    }
+    .clickable-mortar {
+      display: inline-block;
+      padding: 18px 28px;
+      border-radius: 80px;
+      background: rgba(0,184,212,0.1);
+      border: 2px solid var(--accent2);
+      box-shadow: 0 0 12px rgba(0,184,212,0.7);
+      cursor: pointer;
+      transition: 0.05s linear;
+      animation: softGlow 0.9s infinite alternate;
+    }
+    .clickable-mortar:active { transform: scale(0.94); background: rgba(0,184,212,0.3); }
+    @keyframes softGlow {
+      from { box-shadow: 0 0 5px rgba(0,184,212,0.5); border-color: var(--accent2); }
+      to { box-shadow: 0 0 20px rgba(0,229,160,0.8); border-color: var(--accent); }
+    }
+    .contamination-warning {
+      background: rgba(255,94,126,0.2);
+      border-left: 5px solid var(--danger);
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .progress-ring {
+      background: var(--bg-dark);
+      border-radius: 60px;
+      padding: 6px 16px;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    .quiz-option {
+      background: var(--surface2);
+      border-radius: 60px;
+      padding: 10px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid transparent;
+    }
+    .quiz-option:hover { border-color: var(--accent); background: rgba(0,229,160,0.1); }
+    .quiz-option.selected { background: var(--accent); color: #0a0e1a; border-color: var(--accent); }
+    .passcode-input {
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 60px;
+      padding: 12px 20px;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      letter-spacing: 2px;
+      width: 100%;
+      max-width: 260px;
+    }
+    .toast-custom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: transform 0.3s;
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+    }
+    .toast-custom.show { transform: translateX(-50%) translateY(0); }
+    footer { background: #090c14; }
+    /* embedded chat preview */
+    .embedded-chat-preview {
+      background: var(--surface2);
+      border-radius: 24px;
+      margin-top: 1.8rem;
+      border: 1px solid rgba(0,229,160,0.2);
+      overflow: hidden;
+    }
+    .chat-preview-header {
+      background: rgba(0,0,0,0.3);
+      padding: 12px 20px;
+      border-bottom: 1px solid rgba(0,229,160,0.2);
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mini-message-list {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 12px;
+      background: #0b0f18;
+      font-size: 0.8rem;
+    }
+    .mini-message {
+      background: var(--surface);
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      border-radius: 16px;
+      border-left: 3px solid var(--accent);
+    }
+    @media (max-width: 768px) { .lab-card { padding: 1.3rem; } .step-title { font-size: 1.4rem; } }
+  </style>
+</head>
+<body>
+
+<div class="app-container d-flex flex-column min-vh-100">
+  <nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand brand-dna fw-bold" href="#"><span class="me-1">🧬</span> DNA Lab Studio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra">
+        <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExtra">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/instructions.html" target="_blank">📓 Notes Panel</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Questions</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/chatbox.html" target="_blank">💬 Chat</a></li>
+          <!-- Additional contextual link for gatekeeper (stays but style identical) -->
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="backToGatekeeper">🔒 Back to Gatekeeper</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetStep1Hint">🔄 Reset Selection</a></li>
+        </ul>
+        <div class="d-flex gap-3 align-items-center">
+          <span class="badge-mini" id="stepDisplay">🍓 Step 1: Extraction Sim</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-4 flex-grow-1">
+    <div class="lab-card mx-auto" style="max-width: 1100px;">
+      <div class="step-badge">🧪 REALISTIC SIMULATION • GLOW GUIDES + INTEGRATED CHAT</div>
+      <div class="step-title">🍓 Strawberry DNA Extraction</div>
+      
+      <!-- Simulation zone -->
+      <div class="simulation-panel" id="simulationZone">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+          <h5 class="fw-bold mb-0">🧬 Lab Bench (Click glowing objects)</h5>
+          <span class="progress-ring" id="actionCounter">⚡ 0/??</span>
+        </div>
+        <div id="dynamicSimContent" class="interactive-area" style="min-height: 380px;"></div>
+        <div id="videoReference" class="mt-3 text-center" style="display: none;">
+          <div class="ratio ratio-16x9" style="max-width: 500px; margin: 0 auto;">
+            <video controls style="border-radius: 20px;" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='100%25' height='100%25' fill='%23181e2c'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2300e5a0' font-family='monospace' font-size='14'%3E📹 Demo: Strawberry DNA%3C/text%3E%3C/svg%3E">
+              <source src="../../videos/strawberry.mp4" type="video/mp4">
+              Your browser does not support video.
+            </video>
+          </div>
+        </div>
+      </div>
+      
+      <div id="contaminationTip" class="contamination-warning mb-3" style="display: none;">
+        <strong>⚠️ CONTAMINATION RISK!</strong> <span id="contamMsg"></span>
+      </div>
+      
+      <!-- Quiz section -->
+      <div id="quizSection" style="display: none;" class="mt-4">
+        <div class="instruction-card mb-3" style="border-left: 4px solid var(--accent2); background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 20px;">
+          <h5 class="fw-bold">📝 Check Your Understanding</h5>
+          <p class="small">Answer questions to unlock Step 2. Your correct answers can be shared to the lab chat!</p>
+        </div>
+        <div class="mb-4">
+          <p class="fw-semibold mb-2">1️⃣ Why does strawberry yield so much visible DNA compared to other fruits?</p>
+          <div id="q1Options">
+            <div class="quiz-option" data-q="1" data-val="a">A) High sugar content precipitates DNA</div>
+            <div class="quiz-option" data-q="1" data-val="b">B) Octoploid genome (8 copies of each chromosome)</div>
+            <div class="quiz-option" data-q="1" data-val="c">C) It contains more water</div>
+            <div class="quiz-option" data-q="1" data-val="d">D) No cell wall</div>
+          </div>
+        </div>
+        <div class="mb-4">
+          <p class="fw-semibold mb-2">2️⃣ What is the main role of dish detergent in the extraction buffer?</p>
+          <div id="q2Options">
+            <div class="quiz-option" data-q="2" data-val="a">A) Breaks down proteins (protease)</div>
+            <div class="quiz-option" data-q="2" data-val="b">B) Dissolves cell membrane & nuclear envelope lipids</div>
+            <div class="quiz-option" data-q="2" data-val="c">C) Precipitates DNA instantly</div>
+            <div class="quiz-option" data-q="2" data-val="d">D) Neutralizes pH</div>
+          </div>
+        </div>
+        <div class="text-center mt-3">
+          <button id="submitQuizBtn" class="btn-primary-lab" disabled>✅ Submit & Unlock Step 2</button>
+          <button id="shareQuizToChatBtn" class="btn-outline-lab ms-2" style="display: none;">💬 Share My Answers to Chat</button>
+        </div>
+        <div id="quizFeedback" class="small text-center mt-2"></div>
+      </div>
+      
+      <!-- STEP 2 GATEKEEPER -->
+      <div id="step2Gatekeeper" style="display: none;" class="mt-5 pt-3 border-top">
+        <h5 class="fw-bold text-center">🔐 Step 2 Gatekeeper</h5>
+        <div class="text-center mt-3">
+          <div class="d-flex flex-column align-items-center gap-3">
+            <input type="text" id="step2Passcode" class="passcode-input" placeholder="Enter passcode" maxlength="20">
+            <button id="unlockStep2Btn" class="btn-outline-lab">🔓 Unlock Step 2</button>
+            <div class="small text-secondary">💡 Hint: The chemical that breaks cell membranes (5 letters, uppercase) L Y _ _ S</div>
+          </div>
+          <a href="#" id="continueStep2Link" class="btn-primary-lab mt-3" style="pointer-events: none; opacity:0.5; text-decoration:none; display:inline-block;">➡ Continue to Step 2: DNA Precipitation</a>
+        </div>
+      </div>
+      
+      <!-- Reflection area -->
+      <div id="openEndedSection" style="display: none;" class="mt-4 pt-3">
+        <div class="instruction-card">
+          <h5 class="fw-bold">🧪 Reflection: Contamination & Technique</h5>
+          <p class="small">How can contamination affect DNA extraction results? What aseptic technique would you apply after mashing?</p>
+          <textarea id="labReflection" class="form-control" rows="3" style="background:var(--surface2); border:1px solid var(--accent); color:white; border-radius:20px;" placeholder="Write your reflection about contamination prevention..."></textarea>
+          <button id="shareChatboxBtn" class="btn-outline-lab mt-3">💬 Send Reflection to Lab Chat</button>
+          <div id="shareFeedback" class="small text-secondary mt-2"></div>
+        </div>
+      </div>
+
+      <!-- Embedded live chat preview (shows last 5 messages, interactive) -->
+      <div class="embedded-chat-preview mt-4">
+        <div class="chat-preview-header">
+          <span>💬 Live Lab Chat (editable messages)</span>
+          <button id="refreshChatPreviewBtn" class="btn-outline-lab btn-sm" style="padding: 2px 12px;">↻ Refresh</button>
+        </div>
+        <div id="chatPreviewMessages" class="mini-message-list">
+          <div class="text-secondary p-2">Loading chat...</div>
+        </div>
+        <div class="p-2 d-flex gap-2" style="background: var(--surface); border-top: 1px solid rgba(0,229,160,0.2);">
+          <input type="text" id="quickChatMsg" class="form-control form-control-sm" placeholder="Quick message..." style="background:#0b0f18; border-color:var(--accent); color:white;">
+          <button id="quickSendChatBtn" class="btn-primary-lab btn-sm">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="text-center py-3 small text-secondary"><span>🧬 DNA Lab Studio — Interactive extraction + cross-tab editable chat</span></footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // ========== GLOBAL CHAT UTILITIES (shared localStorage) ==========
+  const STORAGE_KEY = 'dna_lab_chat_messages';
+  
+  function getChatMessages() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        let msgs = JSON.parse(saved);
+        msgs = msgs.filter(m => m && typeof m.text === 'string');
+        return msgs;
+      } catch(e) { return []; }
+    }
+    // default welcome message (editable false)
+    return [{
+      id: Date.now(),
+      author: '🧬 DNA Lab Bot',
+      text: '✨ Welcome to collaborative chat! Share experiment thoughts, quiz answers, or reflections.',
+      timestamp: new Date().toISOString(),
+      editable: false
+    }];
+  }
+  
+  function saveChatMessages(messages) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    window.dispatchEvent(new StorageEvent('storage', { key: STORAGE_KEY, newValue: JSON.stringify(messages) }));
+    updateChatPreview(); // update preview immediately
+  }
+  
+  function addChatMessage(author, text, editable = true) {
+    if (!text || !text.trim()) return false;
+    const messages = getChatMessages();
+    const newMsg = {
+      id: Date.now(),
+      author: author.trim().substring(0, 35),
+      text: text.trim(),
+      timestamp: new Date().toISOString(),
+      editable: editable
+    };
+    messages.push(newMsg);
+    saveChatMessages(messages);
+    showToast(`💬 "${author}" posted to chat`, false);
+    playBeep(520, 100);
+    updateChatPreview();
+    return true;
+  }
+  
+  function updateChatPreview() {
+    const container = document.getElementById('chatPreviewMessages');
+    if (!container) return;
+    let messages = getChatMessages();
+    messages = [...messages].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 6);
+    if (messages.length === 0) {
+      container.innerHTML = '<div class="text-secondary p-2">✨ No messages yet</div>';
+      return;
+    }
+    container.innerHTML = messages.map(msg => `
+      <div class="mini-message" data-msg-id="${msg.id}">
+        <div class="d-flex justify-content-between">
+          <strong style="color: var(--accent); font-size:0.75rem;">${escapeHtml(msg.author)}</strong>
+          <span class="text-secondary" style="font-size:0.6rem;">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+        </div>
+        <div class="small mt-1">${escapeHtml(msg.text)}</div>
+        ${msg.editable ? `<div class="mt-1"><button class="edit-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--accent2); font-size:0.6rem;">✏️ edit</button> <button class="del-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--danger); font-size:0.6rem;">🗑️ delete</button></div>` : '<span class="text-secondary" style="font-size:0.6rem;">🔒 system</span>'}
+      </div>
+    `).join('');
+    
+    // attach edit/delete events to preview buttons
+    document.querySelectorAll('.edit-mini-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const msgId = parseInt(btn.getAttribute('data-id'));
+        editChatMessage(msgId);
+      });
+    });
+    document.querySelectorAll('.del-mini-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const msgId = parseInt(btn.getAttribute('data-id'));
+        deleteChatMessage(msgId);
+      });
+    });
+  }
+  
+  function editChatMessage(msgId) {
+    let messages = getChatMessages();
+    const msg = messages.find(m => m.id === msgId);
+    if (!msg || !msg.editable) { showToast("Cannot edit this message.", true); return; }
+    const newText = prompt("Edit your message:", msg.text);
+    if (newText && newText.trim() !== "") {
+      msg.text = newText.trim();
+      msg.timestamp = new Date().toISOString();
+      saveChatMessages(messages);
+      showToast("✏️ Message updated in chat.", false);
+      updateChatPreview();
+    }
+  }
+  
+  function deleteChatMessage(msgId) {
+    let messages = getChatMessages();
+    const index = messages.findIndex(m => m.id === msgId);
+    if (index === -1) return;
+    if (!messages[index].editable) { showToast("System message cannot be deleted.", true); return; }
+    if (confirm("Delete this message permanently?")) {
+      messages.splice(index, 1);
+      saveChatMessages(messages);
+      showToast("🗑️ Message deleted.", false);
+      updateChatPreview();
+    }
+  }
+  
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+  
+  function showToast(msg, isError = false) {
+    let toastDiv = document.querySelector('.toast-custom');
+    if(!toastDiv) {
+      toastDiv = document.createElement('div');
+      toastDiv.className = 'toast-custom';
+      document.body.appendChild(toastDiv);
+    }
+    toastDiv.textContent = msg;
+    toastDiv.style.borderColor = isError ? "var(--danger)" : "var(--accent)";
+    toastDiv.classList.add('show');
+    setTimeout(() => toastDiv.classList.remove('show'), 2700);
+  }
+  
+  function playBeep(freq, duration) {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      gain.gain.value = 0.08;
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000);
+      osc.stop(audioCtx.currentTime + duration/1000);
+    } catch(e) {}
+  }
+  
+  // ========== STRAWBERRY SIMULATION STATE ==========
+  let simPhase = "pick";
+  let mashCount = 0;
+  const REQUIRED_MASH = 8;
+  let extractionComplete = false;
+  let quizPassed = false;
+  let contaminationEventTriggered = false;
+  let selectedQ1 = null, selectedQ2 = null;
+  
+  const dynamicContainer = document.getElementById('dynamicSimContent');
+  const actionCounterSpan = document.getElementById('actionCounter');
+  const quizSection = document.getElementById('quizSection');
+  const step2Gatekeeper = document.getElementById('step2Gatekeeper');
+  const openEndedDiv = document.getElementById('openEndedSection');
+  const videoRefDiv = document.getElementById('videoReference');
+  const contaminationTipDiv = document.getElementById('contaminationTip');
+  const contamMsgSpan = document.getElementById('contamMsg');
+  
+  function maybeTriggerContamination() {
+    if(!contaminationEventTriggered && simPhase === "mash" && mashCount >= 3 && Math.random() < 0.4) {
+      contaminationEventTriggered = true;
+      contaminationTipDiv.style.display = "block";
+      contamMsgSpan.innerHTML = "⚠️ You forgot to sterilize the pestle! Cross-contamination detected. In real labs, this degrades DNA and introduces nucleases. Always clean equipment.";
+      showToast("🧫 Contamination warning! Read the safety tip.", false);
+      playBeep(310, 300);
+    }
+  }
+  
+  function updateUI() {
+    if(simPhase === "pick") {
+      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="strawberryGlow"><span style="font-size: 4rem;">🍓</span><p class="mt-2 fw-bold mb-0">Click glowing strawberry to collect sample</p><small>1 fresh strawberry needed</small></div></div>`;
+      actionCounterSpan.innerText = "🍓 0/1 strawberry";
+      const glowBox = document.getElementById('strawberryGlow');
+      if(glowBox) glowBox.onclick = () => {
+        actionCounterSpan.innerText = "🍓 1/1 strawberry collected!";
+        showToast("✅ Strawberry collected! Now proceed to mashing phase.", false);
+        playBeep(523, 120);
+        simPhase = "mash";
+        mashCount = 0;
+        contaminationEventTriggered = false;
+        contaminationTipDiv.style.display = "none";
+        updateUI();
+      };
+    } 
+    else if(simPhase === "mash") {
+      dynamicContainer.innerHTML = `<div class="text-center"><div class="clickable-mortar" id="mortarGlow"><span style="font-size: 3.5rem;">🪨🥣🔨</span><p class="mt-2 fw-bold">Click mortar & pestle to mash</p><small>${REQUIRED_MASH} clicks to break cell walls</small></div><div class="progress mt-3" style="height: 10px; max-width: 300px; margin: 0 auto;"><div id="mashProgressFill" style="width: 0%; height: 10px; background: var(--accent); border-radius: 10px;"></div></div></div>`;
+      actionCounterSpan.innerText = `🔨 Mash: ${mashCount}/${REQUIRED_MASH}`;
+      const mortar = document.getElementById('mortarGlow');
+      if(mortar) mortar.onclick = () => {
+        if(mashCount < REQUIRED_MASH) {
+          mashCount++;
+          actionCounterSpan.innerText = `🔨 Mash: ${mashCount}/${REQUIRED_MASH}`;
+          const progFill = document.getElementById('mashProgressFill');
+          if(progFill) progFill.style.width = `${(mashCount/REQUIRED_MASH)*100}%`;
+          playBeep(440, 50);
+          maybeTriggerContamination();
+          if(mashCount === REQUIRED_MASH) {
+            showToast("💥 Cell walls broken! Add lysis buffer.", false);
+            playBeep(659, 200);
+            simPhase = "buffer";
+            updateUI();
+          }
+        }
+      };
+    }
+    else if(simPhase === "buffer") {
+      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="bufferGlow"><span style="font-size: 3rem;">🧴💧</span><p class="mt-2 fw-bold">Click to add Lysis Buffer (detergent + salt)</p><small>Detergent dissolves lipid membranes</small></div><div class="contamination-warning mt-3" style="background:rgba(0,229,160,0.1);">💡 Sterile pipette tips avoid nuclease contamination.</div></div>`;
+      actionCounterSpan.innerText = "⚗️ Awaiting buffer addition";
+      const bufferBtn = document.getElementById('bufferGlow');
+      if(bufferBtn) bufferBtn.onclick = () => {
+        showToast("🧼 Detergent breaks down cell & nuclear membranes! DNA released.", false);
+        playBeep(720, 150);
+        simPhase = "alcohol";
+        updateUI();
+      };
+    }
+    else if(simPhase === "alcohol") {
+      dynamicContainer.innerHTML = `<div class="text-center"><div class="glow-box" id="alcoholGlow"><span style="font-size: 3.5rem;">❄️🧪</span><p class="mt-2 fw-bold">Click to add Cold Isopropyl Alcohol</p><small>DNA is insoluble → white strands appear!</small></div></div>`;
+      actionCounterSpan.innerText = "🧬 Ready to precipitate DNA";
+      const alcoholDiv = document.getElementById('alcoholGlow');
+      if(alcoholDiv) alcoholDiv.onclick = () => {
+        if(!extractionComplete) {
+          extractionComplete = true;
+          showToast("🎉 DNA extraction complete! White DNA strands visible.", false);
+          playBeep(880, 350);
+          videoRefDiv.style.display = "block";
+          dynamicContainer.innerHTML = `<div class="text-center"><span style="font-size:3rem;">🧬✅</span><p class="fw-bold mt-2">Extraction Successful!</p><p class="small">Strawberry DNA isolated.</p></div>`;
+          actionCounterSpan.innerText = "✅ Extraction Complete!";
+          quizSection.style.display = "block";
+          attachQuizListeners();
+          if(!contaminationEventTriggered) {
+            contaminationTipDiv.style.display = "block";
+            contamMsgSpan.innerHTML = "🧼 Great job avoiding contamination! Sterile technique preserved DNA integrity.";
+          }
+          // enable share quiz button later after quiz submission maybe
+        }
+      };
+    }
+  }
+  
+  function attachQuizListeners() {
+    document.querySelectorAll('.quiz-option[data-q="1"]').forEach(opt => opt.addEventListener('click', quizHandler));
+    document.querySelectorAll('.quiz-option[data-q="2"]').forEach(opt => opt.addEventListener('click', quizHandler));
+  }
+  
+  function quizHandler(e) {
+    const target = e.currentTarget;
+    const q = target.getAttribute('data-q');
+    const val = target.getAttribute('data-val');
+    if(q === '1') { selectedQ1 = val; document.querySelectorAll('.quiz-option[data-q="1"]').forEach(opt => opt.classList.remove('selected')); target.classList.add('selected'); }
+    if(q === '2') { selectedQ2 = val; document.querySelectorAll('.quiz-option[data-q="2"]').forEach(opt => opt.classList.remove('selected')); target.classList.add('selected'); }
+    const submitBtn = document.getElementById('submitQuizBtn');
+    if(selectedQ1 !== null && selectedQ2 !== null) submitBtn.disabled = false;
+    document.getElementById('shareQuizToChatBtn').style.display = (selectedQ1 && selectedQ2) ? "inline-flex" : "none";
+  }
+  
+  document.getElementById('submitQuizBtn').addEventListener('click', () => {
+    const correct1 = (selectedQ1 === 'b');
+    const correct2 = (selectedQ2 === 'b');
+    if(correct1 && correct2) {
+      quizPassed = true;
+      document.getElementById('quizFeedback').innerHTML = "✅ Perfect! Step 2 gatekeeper unlocked.";
+      showToast("Quiz passed! Unlock Step 2 with passcode: LYSIS", false);
+      playBeep(660, 180);
+      step2Gatekeeper.style.display = "block";
+      openEndedDiv.style.display = "block";
+      document.getElementById('submitQuizBtn').disabled = true;
+    } else {
+      document.getElementById('quizFeedback').innerHTML = "❌ Not quite. Strawberries are octoploid; detergent dissolves lipids. Try again!";
+      showToast("Incorrect answers. Review science.", true);
+      playBeep(330, 200);
+    }
+  });
+  
+  // Share quiz answers to chat (question + answer)
+  document.getElementById('shareQuizToChatBtn')?.addEventListener('click', () => {
+    let q1text = "", q2text = "";
+    if(selectedQ1 === 'b') q1text = "Strawberry is octoploid (8x genome) → high DNA yield";
+    else q1text = selectedQ1 ? "Incorrect answer attempted" : "No answer";
+    if(selectedQ2 === 'b') q2text = "Detergent dissolves cell membrane & nuclear envelope lipids";
+    else q2text = selectedQ2 ? "Alternative choice" : "No answer";
+    const fullMsg = `🍓 Quiz reflection: Q1: ${q1text}. Q2: ${q2text}.`;
+    addChatMessage("🧪 Strawberry Lab (Student)", fullMsg, true);
+  });
+  
+  function unlockStep2() {
+    const entered = document.getElementById('step2Passcode')?.value.trim().toUpperCase() || "";
+    if(entered === "LYSIS" && quizPassed) {
+      showToast("🔓 Step 2 unlocked! You may continue.", false);
+      const continueLink = document.getElementById('continueStep2Link');
+      if(continueLink) { continueLink.style.pointerEvents = "auto"; continueLink.style.opacity = "1"; continueLink.setAttribute('href', 'step2_precipitation.html'); continueLink.innerHTML = "🧪 Continue to Step 2: DNA Precipitation →"; }
+      document.getElementById('unlockStep2Btn').disabled = true;
+      playBeep(523, 150);
+    } else if(!quizPassed) showToast("⚠️ Pass the quiz first.", true);
+    else showToast("❌ Incorrect passcode. Hint: LYSIS", true);
+  }
+  document.getElementById('unlockStep2Btn')?.addEventListener('click', unlockStep2);
+  document.getElementById('step2Passcode')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlockStep2(); });
+  
+  // Reflection share
+  document.getElementById('shareChatboxBtn')?.addEventListener('click', () => {
+    const reflection = document.getElementById('labReflection')?.value.trim();
+    if(!reflection) { document.getElementById('shareFeedback').innerHTML = "Write a reflection first."; return; }
+    addChatMessage("🍓 Lab Researcher", `Reflection: ${reflection}`, true);
+    document.getElementById('shareFeedback').innerHTML = "✅ Reflection sent to chat!";
+    document.getElementById('labReflection').value = "";
+  });
+  
+  // Quick send chat from preview
+  document.getElementById('quickSendChatBtn')?.addEventListener('click', () => {
+    const quickMsg = document.getElementById('quickChatMsg')?.value.trim();
+    if(quickMsg) {
+      addChatMessage("Participant", quickMsg, true);
+      document.getElementById('quickChatMsg').value = "";
+    } else showToast("Enter a message", true);
+  });
+  document.getElementById('refreshChatPreviewBtn')?.addEventListener('click', () => updateChatPreview());
+  document.getElementById('openFullChatBtn')?.addEventListener('click', (e) => { e.preventDefault(); window.open('chatbox.html', '_blank'); });
+  document.getElementById('showQuestionsBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("❓ Cold alcohol precipitates DNA. Detergent lyses membranes. Contamination introduces DNases."); });
+  
+  // storage sync across tabs
+  window.addEventListener('storage', (e) => { if(e.key === STORAGE_KEY) updateChatPreview(); });
+  setInterval(() => updateChatPreview(), 4000);
+  
+  updateUI();
+  updateChatPreview();
+</script>
+<div class="toast-custom"></div>
+</body>
+</html>

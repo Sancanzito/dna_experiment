@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>DNA Lab Studio | Step Gatekeeper</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f121c;
+      --surface: #181e2c;
+      --surface2: #1f2537;
+      --accent: #00e5a0;
+      --accent2: #00b8d4;
+      --text-light: #eef2ff;
+      --text-dim: #8d9bb0;
+      --danger: #ff5e7e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+    .lab-navbar {
+      background: var(--surface) !important;
+      border-bottom: 1px solid rgba(0,229,160,0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .brand-dna {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent) !important;
+    }
+    .nav-link-custom {
+      color: var(--text-dim) !important;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-link-custom:hover { color: var(--accent) !important; }
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,160,0.12);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
+    }
+    .step-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .step-title {
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+    .btn-primary-lab {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #0a0e1a;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 40px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,229,160,0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary-lab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,229,160,0.4);
+      color: #0a0e1a;
+    }
+    .btn-outline-lab {
+      background: transparent;
+      border: 1.5px solid rgba(0,229,160,0.4);
+      color: var(--accent);
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 8px 20px;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .btn-outline-lab:hover {
+      background: rgba(0,229,160,0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .instruction-card {
+      background: rgba(0,0,0,0.2);
+      border-radius: 24px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--accent);
+    }
+    .passcode-input {
+      background: var(--surface2);
+      border: 1px solid var(--accent);
+      border-radius: 60px;
+      padding: 12px 20px;
+      color: white;
+      font-size: 1.2rem;
+      text-align: center;
+      letter-spacing: 2px;
+      width: 100%;
+      max-width: 260px;
+    }
+    .passcode-input:focus {
+      outline: none;
+      border-color: var(--accent2);
+      box-shadow: 0 0 8px rgba(0,229,160,0.3);
+    }
+    .badge-mini {
+      background: var(--surface2);
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .toast-custom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: transform 0.3s;
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+    }
+    .toast-custom.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    footer { background: #090c14; }
+    @media (max-width: 768px) {
+      .lab-card { padding: 1.3rem; }
+      .step-title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container d-flex flex-column min-vh-100">
+  <!-- ========== NAVBAR (fully untouched) ========== -->
+  <nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand brand-dna fw-bold" href="#">
+        <span class="me-1">🧬</span> DNA Lab Studio
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra" aria-controls="navbarExtra" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExtra">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/instructions.html" target="_blank">📓 Notes Panel</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Questions</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/chatbox.html" target="_blank">💬 Chat</a></li>
+        </ul>
+        <div class="d-flex gap-3 align-items-center">
+          <span class="badge-mini" id="stepDisplay">📍 Step 0/7</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT - SIMPLIFIED: Only Passcode + Instructions Card -->
+  <div class="container my-4 flex-grow-1" id="mainArea">
+    <div class="lab-card mx-auto" style="max-width: 780px;">
+      <div class="step-badge">🔐 STEP GATEKEEPER</div>
+      <div class="step-title">📖 DNA Lab: Choose Your Sample</div>
+      
+      <!-- General Instructions Card -->
+      <div class="instruction-card mb-4">
+        <h5 class="fw-bold" style="color:var(--accent);">🧬 Step 1: Selecting a Specimen</h5>
+        <p class="small">In this first step, you will choose a biological source for DNA extraction. Each sample has different characteristics:</p>
+        <ul class="small" style="color:var(--text-dim);">
+          <li><strong>🍓 Strawberry</strong> – Easy, high DNA yield (octoploid). Great for beginners.</li>
+          <li><strong>🧅 Onion</strong> – Moderate difficulty, low sugar content.</li>
+          <li><strong>🧫 Cheek cells</strong> – Human sample, requires more careful lysis.</li>
+        </ul>
+        <div class="mt-2 text-secondary-emphasis small bg-dark p-2 rounded" style="background:#0a0e18;">
+          💡 <strong>Goal:</strong> Understand how sample choice affects DNA quantity and purity.
+        </div>
+      </div>
+      
+      <!-- Passcode Challenge with link-style button -->
+      <div class="lab-zone text-center" style="background: var(--surface2); border-radius: 24px; padding: 1.8rem;">
+        <h5 class="fw-semibold mb-3">🔑 Enter Passcode to Unlock Step 1</h5>
+        <div class="d-flex flex-column align-items-center gap-3">
+          <input type="text" id="passcodeInput" class="passcode-input" placeholder="Enter code" maxlength="20" autocomplete="off">
+          <div>
+            <a href="#" id="unlockLinkBtn" class="btn-primary-lab" style="text-decoration: none;">
+              🔓 Unlock Step 1 <span style="font-size:1.2rem;">→</span>
+            </a>
+          </div>
+          <div id="passcodeHint" class="small text-secondary mt-1">
+            💡 Hint: The passcode is <strong>"DNA2025"</strong> (case-sensitive)
+          </div>
+        </div>
+      </div>
+      
+      <!-- Separate link that becomes active after unlock -->
+      <div class="text-center mt-4">
+        <a href="laboratory steps/step1.html" id="continueLink" class="btn-outline-lab" style="pointer-events: none; opacity: 0.5; text-decoration: none;">
+          ⚡ Go to Step 1: Choose Sample →
+        </a>
+        <p class="small text-secondary mt-2">Enter the correct passcode above to enable this link.</p>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // SIMPLIFIED SCRIPT: Only passcode verification + redirection to step page
+  // The actual step content (sample selection, lysis, etc.) will live on separate HTML pages.
+  // This page acts as a gatekeeper for Step 1.
+  
+  const CORRECT_PASSCODE = "DNA2025";
+  let isUnlocked = false;
+  
+  // DOM elements
+  const passInput = document.getElementById('passcodeInput');
+  const unlockBtn = document.getElementById('unlockLinkBtn');
+  const continueLink = document.getElementById('continueLink');
+  const stepDisplaySpan = document.getElementById('stepDisplay');
+  
+  function showToast(msg) {
+    let toastDiv = document.querySelector('.toast-custom');
+    if(!toastDiv) {
+      toastDiv = document.createElement('div');
+      toastDiv.className = 'toast-custom';
+      document.body.appendChild(toastDiv);
+    }
+    toastDiv.textContent = msg;
+    toastDiv.classList.add('show');
+    setTimeout(() => toastDiv.classList.remove('show'), 2200);
+  }
+  
+  function playBeep(freq, duration) {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      gain.gain.value = 0.1;
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000);
+      osc.stop(audioCtx.currentTime + duration/1000);
+    } catch(e) {}
+  }
+  
+  function unlockStep() {
+    const enteredCode = passInput ? passInput.value.trim() : "";
+    if (enteredCode === CORRECT_PASSCODE) {
+      isUnlocked = true;
+      showToast("✅ Passcode correct! Step 1 is now unlocked.");
+      // Enable the continue link
+      if (continueLink) {
+        continueLink.style.pointerEvents = "auto";
+        continueLink.style.opacity = "1";
+        continueLink.style.borderColor = "var(--accent)";
+        continueLink.setAttribute('href', 'laboratory steps/step1.html');
+      }
+      if (unlockBtn) {
+        unlockBtn.innerHTML = "✅ Unlocked! ✅";
+        unlockBtn.style.opacity = "0.8";
+        unlockBtn.style.cursor = "default";
+      }
+      if(passInput) passInput.style.borderColor = "var(--accent)";
+      playBeep(523, 150);
+      // Update step display
+      stepDisplaySpan.innerHTML = "📍 Step 1/7 (Unlocked)";
+    } else {
+      isUnlocked = false;
+      showToast("❌ Incorrect passcode. Hint: DNA2025 (case-sensitive)");
+      if(continueLink) {
+        continueLink.style.pointerEvents = "none";
+        continueLink.style.opacity = "0.5";
+        continueLink.removeAttribute('href');
+      }
+      if(passInput) passInput.style.borderColor = "var(--danger)";
+      setTimeout(() => { if(passInput) passInput.style.borderColor = "var(--accent)"; }, 800);
+      playBeep(330, 200);
+    }
+  }
+  
+  // Event listeners
+  if (unlockBtn) {
+    unlockBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      unlockStep();
+    });
+  }
+  
+  if (passInput) {
+    passInput.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') {
+        e.preventDefault();
+        unlockStep();
+      }
+    });
+  }
+  
+  // Reset functionality (clears unlock state)
+  const resetBtn = document.getElementById('resetLabBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      isUnlocked = false;
+      if (passInput) passInput.value = "";
+      if (continueLink) {
+        continueLink.style.pointerEvents = "none";
+        continueLink.style.opacity = "0.5";
+        continueLink.removeAttribute('href');
+        continueLink.innerHTML = "⚡ Go to Step 1: Choose Sample →";
+      }
+      if (unlockBtn) {
+        unlockBtn.innerHTML = "🔓 Unlock Step 1 →";
+        unlockBtn.style.opacity = "1";
+      }
+      stepDisplaySpan.innerHTML = "📍 Step 0/7";
+      showToast("Lab reset. Passcode required again.");
+      if(passInput) passInput.style.borderColor = "var(--accent)";
+    });
+  }
+  
+  // Stubs for other navbar buttons
+  document.getElementById('showGamesBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("🎮 Mini games page coming soon!"); });
+  document.getElementById('showQuestionsBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("❓ Student Q&A section coming soon!"); });
+  
+  // Initial state: continue link is disabled
+  if (continueLink) {
+    continueLink.style.pointerEvents = "none";
+    continueLink.style.opacity = "0.5";
+    continueLink.removeAttribute('href');
+  }
+  stepDisplaySpan.innerHTML = "📍 Step 0/7";
+</script>
+</body>
+</html>

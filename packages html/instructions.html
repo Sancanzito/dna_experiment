@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Notes | Lesson 14: DNA Extraction & Gel Electrophoresis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #eef3f7;
+            color: #1e2f3a;
+            padding: 2rem;
+        }
+        .notes-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            padding: 2rem 2.2rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            border-left: 6px solid #2c7da0;
+            padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #0a3142;
+        }
+        .sub {
+            color: #3e6b81;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #cde3ec;
+            padding-bottom: 0.8rem;
+        }
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #1f5e7e;
+        }
+        h3 {
+            font-size: 1.3rem;
+            margin: 1rem 0 0.5rem;
+            color: #2c7da0;
+        }
+        p, li {
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+        ul, ol {
+            margin: 0.8rem 0 1rem 1.8rem;
+        }
+        .protocol-box {
+            background: #f1f8fe;
+            padding: 1.2rem;
+            border-radius: 24px;
+            margin: 1.2rem 0;
+            border-left: 5px solid #2c7da0;
+        }
+        .highlight {
+            background: #e9f2f7;
+            font-weight: 500;
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 2rem;
+            background: #2c7da0;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .btn-back:hover {
+            background: #1f5e7e;
+        }
+        hr {
+            margin: 1.5rem 0;
+        }
+        footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            text-align: center;
+            color: #608aa3;
+        }
+    </style>
+</head>
+<body>
+<div class="notes-container">
+    <h1>🧬 Lesson 14: DNA Extraction & Gel Electrophoresis</h1>
+    <div class="sub">Detailed laboratory notes — principles, protocol, and data interpretation</div>
+
+    <h2>📌 Learning Objectives (Reinforced)</h2>
+    <ul>
+        <li>Execute a standard DNA extraction protocol from biological samples.</li>
+        <li>Set up and run an agarose gel electrophoresis experiment.</li>
+        <li>Analyze and interpret gel electrophoresis results to determine DNA fragment sizes.</li>
+        <li>Understand the role of each reagent and buffer in DNA isolation and separation.</li>
+    </ul>
+
+    <h2>🧪 DNA Extraction: Core Concepts</h2>
+    <p>DNA extraction aims to isolate deoxyribonucleic acid from cells, removing proteins, lipids, and other contaminants. The three essential phases are: <strong>lysis, precipitation, and purification</strong>. Detergents (SDS or CTAB) disrupt cell membranes; salt (NaCl) shields negative charges on DNA; alcohol (cold ethanol/isopropanol) causes DNA to come out of solution due to lower dielectric constant. The DNA precipitate is then washed and rehydrated in TE buffer or nuclease-free water.</p>
+
+    <div class="protocol-box">
+        <strong>🔬 Standard DNA Extraction Protocol (Classic)</strong><br>
+        <strong>Materials:</strong> Sample (cheek cells / fruit / tissue), lysis buffer (10% SDS, 0.5M EDTA, Proteinase K optional), 5M NaCl, ice-cold isopropanol, microcentrifuge tubes.<br>
+        <strong>Steps:</strong>
+        <ol>
+            <li>Homogenize sample in lysis buffer (incubate 55°C for 15 min).</li>
+            <li>Add high salt solution to precipitate proteins/debris.</li>
+            <li>Centrifuge at 12,000 rpm for 5 min → collect supernatant containing DNA.</li>
+            <li>Add equal volume cold isopropanol, gently invert → white DNA precipitate appears.</li>
+            <li>Centrifuge to pellet DNA, discard supernatant, wash with 70% ethanol.</li>
+            <li>Air-dry pellet, resuspend in 50-100 µL TE buffer.</li>
+        </ol>
+    </div>
+
+    <h2>⚡ Agarose Gel Electrophoresis</h2>
+    <p>After extraction, DNA is analyzed via gel electrophoresis. The agarose concentration (usually 0.8%–2%) determines resolution: lower percentage for larger fragments, higher for smaller fragments. TAE (Tris-acetate-EDTA) or TBE buffer maintains pH and conducts electricity. Loading dye contains glycerol (to weigh down samples) and tracking dyes (bromophenol blue). The DNA ladder contains fragments of known base pairs (e.g., 100 bp ladder or 1 kb ladder).</p>
+
+    <h3>📊 Running the Gel: Procedure</h3>
+    <ul>
+        <li><strong>Cast gel:</strong> Dissolve agarose in 1x TAE, cool to ~60°C, add stain (GelRed or SYBR Safe), pour into comb tray.</li>
+        <li><strong>Load samples:</strong> Mix 5–10 µL DNA sample with loading dye, pipette into wells.</li>
+        <li><strong>Electrophoresis:</strong> Submerge gel in buffer, apply 80–120 V, run until dye front ~2/3 of gel length.</li>
+        <li><strong>Visualization:</strong> Use UV transilluminator or blue-light system. DNA bands fluoresce due to intercalating dye.</li>
+    </ul>
+
+    <div class="protocol-box">
+        <strong>📈 Interpretation Guide</strong><br>
+        ✅ <strong>High molecular weight band</strong> near well: Intact genomic DNA.<br>
+        ✅ <strong>Multiple distinct bands (plasmids):</strong> supercoiled (fast), linear (middle), nicked (slow).<br>
+        ⚠️ <strong>Smear from well to low size:</strong> degraded DNA or nuclease contamination.<br>
+        ❌ <strong>No bands:</strong> No DNA loaded, stain failure, or incorrect buffer polarity.
+    </div>
+
+    <h2>🧠 Key Calculations & Analysis</h2>
+    <p>Use the DNA ladder to estimate fragment size. Plot log10(size) vs migration distance to create a standard curve, then interpolate unknown bands. For example, if an unknown band migrates between 500 bp and 700 bp of ladder, estimate approximate size. This is essential for restriction mapping or PCR product confirmation.</p>
+
+    <h2>⚠️ Troubleshooting Common Issues</h2>
+    <ul>
+        <li><strong>DNA extraction yields low quantity:</strong> Inefficient lysis, old sample, or incomplete precipitation. Add more salt or extend incubation.</li>
+        <li><strong>Smearing in gel:</strong> Overloaded DNA or degraded sample; use less sample and fresh nuclease-free reagents.</li>
+        <li><strong>Bands look distorted (“smiley”):</strong> Voltage too high or gel not completely submerged; reduce voltage.</li>
+        <li><strong>Ladder bands unclear:</strong> Expired ladder or insufficient staining; prepare fresh ladder dilutions.</li>
+    </ul>
+
+    <h2>📚 Connection to Theoretical Concepts</h2>
+    <p>DNA extraction and electrophoresis reinforce the molecular structure of DNA (negatively charged phosphate backbone), role of buffers (pH stability), and the hydrophobic effect during ethanol precipitation. These lab skills underpin genetic analysis, forensics, and molecular cloning.</p>
+
+    <hr>
+    <p><strong>📝 Post-Lab Questions (for reflection):</strong><br>
+    1. Why is it critical to use cold alcohol during DNA precipitation?<br>
+    2. How does agarose percentage affect separation of small vs large DNA fragments?<br>
+    3. What would happen if you forgot to add the DNA ladder to the gel?<br>
+    </p>
+
+    <a href="main.html" onclick="window.close(); return false;" class="btn-back">← Close this window / Return to main hub</a>
+    <footer>Biochemistry Teaching Resource — Based on "Essential Concepts for Science Education Majors" | Chapter 14 Lab Supplement</footer>
+</div>
+<script>
+    // optional: provide a close-friendly experience if opened from main page
+    console.log("Lab notes for Lesson 14 opened");
+</script>
+</body>
+</html>

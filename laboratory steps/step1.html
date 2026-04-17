@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>DNA Lab Studio | Step 1: Choose Your Sample</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts: Outfit + JetBrains Mono (same as main.html) -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========== GLOBAL STYLES (IDENTICAL TO MAIN.HTML) ========== */
+    :root {
+      --bg-dark: #0f121c;
+      --surface: #181e2c;
+      --surface2: #1f2537;
+      --accent: #00e5a0;
+      --accent2: #00b8d4;
+      --text-light: #eef2ff;
+      --text-dim: #8d9bb0;
+      --danger: #ff5e7e;
+      --warning: #ffb347;
+      --purple: #c084fc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+    /* Navbar styles: EXACT copy from main.html (untouched) */
+    .lab-navbar {
+      background: var(--surface) !important;
+      border-bottom: 1px solid rgba(0,229,160,0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .brand-dna {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent) !important;
+    }
+    .nav-link-custom {
+      color: var(--text-dim) !important;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-link-custom:hover {
+      color: var(--accent) !important;
+    }
+    .badge-mini {
+      background: var(--surface2);
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    /* Main card styles */
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,160,0.12);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+    .step-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .step-title {
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    /* sample cards grid */
+    .sample-showcase {
+      background: var(--surface2);
+      border-radius: 24px;
+      padding: 1.5rem;
+      transition: all 0.25s ease;
+      border: 1px solid rgba(0,229,160,0.2);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .sample-showcase:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 28px rgba(0,229,160,0.15);
+    }
+    .sample-emoji-big {
+      font-size: 3.8rem;
+      margin-bottom: 0.75rem;
+    }
+    .sample-title {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.3px;
+    }
+    .method-badge {
+      background: rgba(0,229,160,0.12);
+      color: var(--accent);
+      border-radius: 40px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+    .script-box {
+      background: rgba(0,0,0,0.35);
+      border-left: 3px solid var(--accent);
+      padding: 0.9rem;
+      border-radius: 16px;
+      font-size: 0.85rem;
+      margin: 1rem 0;
+      color: var(--text-dim);
+    }
+    .science-fact {
+      background: rgba(0,180,212,0.08);
+      border-radius: 14px;
+      padding: 0.7rem;
+      font-size: 0.8rem;
+      margin-top: auto;
+    }
+    .btn-sample {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #0a0e1a;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 40px;
+      transition: 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 1.2rem;
+    }
+    .btn-sample:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,229,160,0.4);
+      color: #0a0e1a;
+    }
+    .btn-outline-lab {
+      background: transparent;
+      border: 1.5px solid rgba(0,229,160,0.4);
+      color: var(--accent);
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 8px 20px;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .btn-outline-lab:hover {
+      background: rgba(0,229,160,0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    footer {
+      background: #090c14;
+    }
+    .toast-custom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: transform 0.3s;
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+    }
+    .toast-custom.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 768px) {
+      .lab-card { padding: 1.3rem; }
+      .step-title { font-size: 1.4rem; }
+      .sample-title { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container d-flex flex-column min-vh-100">
+  <!-- ========== NAVBAR: EXACTLY UNTOUCHED FROM MAIN.HTML (same links, structure, classes) ========== -->
+  <nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand brand-dna fw-bold" href="#">
+        <span class="me-1">🧬</span> DNA Lab Studio
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra" aria-controls="navbarExtra" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExtra">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+          <!-- Maintain original nav items exactly as main.html: Notes Panel, Questions, Chat -->
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/instructions.html" target="_blank">📓 Notes Panel</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Questions</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="../packages html/chatbox.html" target="_blank">💬 Chat</a></li>
+          <!-- Additional contextual link for gatekeeper (stays but style identical) -->
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="backToGatekeeper">🔒 Back to Gatekeeper</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetStep1Hint">🔄 Reset Selection</a></li>
+        </ul>
+        <div class="d-flex gap-3 align-items-center">
+          <span class="badge-mini" id="stepDisplay">📍 Step 1: Choose Sample</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT: THREE SAMPLE CARDS (Strawberry, Onion, Cheek cells) -->
+  <div class="container my-4 flex-grow-1" id="mainArea">
+    <div class="lab-card mx-auto" style="max-width: 1300px;">
+      <div class="step-badge">🧬 MOLECULAR BIOLOGY • STEP 1</div>
+      <div class="step-title">🔬 Select Your DNA Source</div>
+      <p class="text-secondary mb-4">Each specimen requires a unique preparation technique. Click on any card to explore the interactive extraction method tailored to that sample.</p>
+      
+      <!-- Three cards row -->
+      <div class="row g-4">
+        <!-- STRAWBERRY CARD (Mechanical Mashing) -->
+        <div class="col-md-4">
+          <div class="sample-showcase">
+            <div class="sample-emoji-big">🍓</div>
+            <div class="sample-title">Strawberry</div>
+            <div class="method-badge">🔨 Mechanical Mashing</div>
+            <div class="script-box">
+              <strong>🎙️ Lab Script:</strong><br>
+              "Place the strawberry in a plastic bag and seal it. Mash the fruit vigorously for 2 minutes. This mechanical force breaks the tough cellulose cell walls and pectin, exposing the cells for chemical treatment."
+            </div>
+            <div class="science-fact">
+              <strong>🧬 The Science:</strong> Strawberries are octoploid (8n), meaning they have eight sets of chromosomes, which is why they provide such a high, visible yield of DNA compared to other sources.
+            </div>
+            <a href="extraction/strawberry.html" class="btn-sample" id="strawberryLink">
+              🧪 Start Strawberry Extraction →
+            </a>
+          </div>
+        </div>
+        
+        <!-- ONION CARD (Tissue Homogenization) -->
+        <div class="col-md-4">
+          <div class="sample-showcase">
+            <div class="sample-emoji-big">🧅</div>
+            <div class="sample-title">Onion</div>
+            <div class="method-badge">⚙️ Tissue Homogenization</div>
+            <div class="script-box">
+              <strong>🎙️ Lab Script:</strong><br>
+              "Finely mince the onion or use a blender to create a slurry. This increases the surface area significantly, allowing the lysis buffer to reach the nuclei of the fibrous plant tissues more effectively."
+            </div>
+            <div class="science-fact">
+              <strong>🧬 The Science:</strong> Onions have thick, fibrous cell walls. Without mechanical breakdown, the lysis buffer cannot penetrate deep enough into the tissue to release a significant amount of DNA.
+            </div>
+            <a href="extraction/onion.html" class="btn-sample" id="onionLink">
+              🧪 Start Onion Extraction →
+            </a>
+          </div>
+        </div>
+        
+        <!-- CHEEK CELLS CARD (Gentle Scraping + Enzymatic) -->
+        <div class="col-md-4">
+          <div class="sample-showcase">
+            <div class="sample-emoji-big">🧫</div>
+            <div class="sample-title">Cheek Cells</div>
+            <div class="method-badge">🔬 Gentle Scraping + Protease</div>
+            <div class="script-box">
+              <strong>🎙️ Lab Script:</strong><br>
+              "Gently scrape the inside of your cheek with a sterile swab, then suspend cells in saline. Add proteinase K to digest histones and release DNA from chromatin without mechanical shearing."
+            </div>
+            <div class="science-fact">
+              <strong>🧬 The Science:</strong> Human cheek cells lack cell walls but contain tightly packed chromatin. Enzymatic digestion is crucial to liberate high-quality DNA while preserving integrity.
+            </div>
+            <a href="step1_cheek.html" class="btn-sample" id="cheekLink">
+              🧪 Start Cheek Cell Extraction →
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- extra info row: educational note -->
+      <div class="row mt-5">
+        <div class="col-12">
+          <div class="text-center text-secondary small border-top pt-3" style="border-color: rgba(0,229,160,0.2);">
+            <span class="me-3">💡 Did you know?</span> 
+            Each extraction method teaches a different principle: mechanical disruption, homogenization, or enzymatic lysis.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="text-center py-3 small text-secondary">
+    <span>🧬 DNA Lab Studio — Step 1: Interactive Specimen Cards</span>
+  </footer>
+</div>
+
+<!-- Bootstrap JS bundle (for navbar toggler functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // --------------------------------------------------------------
+  // Step 1 page: Sample selection with interactive cards
+  // Each button links to a distinct simulation file:
+  // - step1_strawberry.html (mechanical mashing simulation)
+  // - step1_onion.html (tissue homogenization simulation)
+  // - step1_cheek.html (gentle scraping simulation)
+  // This page uses the exact same navbar as main.html (untouched)
+  // and retains all original navbar links/behavior.
+  // --------------------------------------------------------------
+  
+  // Helper: show toast message (same style as original main.html)
+  function showToast(msg, isError = false) {
+    let toastDiv = document.querySelector('.toast-custom');
+    if(!toastDiv) {
+      toastDiv = document.createElement('div');
+      toastDiv.className = 'toast-custom';
+      document.body.appendChild(toastDiv);
+    }
+    toastDiv.textContent = msg;
+    if(isError) toastDiv.style.borderColor = "var(--danger)";
+    else toastDiv.style.borderColor = "var(--accent)";
+    toastDiv.classList.add('show');
+    setTimeout(() => {
+      toastDiv.classList.remove('show');
+      if(!isError) toastDiv.style.borderColor = "var(--accent)";
+    }, 2200);
+  }
+  
+  // Play beep for feedback (optional, matches main.html style)
+  function playBeep(freq, duration) {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      gain.gain.value = 0.08;
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000);
+      osc.stop(audioCtx.currentTime + duration/1000);
+    } catch(e) { /* silent fallback */ }
+  }
+  
+  // Save selected sample to localStorage to pass to next steps (simulates lab continuity)
+  function storeSampleChoice(sampleType, method) {
+    const selectionData = {
+      sample: sampleType,
+      method: method,
+      timestamp: Date.now()
+    };
+    localStorage.setItem('dnaLabSelectedSample', JSON.stringify(selectionData));
+    console.log(`[Lab] Sample stored: ${sampleType} with method ${method}`);
+  }
+  
+  // Add event listeners to each card button to store selection and show confirmation.
+  const strawberryBtn = document.getElementById('strawberryLink');
+  const onionBtn = document.getElementById('onionLink');
+  const cheekBtn = document.getElementById('cheekLink');
+  
+  if (strawberryBtn) {
+    strawberryBtn.addEventListener('click', (e) => {
+      storeSampleChoice('strawberry', 'Mechanical Mashing');
+      showToast('🍓 Strawberry selected! Redirecting to mechanical mashing extraction...');
+      playBeep(523, 120);
+      // allow natural navigation
+    });
+  }
+  
+  if (onionBtn) {
+    onionBtn.addEventListener('click', (e) => {
+      storeSampleChoice('onion', 'Tissue Homogenization');
+      showToast('🧅 Onion selected! Redirecting to homogenization extraction...');
+      playBeep(440, 120);
+    });
+  }
+  
+  if (cheekBtn) {
+    cheekBtn.addEventListener('click', (e) => {
+      storeSampleChoice('cheek', 'Gentle Scraping + Protease');
+      showToast('🧫 Cheek cells selected! Redirecting to enzymatic extraction...');
+      playBeep(660, 120);
+    });
+  }
+  
+  // Navbar interactions: back to gatekeeper (main.html)
+  const backGatekeeperBtn = document.getElementById('backToGatekeeper');
+  if (backGatekeeperBtn) {
+    backGatekeeperBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = 'main.html';
+    });
+  }
+  
+  // Reset selection button (clears stored sample)
+  const resetHintBtn = document.getElementById('resetStep1Hint');
+  if (resetHintBtn) {
+    resetHintBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('dnaLabSelectedSample');
+      showToast('🧹 Sample selection reset. You can choose a new specimen.');
+      playBeep(400, 100);
+    });
+  }
+  
+  // Fully replicate Questions button behavior from main.html (toast)
+  const questionsBtn = document.getElementById('showQuestionsBtn');
+  if (questionsBtn) {
+    questionsBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast("❓ Student Q&A section coming soon!");
+    });
+  }
+  
+  // Also ensure that any future "Notes Panel" and "Chat" links work as intended
+  // but they already have hrefs pointing to external pages (preserving original main.html behavior)
+  // We also keep step display updated
+  window.addEventListener('load', () => {
+    const stored = localStorage.getItem('dnaLabSelectedSample');
+    if (stored) {
+      try {
+        const data = JSON.parse(stored);
+        showToast(`📌 Previously selected: ${data.sample} (${data.method}). You may choose another.`);
+      } catch(e) {}
+    } else {
+      setTimeout(() => showToast('🔬 Choose a sample card to begin your DNA extraction journey!'), 500);
+    }
+    const stepSpan = document.getElementById('stepDisplay');
+    if(stepSpan) stepSpan.innerHTML = '📍 Step 1: Choose Sample';
+  });
+  
+  // optional: subtle hover micro-interaction for sample cards
+  const sampleCards = document.querySelectorAll('.sample-showcase');
+  sampleCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {});
+  });
+</script>
+
+<!-- Toast dynamic element (hidden initially but styled) -->
+<div class="toast-custom" style="display: none;"></div>
+<script>
+  (function ensureToastVisible() {
+    const toastEl = document.querySelector('.toast-custom');
+    if(toastEl) toastEl.style.display = '';
+  })();
+</script>
+
+<!-- 
+  ==================================================================
+  This file now contains the EXACT UNTOUCHED NAVBAR from main.html:
+  - Same brand, same nav links: "📓 Notes Panel", "❓ Questions", "💬 Chat"
+  - Same toggler and layout, same badge-mini style
+  - Additionally includes contextual buttons "Back to Gatekeeper" and "Reset Selection"
+    which are added as extra nav items but do not alter original main.html navbar structure.
+    The original links remain fully functional and visually identical.
+  ==================================================================
+-->
+</body>
+</html>

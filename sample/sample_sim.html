@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>DNA Lab Studio | Customizable Teaching Template</title>
+  <!-- Bootstrap 5 + Icons (offline-ready, but CDN is used; works offline after first load) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts (Outfit & Mono) – optional but nice, still loads only if online; falls back to system fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========== GLOBAL STYLES (minimal, no external libs except bootstrap) ========== */
+    :root {
+      --bg-dark: #0f121c;
+      --surface: #181e2c;
+      --surface2: #1f2537;
+      --accent: #00e5a0;
+      --accent2: #00b8d4;
+      --text-light: #eef2ff;
+      --text-dim: #8d9bb0;
+      --danger: #ff5e7e;
+      --warning: #ffb347;
+      --purple: #c084fc;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+    /* custom lab navbar with extra menu */
+    .lab-navbar {
+      background: var(--surface) !important;
+      border-bottom: 1px solid rgba(0,229,160,0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .brand-dna {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent) !important;
+    }
+    .nav-link-custom {
+      color: var(--text-dim) !important;
+      font-weight: 500;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-link-custom:hover {
+      color: var(--accent) !important;
+    }
+    /* main card style */
+    .lab-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,160,0.12);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+    }
+    .step-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .step-title {
+      font-weight: 800;
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+    /* progress */
+    .progress-custom {
+      background: var(--surface2);
+      border-radius: 20px;
+      height: 8px;
+    }
+    .progress-bar-custom {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 20px;
+      transition: width 0.3s ease;
+    }
+    /* buttons */
+    .btn-primary-lab {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #0a0e1a;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 40px;
+      transition: 0.2s;
+      box-shadow: 0 4px 12px rgba(0,229,160,0.3);
+    }
+    .btn-primary-lab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,229,160,0.4);
+      color: #0a0e1a;
+    }
+    .btn-outline-lab {
+      background: transparent;
+      border: 1.5px solid rgba(0,229,160,0.4);
+      color: var(--accent);
+      font-weight: 600;
+      border-radius: 40px;
+      padding: 8px 20px;
+      transition: 0.2s;
+    }
+    .btn-outline-lab:hover {
+      background: rgba(0,229,160,0.08);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    /* sample selector cards */
+    .sample-option {
+      background: var(--surface2);
+      border-radius: 20px;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+      text-align: center;
+    }
+    .sample-option.selected {
+      border-color: var(--accent);
+      background: rgba(0,229,160,0.08);
+      box-shadow: 0 4px 14px rgba(0,229,160,0.15);
+    }
+    .sample-emoji {
+      font-size: 2.4rem;
+    }
+    /* interactive zones */
+    .lab-zone {
+      background: var(--surface2);
+      border-radius: 24px;
+      padding: 1.8rem;
+      margin: 1rem 0;
+    }
+    .tube-simple {
+      background: rgba(0,0,0,0.25);
+      border-radius: 0 0 30px 30px;
+      width: 70px;
+      height: 160px;
+      border: 2px solid rgba(0,229,160,0.25);
+      border-top: none;
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+    .liquid-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, #00e5a0aa, #00b8d4aa);
+      transition: height 0.4s ease;
+    }
+    .drag-sim {
+      background: linear-gradient(135deg, #00e5a0, #00b8d4);
+      color: #0a0e1a;
+      font-weight: bold;
+      display: inline-block;
+      padding: 8px 24px;
+      border-radius: 60px;
+      cursor: pointer;
+      user-select: none;
+    }
+    /* gel well */
+    .gel-well-sim {
+      width: 32px;
+      height: 12px;
+      background: rgba(0,229,160,0.2);
+      border-radius: 3px 3px 0 0;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .gel-well-sim.loaded {
+      background: var(--accent);
+      box-shadow: 0 0 6px var(--accent);
+    }
+    /* quiz & game item */
+    .quiz-card-item {
+      background: var(--surface2);
+      border-radius: 18px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: 0.1s;
+      border-left: 4px solid transparent;
+    }
+    .quiz-card-item.correct {
+      border-left-color: var(--accent);
+      background: rgba(0,229,160,0.08);
+    }
+    .quiz-card-item.wrong {
+      border-left-color: var(--danger);
+      background: rgba(255,94,126,0.08);
+    }
+    /* badge */
+    .badge-mini {
+      background: var(--surface2);
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .badge-earned {
+      background: var(--accent);
+      color: #0a0e1a;
+    }
+    .toast-custom {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      padding: 10px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: transform 0.3s;
+      z-index: 1050;
+      backdrop-filter: blur(4px);
+    }
+    .toast-custom.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    /* extras */
+    .input-notes {
+      background: var(--surface2);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 18px;
+      padding: 1rem;
+      color: var(--text-light);
+    }
+    textarea.custom-note {
+      background: #0b0f18;
+      border: 1px solid #2a3448;
+      color: white;
+      border-radius: 16px;
+      padding: 12px;
+      width: 100%;
+    }
+    hr {
+      border-color: rgba(0,229,160,0.15);
+    }
+    footer {
+      background: #090c14;
+    }
+    @media (max-width: 768px) {
+      .lab-card { padding: 1.3rem; }
+      .step-title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container d-flex flex-column min-vh-100">
+  <!-- ========== NAVBAR with additional tools ========== -->
+  <nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand brand-dna fw-bold" href="#">
+        <span class="me-1">🧬</span> DNA Lab Studio
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra" aria-controls="navbarExtra" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarExtra">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetLabBtn">🔄 Reset Lab</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/instructions.html" id="showNotesBtn" target="_blank">📓 Notes Panel</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showGamesBtn">🎮 Mini Games & Quiz</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Student Questions</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/chatbox.html" id="showChatboxBtn">💬 Chat & Messages</a></li>
+        </ul>
+        <div class="d-flex gap-3 align-items-center">
+          <span class="badge-mini" id="badgeCounter">🏅 0 badges</span>
+          <span class="badge-mini" id="stepCounterDisplay">🧪 Step 0/7</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Progress bar (simple) -->
+  <div class="px-3 pt-3">
+    <div class="d-flex justify-content-between small text-secondary mb-1">
+      <span id="stepLabel">Lab Progress</span>
+      <span id="progressPercent">0%</span>
+    </div>
+    <div class="progress-custom">
+      <div class="progress-bar-custom" id="globalProgress" style="width: 0%; height: 8px;"></div>
+    </div>
+  </div>
+
+  <!-- DYNAMIC MAIN CONTENT AREA -->
+  <div class="container my-4 flex-grow-1" id="mainDynamicArea">
+    <!-- Rendered by JS -->
+    <div class="text-center py-5">Loading interactive lab...</div>
+  </div>
+
+
+<!-- Bootstrap JS bundle (required for toggles) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // --------------------------------------------------------------
+  // CUSTOMIZABLE LAB STATE (7 main steps + additional quizzes)
+  // --------------------------------------------------------------
+  let currentStep = 0;          // 0 = welcome, 1= sample, 2=lysis, 3=precip, 4=gelLoad,5=run,6=analysis,7=complete
+  let selectedSample = null;
+  let badgesEarned = [];
+  let lysisDone = false;
+  let precipDone = false;
+  let gelLoadedCount = 0;
+  let gelRunTriggered = false;
+  let quizGameAnswers = { q1: null, q2: null, q3: null };
+  
+  // Helper functions
+  function showToast(msg) {
+    let toastDiv = document.querySelector('.toast-custom');
+    if(!toastDiv) {
+      toastDiv = document.createElement('div');
+      toastDiv.className = 'toast-custom';
+      document.body.appendChild(toastDiv);
+    }
+    toastDiv.textContent = msg;
+    toastDiv.classList.add('show');
+    setTimeout(() => toastDiv.classList.remove('show'), 2200);
+  }
+  
+  function earnBadge(name) {
+    if(badgesEarned.includes(name)) return;
+    badgesEarned.push(name);
+    document.getElementById('badgeCounter').innerHTML = `🏅 ${badgesEarned.length} badge${badgesEarned.length !== 1 ? 's' : ''}`;
+    showToast(`✨ Badge unlocked: ${name}`);
+    playBeep(660, 100);
+  }
+  
+  function updateMainProgress() {
+    const totalSteps = 7; // after welcome => step 1 to 7
+    let progress = 0;
+    if(currentStep === 0) progress = 0;
+    else progress = (currentStep / totalSteps) * 100;
+    document.getElementById('globalProgress').style.width = progress + '%';
+    document.getElementById('progressPercent').innerText = Math.floor(progress) + '%';
+    document.getElementById('stepLabel').innerHTML = `Step ${currentStep} / ${totalSteps}`;
+    document.getElementById('stepCounterDisplay').innerHTML = `🧪 Step ${currentStep}/${totalSteps}`;
+  }
+  
+  function playBeep(freq, duration) {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.frequency.value = freq;
+      gain.gain.value = 0.1;
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000);
+      osc.stop(audioCtx.currentTime + duration/1000);
+    } catch(e) {}
+  }
+  
+  function nextStep() {
+    if(currentStep === 0 && !selectedSample) {
+      showToast("Please select a sample first!");
+      return;
+    }
+    if(currentStep === 2 && !lysisDone) { showToast("Add lysis buffer and mix first!"); return; }
+    if(currentStep === 3 && !precipDone) { showToast("Complete precipitation by pouring cold alcohol!"); return; }
+    if(currentStep === 4 && gelLoadedCount < 4) { showToast("Load all 4 gel wells with DNA sample!"); return; }
+    if(currentStep === 5 && !gelRunTriggered) { showToast("Run the electrophoresis gel first!"); return; }
+    if(currentStep < 7) {
+      currentStep++;
+      updateMainProgress();
+      renderCurrentStep();
+      if(currentStep === 7) {
+        earnBadge('DNA Master');
+        confettiEffect();
+      }
+    } else {
+      showToast("Lab completed! Press Reset to start over.");
+    }
+  }
+  
+  function confettiEffect() {
+    for(let i=0;i<30;i++) {
+      const conf = document.createElement('div');
+      conf.style.position = 'fixed';
+      conf.style.width = '6px';
+      conf.style.height = '6px';
+      conf.style.background = `hsl(${Math.random()*360}, 70%, 60%)`;
+      conf.style.left = Math.random() * 100 + '%';
+      conf.style.top = '-10px';
+      conf.style.pointerEvents = 'none';
+      conf.style.zIndex = '9999';
+      conf.style.borderRadius = '2px';
+      conf.style.animation = 'fallConf 1.8s forwards';
+      document.body.appendChild(conf);
+      setTimeout(() => conf.remove(), 2000);
+    }
+    const style = document.createElement('style');
+    style.textContent = `@keyframes fallConf { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(100vh) rotate(360deg); opacity:0; } }`;
+    document.head.appendChild(style);
+  }
+  
+  // Render dynamic content based on step
+  function renderCurrentStep() {
+    const container = document.getElementById('mainDynamicArea');
+    if(currentStep === 0) renderWelcome(container);
+    else if(currentStep === 1) renderSampleChoice(container);
+    else if(currentStep === 2) renderLysisStep(container);
+    else if(currentStep === 3) renderPrecipitationStep(container);
+    else if(currentStep === 4) renderGelLoadingStep(container);
+    else if(currentStep === 5) renderGelRunStep(container);
+    else if(currentStep === 6) renderAnalysisStep(container);
+    else if(currentStep === 7) renderCompletion(container);
+  }
+  
+  function renderWelcome(cont) {
+    cont.innerHTML = `
+      <div class="lab-card text-center mx-auto" style="max-width: 700px;">
+        <span class="step-badge">🧬 INTRODUCTION</span>
+        <div class="step-title">Welcome to DNA Lab Studio</div>
+        <p class="text-secondary">In this virtual lab, you'll extract DNA from cells and analyze it using gel electrophoresis. Complete each step to earn badges.<br><strong>Teachers: use navbar tools to add notes, games, or custom questions!</strong></p>
+        <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+          <button class="btn-primary-lab" id="startExpBtn">🧪 Begin Experiment</button>
+          <button class="btn-outline-lab" id="viewSampleBtn">🍓 Pick Strawberry Sample</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('startExpBtn')?.addEventListener('click', () => {
+      if(!selectedSample) {
+        selectedSample = 'strawberry';
+        earnBadge('Sample Chosen');
+      }
+      currentStep = 1;
+      updateMainProgress();
+      renderCurrentStep();
+    });
+    document.getElementById('viewSampleBtn')?.addEventListener('click', () => {
+      selectedSample = 'strawberry';
+      showToast("Sample selected: Strawberry (high DNA yield)");
+      earnBadge('Sample Chosen');
+    });
+  }
+  
+  function renderSampleChoice(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 1 — SELECT SPECIMEN</div>
+        <h2 class="step-title">🧫 Choose your DNA source</h2>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4"><div class="sample-option ${selectedSample==='strawberry'?'selected':''}" data-samp="strawberry"><span class="sample-emoji">🍓</span><div class="fw-bold">Strawberry</div><small class="text-success">Easy / high DNA</small></div></div>
+          <div class="col-md-4"><div class="sample-option ${selectedSample==='onion'?'selected':''}" data-samp="onion"><span class="sample-emoji">🧅</span><div class="fw-bold">Onion</div><small>Moderate difficulty</small></div></div>
+          <div class="col-md-4"><div class="sample-option ${selectedSample==='cheek'?'selected':''}" data-samp="cheek"><span class="sample-emoji">🧫</span><div class="fw-bold">Cheek cells</div><small>Advanced</small></div></div>
+        </div>
+        <div class="mt-4 d-flex justify-content-between">
+          <button class="btn-outline-lab" id="backWelcome">Back</button>
+          <button class="btn-primary-lab" id="confirmSampleBtn">Confirm & Continue →</button>
+        </div>
+      </div>
+    `;
+    document.querySelectorAll('.sample-option').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const samp = el.dataset.samp;
+        selectedSample = samp;
+        document.querySelectorAll('.sample-option').forEach(opt => opt.classList.remove('selected'));
+        el.classList.add('selected');
+        showToast(`Selected: ${samp}`);
+      });
+    });
+    document.getElementById('confirmSampleBtn')?.addEventListener('click', () => {
+      if(selectedSample) { nextStep(); } else showToast("Please pick a sample");
+    });
+    document.getElementById('backWelcome')?.addEventListener('click', () => { currentStep=0; updateMainProgress(); renderCurrentStep(); });
+  }
+  
+  function renderLysisStep(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 2 — CELL LYSIS</div>
+        <h2 class="step-title">💧 Add Lysis Buffer</h2>
+        <div class="lab-zone text-center">
+          <div class="tube-simple" style="position:relative;"><div id="lysisFill" class="liquid-fill" style="height: 30%;"></div></div>
+          <div class="mt-3"><span id="lysisStatusMsg" class="badge-mini">Not added</span></div>
+          <button class="drag-sim mt-3" id="addLysisBtn">🧴 Add Lysis Buffer</button>
+          <button class="btn-outline-lab ms-2" id="mixLysisBtn" disabled>🔄 Mix</button>
+        </div>
+        <div class="mt-3 text-secondary small">💡 Detergent breaks cell membrane, releasing DNA.</div>
+        <div class="d-flex justify-content-between mt-4"><button class="btn-outline-lab" id="prevStepLysis">Back</button><button class="btn-primary-lab" id="nextLysisStep" disabled>Continue →</button></div>
+      </div>
+    `;
+    let bufferAdded = false;
+    document.getElementById('addLysisBtn')?.addEventListener('click', () => {
+      if(!bufferAdded) {
+        bufferAdded = true;
+        document.getElementById('lysisFill').style.height = '70%';
+        document.getElementById('lysisStatusMsg').innerHTML = '✅ Lysis buffer added';
+        document.getElementById('mixLysisBtn').disabled = false;
+        playBeep(400,80);
+      }
+    });
+    document.getElementById('mixLysisBtn')?.addEventListener('click', () => {
+      if(bufferAdded) {
+        document.getElementById('lysisFill').style.height = '85%';
+        document.getElementById('lysisStatusMsg').innerHTML = '🧬 Cells broken, DNA released!';
+        lysisDone = true;
+        document.getElementById('nextLysisStep').disabled = false;
+        earnBadge('Lysis Expert');
+        showToast("Lysis complete! DNA is free.");
+        playBeep(523,150);
+      }
+    });
+    document.getElementById('prevStepLysis')?.addEventListener('click', () => { currentStep--; updateMainProgress(); renderCurrentStep(); });
+    document.getElementById('nextLysisStep')?.addEventListener('click', () => { if(lysisDone) nextStep(); });
+  }
+  
+  function renderPrecipitationStep(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 3 — PRECIPITATION</div>
+        <h2 class="step-title">❄️ Add Cold Alcohol</h2>
+        <div class="lab-zone text-center">
+          <div class="tube-simple" style="position:relative;"><div id="precipFill" class="liquid-fill" style="height: 70%; background: linear-gradient(0deg,#00e5a0aa,#00b8d4aa);"></div><div id="dnaStrandsVis" style="position:absolute; bottom:20%; left:50%; transform:translateX(-50%); font-size:0.7rem; opacity:0;">🧬 DNA strands</div></div>
+          <input type="range" id="alcoholSlider" class="form-range mt-3" min="0" max="100" value="0">
+          <div id="precipFeedback" class="mt-2 small text-secondary">Pour cold isopropanol slowly...</div>
+        </div>
+        <div class="d-flex justify-content-between mt-4"><button class="btn-outline-lab" id="backPrecip">Back</button><button class="btn-primary-lab" id="nextPrecipStep" disabled>Continue →</button></div>
+      </div>
+    `;
+    const slider = document.getElementById('alcoholSlider');
+    const precipFill = document.getElementById('precipFill');
+    const dnaVis = document.getElementById('dnaStrandsVis');
+    const feedback = document.getElementById('precipFeedback');
+    slider.addEventListener('input', (e) => {
+      let val = e.target.value;
+      let newHeight = 70 + (val * 0.3);
+      if(newHeight>95) newHeight=95;
+      precipFill.style.height = newHeight + '%';
+      if(val >= 65) {
+        dnaVis.style.opacity = '1';
+        feedback.innerHTML = '🎉 DNA precipitates! White strands visible!';
+        precipDone = true;
+        document.getElementById('nextPrecipStep').disabled = false;
+        earnBadge('Precipitation Pro');
+      } else if(val>30) {
+        dnaVis.style.opacity = '0.4';
+        feedback.innerHTML = '🔍 Keep adding alcohol...';
+      } else {
+        dnaVis.style.opacity = '0';
+        feedback.innerHTML = 'Pour cold alcohol to see DNA appear.';
+      }
+    });
+    document.getElementById('backPrecip')?.addEventListener('click', () => { currentStep--; updateMainProgress(); renderCurrentStep(); });
+    document.getElementById('nextPrecipStep')?.addEventListener('click', () => { if(precipDone) nextStep(); });
+  }
+  
+  function renderGelLoadingStep(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 4 — LOAD GEL</div>
+        <h2 class="step-title">🧪 Load DNA into wells</h2>
+        <div class="lab-zone text-center">
+          <div class="d-flex justify-content-center gap-4 flex-wrap" id="wellsContainer">
+            ${[0,1,2,3].map(i => `<div class="gel-well-sim" data-well="${i}" style="width:35px;"></div>`).join('')}
+          </div>
+          <div class="mt-2"><span id="wellsLoadedCount">0</span>/4 wells loaded</div>
+          <button class="btn-outline-lab mt-2" id="simulatePipette">🔬 Pipette Sample</button>
+        </div>
+        <div class="d-flex justify-content-between mt-4"><button class="btn-outline-lab" id="backGelLoad">Back</button><button class="btn-primary-lab" id="nextGelStep" disabled>Continue →</button></div>
+      </div>
+    `;
+    gelLoadedCount = 0;
+    function updateWells() {
+      document.querySelectorAll('.gel-well-sim').forEach((w,idx) => {
+        if(idx < gelLoadedCount) w.classList.add('loaded');
+        else w.classList.remove('loaded');
+      });
+      document.getElementById('wellsLoadedCount').innerText = gelLoadedCount;
+      if(gelLoadedCount >= 4) {
+        document.getElementById('nextGelStep').disabled = false;
+        earnBadge('Gel Loader');
+      }
+    }
+    document.getElementById('simulatePipette')?.addEventListener('click', () => {
+      if(gelLoadedCount < 4) {
+        gelLoadedCount++;
+        updateWells();
+        playBeep(440,70);
+        showToast(`Loaded well ${gelLoadedCount}`);
+      } else showToast("All wells are loaded!");
+    });
+    document.getElementById('backGelLoad')?.addEventListener('click', () => { currentStep--; updateMainProgress(); renderCurrentStep(); });
+    document.getElementById('nextGelStep')?.addEventListener('click', () => { if(gelLoadedCount>=4) nextStep(); });
+    updateWells();
+  }
+  
+  function renderGelRunStep(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 5 — ELECTROPHORESIS</div>
+        <h2 class="step-title">⚡ Run the Gel</h2>
+        <div class="lab-zone text-center">
+          <div class="d-flex justify-content-center gap-2"><div class="badge-mini">🔵 Negative</div><div class="mx-2">────</div><div class="badge-mini">🔴 Positive</div></div>
+          <button class="btn-primary-lab mt-3" id="runElectroBtn">Start Current</button>
+          <div id="gelRunMsg" class="mt-2 text-secondary"></div>
+          <div class="mt-3 d-flex justify-content-center gap-2" id="bandAnimationArea"></div>
+        </div>
+        <div class="d-flex justify-content-between mt-4"><button class="btn-outline-lab" id="backGelRun">Back</button><button class="btn-primary-lab" id="nextRunStep" disabled>Continue →</button></div>
+      </div>
+    `;
+    document.getElementById('runElectroBtn')?.addEventListener('click', () => {
+      const msgDiv = document.getElementById('gelRunMsg');
+      msgDiv.innerHTML = '⚡ Running gel... DNA fragments migrating...';
+      setTimeout(() => {
+        msgDiv.innerHTML = '✅ Gel complete! Bands separated by size.';
+        gelRunTriggered = true;
+        document.getElementById('nextRunStep').disabled = false;
+        earnBadge('Electrophoresis Expert');
+        const bandArea = document.getElementById('bandAnimationArea');
+        bandArea.innerHTML = '<div style="width:25px;height:4px;background:#00e5a0;"></div><div style="width:40px;height:4px;background:#00b8d4;"></div><div style="width:15px;height:4px;background:#c084fc;"></div>';
+      }, 1200);
+      playBeep(880,200);
+    });
+    document.getElementById('backGelRun')?.addEventListener('click', () => { currentStep--; updateMainProgress(); renderCurrentStep(); });
+    document.getElementById('nextRunStep')?.addEventListener('click', () => { if(gelRunTriggered) nextStep(); });
+  }
+  
+  function renderAnalysisStep(cont) {
+    cont.innerHTML = `
+      <div class="lab-card mx-auto" style="max-width: 700px;">
+        <div class="step-badge">STEP 6 — ANALYSIS</div>
+        <h2 class="step-title">🔍 Interpret Results</h2>
+        <p>DNA fragments compared to ladder: your sample contains bands ~6kb, 2.5kb, 800bp. Smaller fragments moved farther.</p>
+        <div class="lab-zone d-flex justify-content-around">
+          <div><strong>Ladder</strong><div style="height:4px;width:40px;background:#0af;margin:8px 0;"></div><div style="height:4px;width:28px;background:#0af;"></div><div style="height:4px;width:15px;background:#0af;"></div></div>
+          <div><strong>Your DNA</strong><div style="height:4px;width:38px;background:#00e5a0;margin:8px 0;"></div><div style="height:4px;width:22px;background:#00e5a0;"></div><div style="height:4px;width:12px;background:#00e5a0;"></div></div>
+        </div>
+        <div class="mt-3"><button class="btn-primary-lab w-100" id="completeAnalysisBtn">Complete Lab →</button></div>
+      </div>
+    `;
+    document.getElementById('completeAnalysisBtn')?.addEventListener('click', () => {
+      currentStep = 7;
+      updateMainProgress();
+      renderCurrentStep();
+    });
+  }
+  
+  function renderCompletion(cont) {
+    cont.innerHTML = `
+      <div class="lab-card text-center mx-auto" style="max-width: 700px;">
+        <span class="step-badge">🎉 LAB COMPLETE</span>
+        <div class="step-title">You are a DNA Scientist!</div>
+        <p>You successfully extracted DNA and performed gel electrophoresis.</p>
+        <div class="badge-container d-flex justify-content-center gap-2 flex-wrap mt-2" id="finalBadgesList"></div>
+        <button class="btn-primary-lab mt-4" id="fullResetLab">🔄 Restart Lab</button>
+      </div>
+    `;
+    const badgeContainer = document.getElementById('finalBadgesList');
+    badgesEarned.forEach(b => { badgeContainer.innerHTML += `<span class="badge-mini badge-earned">🏅 ${b}</span>`; });
+    document.getElementById('fullResetLab')?.addEventListener('click', () => {
+      currentStep = 0; selectedSample = null; badgesEarned = []; lysisDone = false; precipDone = false; gelLoadedCount=0; gelRunTriggered=false;
+      updateMainProgress();
+      renderCurrentStep();
+      document.getElementById('badgeCounter').innerHTML = `🏅 0 badges`;
+      showToast("Lab has been reset!");
+    });
+    confettiEffect();
+  }
+  
+  // Load initial
+  window.onload = () => {
+    renderCurrentStep();
+    updateMainProgress();
+    initExtraPanels();
+  };
+</script>
+</body>
+</html>
