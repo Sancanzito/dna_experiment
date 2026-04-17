@@ -327,15 +327,8 @@
 </div>
 
 <div id="dynamicToast" class="toast-custom"></div>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+<script>
+  // Your unique Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyC_75CGGv9CfrpTGV3Bs04JBUykhSBcWr8",
     authDomain: "dna-lab-ab585.firebaseapp.com",
@@ -347,9 +340,8 @@
     measurementId: "G-LCJQ5TPZBR"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  // Initialize Firebase using the "Compat" method
+  firebase.initializeApp(firebaseConfig);
 </script>
 <script>
   // Initialize Firebase
