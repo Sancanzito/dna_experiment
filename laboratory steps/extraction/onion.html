@@ -196,67 +196,57 @@
         </div>
       </div>
 
-     <div class="lab-card">
-    <div class="mb-3">
-      <label class="form-label">Researcher Name</label>
-      <input type="text" id="researcherName" class="form-control bg-dark text-white border-secondary" placeholder="Enter your name">
-    </div>
-    
-    <div class="mb-3">
-      <label class="form-label">Observation Notes</label>
-      <textarea id="labNotes" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="What did you observe under the microscope?"></textarea>
-    </div>
-
-    <button id="syncBtn" class="btn btn-sync w-100">Sync Observation to Chat</button>
-  </div>
-</div>
   <footer class="text-center py-3 small text-secondary"><span>🧬 Optimized onion extraction: cold alcohol + protease + DNase inactivation — best yield</span></footer>
 </div>
 
 <div id="labToast" class="toast-custom"></div>
 
 <script>
-// 1. FIREBASE CONFIG (Use the exact same config from your strawberry.html)
-  const firebaseConfig = {
-    apiKey: "AIzaSyC_75CGGv9CfrpTGV3Bs04JBUykhSBcWr8",
-    authDomain: "dna-lab-ab585.firebaseapp.com",
-    databaseURL: "https://dna-lab-ab585-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "dna-lab-ab585",
-    storageBucket: "dna-lab-ab585.firebasestorage.app",
-    messagingSenderId: "1013587010369",
-    appId: "1:1013587010369:web:355dfd33e2a478601337c0"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
-
-  // 2. SYNC LOGIC
-  document.getElementById('syncBtn').onclick = () => {
-    const name = document.getElementById('researcherName').value || "Anonymous Researcher";
-    const notes = document.getElementById('labNotes').value;
-
-    if (!notes) {
-      alert("Please enter your observations first!");
-      return;
+  // ========== CHAT SYSTEM (from onion.html) ==========
+  const STORAGE_KEY = 'dna_lab_chat_messages';
+  function getChatMessages() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { let msgs = JSON.parse(saved); msgs = msgs.filter(m => m && typeof m.text === 'string'); return msgs; } catch(e) { return []; }
     }
+    return [{ id: Date.now(), author: '🧬 DNA Lab Bot', text: '🧅 Optimized onion protocol: always pre-chill alcohol, sanitize blender, and wear gloves.', timestamp: new Date().toISOString(), editable: false }];
+  }
+  function saveChatMessages(messages) { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); updateChatPreview(); }
+  function addChatMessage(author, text, editable = true) {
+    if (!text || !text.trim()) return false;
+    const messages = getChatMessages();
+    messages.push({ id: Date.now(), author: author.trim().substring(0, 35), text: text.trim(), timestamp: new Date().toISOString(), editable: editable });
+    saveChatMessages(messages);
+    showToastMessage(`💬 "${author}" posted`, false);
+    return true;
+  }
+  function updateChatPreview() {
+    const container = document.getElementById('chatPreviewMessages');
+    if (!container) return;
+    let messages = getChatMessages();
+    messages = [...messages].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 6);
+    if (messages.length === 0) { container.innerHTML = '<div class="text-secondary p-2">✨ No messages yet</div>'; return; }
+    container.innerHTML = messages.map(msg => `
+      <div class="mini-message" data-msg-id="${msg.id}">
+        <div class="d-flex justify-content-between"><strong style="color: var(--accent);">${escapeHtml(msg.author)}</strong><span class="text-secondary" style="font-size:0.6rem;">${new Date(msg.timestamp).toLocaleTimeString()}</span></div>
+        <div class="small mt-1">${escapeHtml(msg.text)}</div>
+        ${msg.editable ? `<div class="mt-1"><button class="edit-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--accent2);">✏️ edit</button> <button class="del-mini-btn btn-sm" data-id="${msg.id}" style="background:none; border:none; color:var(--danger);">🗑️ delete</button></div>` : '<span class="text-secondary" style="font-size:0.6rem;">🔒 system note</span>'}
+      </div>
+    `).join('');
+    document.querySelectorAll('.edit-mini-btn').forEach(btn => btn.addEventListener('click', (e) => { const msgId = parseInt(btn.getAttribute('data-id')); editChatMessage(msgId); }));
+    document.querySelectorAll('.del-mini-btn').forEach(btn => btn.addEventListener('click', (e) => { const msgId = parseInt(btn.getAttribute('data-id')); deleteChatMessage(msgId); }));
+  }
+  function editChatMessage(msgId) { let messages = getChatMessages(); const msg = messages.find(m => m.id === msgId); if (!msg || !msg.editable) { showToastMessage("Cannot edit this message.", true); return; } const newText = prompt("Edit your message:", msg.text); if (newText && newText.trim() !== "") { msg.text = newText.trim(); msg.timestamp = new Date().toISOString(); saveChatMessages(messages); showToastMessage("✏️ Message updated.", false); } }
+  function deleteChatMessage(msgId) { let messages = getChatMessages(); const idx = messages.findIndex(m => m.id === msgId); if (idx === -1) return; if (!messages[idx].editable) { showToastMessage("System message cannot be deleted.", true); return; } if (confirm("Delete permanently?")) { messages.splice(idx, 1); saveChatMessages(messages); showToastMessage("🗑️ Deleted.", false); } }
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+  function showToastMessage(msg, isError = false) {
+    const t = document.getElementById('labToast');
+    t.innerHTML = msg;
+    t.className = isError ? 'toast-custom show danger' : 'toast-custom show';
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+  window.showToast = showToastMessage;
 
-    const fullMessage = `🧅 **Onion Lab Update**\n**Researcher:** ${name}\n**Observations:** ${notes}`;
-
-    // This path MUST match chatbox.html
-    const messagesRef = database.ref('chat-messages'); 
-    
-    messagesRef.push({
-      author: "🧬 Lab System",
-      text: fullMessage,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      userId: "onion_module"
-    }).then(() => {
-      alert("✅ Observations Synced to Chat!");
-      document.getElementById('labNotes').value = "";
-    }).catch((error) => {
-      console.error("Sync Error:", error);
-    });
-  };
   // ========== ORIGINAL new.html SIMULATION (preserved) ==========
   let onionsCollected = 0;
   let grindClicks = 0;

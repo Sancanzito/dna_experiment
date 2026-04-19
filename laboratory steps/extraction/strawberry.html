@@ -88,34 +88,6 @@
       <div id="navigationArea" class="mt-4 text-center" style="display:none;">
         <button class="btn-primary-lab" id="nextPhaseBtn">PROCEED TO NEXT STEP</button>
       </div>
-      <div class="lab-card mb-4" id="notebookSection">
-  <div class="step-badge">📝 RESEARCH LOG</div>
-  <h4 class="fw-bold mb-3">Collaborative Lab Notebook</h4>
-
-  <div class="mb-2 d-flex justify-content-between align-items-center">
-    <label class="small text-dim text-uppercase fw-bold">📥 Live Lab Inbox</label>
-    <span class="badge-mini" style="color:var(--accent);">Syncing Live...</span>
-  </div>
-  
-  <div id="notebookFeed" class="mb-4 p-3 bg-dark rounded shadow-sm" style="max-height: 250px; overflow-y: auto; border: 1px solid rgba(0,229,160,0.2);">
-    <p class="small text-center text-dim">Connecting to logs...</p>
-  </div>
-
-  <div class="row g-3">
-    <div class="col-md-6">
-      <input type="text" id="studentName" class="passcode-input w-100" placeholder="Your Name" style="text-align: left;">
-    </div>
-    <div class="col-md-12">
-      <textarea id="labQuestions" class="passcode-input w-100" rows="2" placeholder="What are your questions?" style="border-radius:15px; text-align: left;"></textarea>
-    </div>
-    <div class="col-md-12">
-      <textarea id="labReflections" class="passcode-input w-100" rows="2" placeholder="Your reflective answers..." style="border-radius:15px; text-align: left;"></textarea>
-    </div>
-    <div class="col-md-12 text-center">
-      <button id="saveNotebookBtn" class="btn-primary-lab">💾 Post to Feed</button>
-    </div>
-  </div>
-</div>
       
       <!-- Video reference (appears after extraction) -->
       <div id="videoArea" class="mt-4" style="display:none;">
@@ -484,66 +456,7 @@
   // Initialize
   startCollect();
 
-  // Notebook + Chat Integration Logic
-// --- UPDATED INTEGRATION LOGIC ---
-const nbSaveBtn = document.getElementById('saveNotebookBtn');
-
-nbSaveBtn.addEventListener('click', () => {
-  // 1. Get User Info & Inputs
-  const name = document.getElementById('studentName').value.trim();
-  const quest = document.getElementById('labQuestions').value.trim();
-  const refl = document.getElementById('labReflections').value.trim();
-
-  // 2. NAME VALIDATION (The Warning)
-  if (!name) {
-    showToast("⚠️ Name Required: Please enter your name to log your research.", true);
-    document.getElementById('studentName').focus();
-    return; // Stop execution
-  }
-
-  // 3. CHECK FOR OTHER FIELDS
-  if (quest && refl) {
-    // 4. PREPARE THE QUIZ DATA (Automated Science Explanation)
-    // We fetch the selected answers and prepare the scientific explanation
-    let quizReport = "";
-    if (extractionComplete) {
-      quizReport = `
-🧪 **Lab Data Report:**
-• Q1 (Genome): ${selectedQ1 === 'b' ? 'Correct (Octoploid)' : 'Incorrect'}
-• Q2 (Detergent): ${selectedQ2 === 'b' ? 'Correct (Lysis)' : 'Incorrect'}
-*Note: Strawberries yield high DNA because they are octoploid (8 sets of chromosomes), and detergent is essential to dissolve the fatty lipid membranes.*
-      `;
-    }
-
-    // 5. CONSTRUCT THE FULL MESSAGE
-    const fullMessage = `📝 **${name}'s Research Log**\n${quizReport}\n**Question:** ${quest}\n**Reflection:** ${refl}`;
-
-    // 6. SAVE TO FIREBASE (Sync to Chat)
-    // Using the same reference structure as your chatbox.html
-    const messagesRef = database.ref('chat-messages'); 
-    
-    messagesRef.push({
-      author: "🧬 Lab System",
-      text: fullMessage,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      userId: "system_log"
-    }).then(() => {
-      showToast("✅ Scientific Log & Reflection Synced!");
-      
-      // Clear inputs for next use
-      document.getElementById('labQuestions').value = "";
-      document.getElementById('labReflections').value = "";
-      
-      // Play success audio if available
-      if (typeof playBeep === "function") playBeep(523, 150);
-    }).catch((error) => {
-      showToast("❌ Sync Error: " + error.message, true);
-    });
-    
-  } else {
-    showToast("⚠️ Please fill in both your questions and reflections.");
-  }
-});
+  
 </script>
 <div class="toast-custom"></div>
 </body>
