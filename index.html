@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>DNA Lab Studio | Step Gatekeeper</title>
-  <!-- Bootstrap 5 + Icons -->
+  <title>DNA Lab Studio | Onion vs Strawberry – Distinct Video + Open-Ended</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -19,339 +17,450 @@
       --text-dim: #8d9bb0;
       --danger: #ff5e7e;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-light);
-      overflow-x: hidden;
-    }
-    .lab-navbar {
-      background: var(--surface) !important;
-      border-bottom: 1px solid rgba(0,229,160,0.2);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-    .brand-dna {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: var(--accent) !important;
-    }
-    .nav-link-custom {
-      color: var(--text-dim) !important;
-      font-weight: 500;
-      transition: 0.2s;
-      font-size: 0.9rem;
-    }
+    body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-light); }
+    .lab-navbar { background: var(--surface) !important; border-bottom: 1px solid rgba(0,229,160,0.2); }
+    .brand-dna { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent) !important; }
+    .nav-link-custom { color: var(--text-dim) !important; font-weight: 500; font-size: 0.9rem; }
     .nav-link-custom:hover { color: var(--accent) !important; }
-    .lab-card {
-      background: var(--surface);
-      border: 1px solid rgba(0,229,160,0.12);
-      border-radius: 28px;
-      padding: 2rem;
-      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3);
-    }
-    .step-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 1.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .step-title {
-      font-weight: 800;
-      font-size: 1.8rem;
-      margin-bottom: 0.75rem;
-    }
-    .btn-primary-lab {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border: none;
-      color: #0a0e1a;
-      font-weight: 700;
-      padding: 10px 28px;
-      border-radius: 40px;
-      transition: 0.2s;
-      box-shadow: 0 4px 12px rgba(0,229,160,0.3);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-primary-lab:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,229,160,0.4);
-      color: #0a0e1a;
-    }
-    .btn-outline-lab {
-      background: transparent;
-      border: 1.5px solid rgba(0,229,160,0.4);
-      color: var(--accent);
-      font-weight: 600;
-      border-radius: 40px;
-      padding: 8px 20px;
-      transition: 0.2s;
-      text-decoration: none;
-    }
-    .btn-outline-lab:hover {
-      background: rgba(0,229,160,0.08);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .instruction-card {
-      background: rgba(0,0,0,0.2);
-      border-radius: 24px;
-      padding: 1.2rem;
-      border-left: 4px solid var(--accent);
-    }
-    .passcode-input {
-      background: var(--surface2);
-      border: 1px solid var(--accent);
-      border-radius: 60px;
-      padding: 12px 20px;
-      color: white;
-      font-size: 1.2rem;
-      text-align: center;
-      letter-spacing: 2px;
-      width: 100%;
-      max-width: 260px;
-    }
-    .passcode-input:focus {
-      outline: none;
-      border-color: var(--accent2);
-      box-shadow: 0 0 8px rgba(0,229,160,0.3);
-    }
-    .badge-mini {
-      background: var(--surface2);
-      border-radius: 40px;
-      padding: 6px 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      color: var(--text-dim);
-    }
-    .toast-custom {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--surface);
-      border: 1px solid var(--accent);
-      padding: 10px 20px;
-      border-radius: 40px;
-      font-weight: 500;
-      transition: transform 0.3s;
-      z-index: 1050;
-      backdrop-filter: blur(4px);
-    }
-    .toast-custom.show {
-      transform: translateX(-50%) translateY(0);
-    }
-    footer { background: #090c14; }
-    @media (max-width: 768px) {
-      .lab-card { padding: 1.3rem; }
-      .step-title { font-size: 1.4rem; }
-    }
+    .badge-mini { background: var(--surface2); border-radius: 40px; padding: 6px 12px; font-size: 0.7rem; font-weight: 600; color: var(--text-dim); }
+    .lab-card { background: var(--surface); border: 1px solid rgba(0,229,160,0.12); border-radius: 28px; padding: 2rem; box-shadow: 0 20px 35px rgba(0,0,0,0.3); }
+    .simulation-panel { background: var(--surface2); border-radius: 28px; padding: 1.8rem; border: 1px solid rgba(0,229,160,0.2); min-height: 480px; }
+    .progress-bar-container { height: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-top: 15px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.3s; }
+    .btn-primary-lab { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; color: #0a0e1a; font-weight: 700; padding: 10px 28px; border-radius: 40px; box-shadow: 0 4px 12px rgba(0,229,160,0.3); }
+    .btn-outline-lab { background: transparent; border: 1.5px solid rgba(0,229,160,0.4); color: var(--accent); font-weight: 600; border-radius: 40px; padding: 8px 20px; }
+    .reagent-btn { background: var(--surface); border: 2px solid var(--accent2); color: white; padding: 15px; border-radius: 20px; width: 130px; transition: 0.3s; }
+    .mortar-btn { font-size: 6rem; background: none; border: none; cursor: pointer; transition: transform 0.1s; }
+    .mortar-btn:active { transform: scale(0.9) translateY(15px); }
+    .onion-target, .strawberry-target { position: absolute; font-size: 2.5rem; cursor: pointer; transition: 0.15s; user-select: none; }
+    .alcohol-slider { width: 100%; height: 15px; border-radius: 10px; appearance: none; background: #0b0f18; border: 1px solid var(--accent); }
+    .alcohol-slider::-webkit-slider-thumb { width: 30px; height: 30px; background: var(--accent); border-radius: 50%; cursor: pointer; }
+    .toast-custom { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(150px); background: var(--surface2); border: 2px solid var(--accent); padding: 18px 30px; border-radius: 24px; transition: transform 0.5s; z-index: 2000; text-align: center; }
+    .toast-custom.show { transform: translateX(-50%) translateY(0); }
+    .quiz-option { background: var(--surface2); border-radius: 60px; padding: 10px 16px; margin-bottom: 10px; cursor: pointer; border: 1px solid transparent; }
+    .quiz-option.selected { background: var(--accent); color: #0a0e1a; border-color: var(--accent); }
+    .passcode-input { background: var(--surface2); border: 1px solid var(--accent); border-radius: 60px; padding: 12px 20px; color: white; text-align: center; letter-spacing: 2px; width: 100%; max-width: 260px; }
+    .filter-drop { position: absolute; font-size: 1.5rem; color: var(--accent2); animation: drip 0.8s infinite; left: 50%; top: 55%; opacity: 0; }
+    @keyframes drip { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(80px); opacity: 0; } }
+    .specimen-selector { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .specimen-card { background: var(--surface2); border-radius: 24px; padding: 1rem 1.5rem; cursor: pointer; transition: 0.2s; text-align: center; width: 140px; border: 2px solid transparent; }
+    .specimen-card.selected { border-color: var(--accent); background: rgba(0,229,160,0.1); }
+    .specimen-card:hover { transform: translateY(-4px); }
   </style>
 </head>
 <body>
 
 <div class="app-container d-flex flex-column min-vh-100">
-  <!-- ========== NAVBAR (fully untouched) ========== -->
   <nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
     <div class="container-fluid">
-      <a class="navbar-brand brand-dna fw-bold" href="#">
-        <span class="me-1">🧬</span> DNA Lab Studio
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra" aria-controls="navbarExtra" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand brand-dna fw-bold" href="#"><span class="me-1">🧬</span> DNA Lab Studio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra">
         <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarExtra">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/instructions.html" target="_blank">📓 Notes Panel</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showQuestionsBtn">❓ Questions</a></li>
-          <li class="nav-item"><a class="nav-link nav-link-custom" href="packages html/chatbox.html">💬 Chat</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showTipsBtn">📓 Science Tips</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetLabBtn">🔄 Reset Lab</a></li>
         </ul>
         <div class="d-flex gap-3 align-items-center">
-          <span class="badge-mini" id="stepDisplay">📍 Step 0/3</span>
+          <span class="badge-mini" id="stepDisplay">🧪 Select Specimen</span>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT - SIMPLIFIED: Only Passcode + Instructions Card -->
-  <div class="container my-4 flex-grow-1" id="mainArea">
-    <div class="lab-card mx-auto" style="max-width: 780px;">
-      <div class="step-badge">🔐 STEP GATEKEEPER</div>
-      <div class="step-title">📖 DNA Lab: Choose Your Sample</div>
-      
-      <!-- General Instructions Card -->
-      <div class="instruction-card mb-4">
-        <h5 class="fw-bold" style="color:var(--accent);">🧬 Step 1: Selecting a Specimen</h5>
-        <p class="small">In this first step, you will choose a biological source for DNA extraction. Each sample has different characteristics:</p>
-        <ul class="small" style="color:var(--text-dim);">
-          <li><strong>🍓 Strawberry</strong> – Easy, high DNA yield (octoploid). Great for beginners.</li>
-          <li><strong>🧅 Onion</strong> – Moderate difficulty, low sugar content.</li>
-          <li><strong>🧫 Cheek cells</strong> – Human sample, requires more careful lysis.</li>
-        </ul>
-        <div class="mt-2 text-secondary-emphasis small bg-dark p-2 rounded" style="background:#0a0e18;">
-          💡 <strong>Goal:</strong> Understand how sample choice affects DNA quantity and purity.
+  <div class="container my-4 flex-grow-1">
+    <div class="lab-card mx-auto" style="max-width: 1100px;">
+      <!-- Specimen Selection -->
+      <div id="specimenPanel" class="mb-4">
+        <div class="specimen-selector">
+          <div class="specimen-card" data-specimen="onion"><div style="font-size: 3rem;">🧅</div><div class="fw-bold">Onion</div><div class="small text-dim">Moderate, low sugar</div></div>
+          <div class="specimen-card" data-specimen="strawberry"><div style="font-size: 3rem;">🍓</div><div class="fw-bold">Strawberry</div><div class="small text-dim">High yield (octoploid)</div></div>
         </div>
+        <div class="text-center"><button id="confirmSpecimenBtn" class="btn-primary-lab" disabled>▶ Start Extraction</button></div>
       </div>
-      
-      <!-- Passcode Challenge with link-style button -->
-      <div class="lab-zone text-center" style="background: var(--surface2); border-radius: 24px; padding: 1.8rem;">
-        <h5 class="fw-semibold mb-3">🔑 Enter Passcode to Unlock Step 1</h5>
-        <div class="d-flex flex-column align-items-center gap-3">
-          <input type="text" id="passcodeInput" class="passcode-input" placeholder="Enter code" maxlength="20" autocomplete="off">
-          <div>
-            <a href="#" id="unlockLinkBtn" class="btn-primary-lab" style="text-decoration: none;">
-              🔓 Unlock Step 1 <span style="font-size:1.2rem;">→</span>
-            </a>
+
+      <!-- Simulation Area -->
+      <div class="simulation-panel" id="simArea"><div class="text-center text-dim p-5">Select onion or strawberry to begin.</div></div>
+      <div class="progress-bar-container"><div id="mainProgress" class="progress-fill"></div></div>
+
+      <!-- Post-extraction: Quick Quiz + Gatekeeper -->
+      <div id="postExtractionArea" style="display: none;" class="mt-4">
+        <div id="quizSection" class="mb-4">
+          <div class="instruction-card mb-3" style="border-left: 4px solid var(--accent2); background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 20px;">
+            <h5 class="fw-bold">📝 Quick Check</h5>
           </div>
-          <div id="passcodeHint" class="small text-secondary mt-1">
-            💡 Hint: The passcode is <strong>"DNA2025"</strong> (case-sensitive)
+          <div class="mb-3"><p class="fw-semibold">1️⃣ Why is 60°C heat treatment recommended after blending?</p>
+            <div id="q1Options"><div class="quiz-option" data-q="1" data-val="a">A) Evaporate water</div><div class="quiz-option" data-q="1" data-val="b">B) Denature DNase enzymes</div><div class="quiz-option" data-q="1" data-val="c">C) Melt cell wall</div></div>
+          </div>
+          <div class="mb-3"><p class="fw-semibold">2️⃣ Why does strawberry yield so much visible DNA?</p>
+            <div id="q2Options"><div class="quiz-option" data-q="2" data-val="a">A) High sugar</div><div class="quiz-option" data-q="2" data-val="b">B) Octoploid genome (8 copies)</div><div class="quiz-option" data-q="2" data-val="c">C) More water</div></div>
+          </div>
+          <div class="text-center"><button id="submitQuizBtn" class="btn-primary-lab" disabled>✅ Validate</button></div>
+          <div id="quizFeedback" class="small text-center mt-2"></div>
+        </div>
+
+        <div id="step2Gatekeeper" style="display: none;" class="mt-3 pt-3 border-top">
+          <h5 class="fw-bold text-center">🔐 Advanced Module Gatekeeper</h5>
+          <div class="text-center mt-3">
+            <input type="text" id="passcodeInput" class="passcode-input" placeholder="Enter passcode">
+            <button id="unlockAdvancedBtn" class="btn-outline-lab mt-2">🔓 Unlock Video + Reflections</button>
+            <div class="small text-secondary mt-1">Hint: Cold solvent (7 letters) A _ _ _ _ _ _ L</div>
           </div>
         </div>
-      </div>
-      
-      <!-- Separate link that becomes active after unlock -->
-      <div class="text-center mt-4">
-        <a href="laboratory steps/step1.html" id="continueLink" class="btn-outline-lab" style="pointer-events: none; opacity: 0.5; text-decoration: none;">
-          ⚡ Go to Step 1: Choose Sample →
-        </a>
-        <p class="small text-secondary mt-2">Enter the correct passcode above to enable this link.</p>
+
+        <!-- ADVANCED VIDEO + OPEN-ENDED (distinct per specimen) -->
+        <div id="advancedVideoModule" style="display: none;" class="mt-4 p-4 bg-dark rounded border border-info">
+          <h5 class="text-center text-accent mb-4">🧪 Advanced Protocol Analysis – <span id="specimenVideoLabel">Onion</span></h5>
+          <div class="ratio ratio-16x9 mb-4 shadow-sm">
+            <iframe id="protocolVideo" src="" title="Specimen DNA Analysis Video" allowfullscreen></iframe>
+          </div>
+          <hr class="border-secondary my-4">
+          <div id="openEndedSection">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold text-warning mb-0">🧐 Specimen Reflection Questions</h6>
+              <button id="shuffleQuestionsBtn" class="btn btn-sm btn-outline-info">🔀 Shuffle Questions</button>
+            </div>
+            <div id="quizQuestionsArea" class="mb-4"></div>
+            <div class="text-center">
+              <button id="submitReflectionsBtn" class="btn-primary-lab">📝 Submit Reflections</button>
+            </div>
+            <div id="reflectionFeedback" class="small text-center mt-3"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <footer class="text-center py-3 small text-secondary"><span>🧬 Onion vs Strawberry: distinct educational videos + unique open-ended questions</span></footer>
+</div>
+<div id="labToast" class="toast-custom"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // SIMPLIFIED SCRIPT: Only passcode verification + redirection to step page
-  // The actual step content (sample selection, lysis, etc.) will live on separate HTML pages.
-  // This page acts as a gatekeeper for Step 1.
-  
-  const CORRECT_PASSCODE = "DNA2025";
-  let isUnlocked = false;
-  
+  // ======================= DISTINCT OPEN-ENDED QUESTION POOLS =======================
+  const ONION_QUESTIONS = [
+    "🧅 Onion-specific: After grinding, the onion released a strong sulfur smell. Why does this happen when plant cells are broken?",
+    "🧅 Onion-specific: How would the DNA yield change if you used a red onion instead of yellow? Predict the color of the precipitate.",
+    "🧅 Onion-specific: The onion homogenate was very watery compared to strawberry. What does that indicate about cellular composition?",
+    "🧅 Onion-specific: Why did we need to grind the onion more vigorously than a strawberry? Relate to cell wall structure.",
+    "🧅 Onion-specific: After filtration, the onion liquid was slightly yellowish. What cellular components might cause this tint?",
+    "🧅 Onion-specific: When you added cold alcohol, DNA appeared as wispy threads. Why does DNA precipitate at the interface?",
+    "🧅 Onion-specific: If you forgot to add salt during lysis, what would happen to the DNA extraction? Explain.",
+    "🧅 Onion-specific: Onions have low sugar content; how does that affect viscosity compared to strawberry?",
+    "🧅 Onion-specific: The protease step removed proteins. How would you know if proteins contaminated your DNA sample?",
+    "🧅 Onion-specific: Why is it critical to pre-chill the alcohol when working with onion DNA?"
+  ];
+
+  const STRAWBERRY_QUESTIONS = [
+    "🍓 Strawberry-specific: Strawberries are octoploid (8 copies of DNA). How did this affect the amount of DNA you observed?",
+    "🍓 Strawberry-specific: The strawberry mixture was thick and frothy after adding detergent. What caused the foam?",
+    "🍓 Strawberry-specific: Why do strawberry DNA extractions often yield pinkish DNA strands? Is that pure DNA?",
+    "🍓 Strawberry-specific: Compared to onion, the strawberry filtered liquid was darker red. What pigment is responsible?",
+    "🍓 Strawberry-specific: If you skipped the filtration step, how would the final DNA precipitate look?",
+    "🍓 Strawberry-specific: Why do we mush strawberries in a bag instead of grinding with a mortar? What’s the advantage?",
+    "🍓 Strawberry-specific: The tiny strawberry seeds remained in the filter. What does that tell you about seed cell walls?",
+    "🍓 Strawberry-specific: How would the experiment differ if you used a frozen strawberry instead of fresh?",
+    "🍓 Strawberry-specific: What would happen if you used room-temperature alcohol instead of ice-cold?",
+    "🍓 Strawberry-specific: Strawberry DNA is often described as 'stringy'. What physical property of DNA makes it clump?"
+  ];
+
+  // ======================= DISTINCT VIDEO URLs (educational, specimen-specific) =======================
+  // Onion DNA extraction video (realistic lab demo)
+  const ONION_VIDEO_URL = "video/onion_extraction.mp4"; // Placeholder for a local video file or a distinct YouTube link
+  // Strawberry DNA extraction video (classic classroom demo)
+  const STRAWBERRY_VIDEO_URL = "video/strawberry_extraction.mp4"; // Placeholder for a local video file or a distinct YouTube link
+  // Fallback / backup
+  const FALLBACK_VIDEO = "https://www.youtube.com/embed/LxQnnmDIGsQ";
+
+  let currentSpecimen = null;       // 'onion' or 'strawberry'
+  let phase = 0;                    // 0=select,1=collect,2=grind,3=lysis,4=filter,5=protease,6=alcohol
+  let collectCount = 0, targetCollect = 12;
+  let grindClicks = 0, targetGrind = 8;
+  let lysisItems = 0;
+  let lastSliderVal = 0;
+  let filterInterval = null;
+  let quizPassed = false;
+  let selectedQ1 = null, selectedQ2 = null;
+  let advancedUnlocked = false;
+
   // DOM elements
-  const passInput = document.getElementById('passcodeInput');
-  const unlockBtn = document.getElementById('unlockLinkBtn');
-  const continueLink = document.getElementById('continueLink');
+  const simArea = document.getElementById('simArea');
+  const progressFill = document.getElementById('mainProgress');
+  const specimenPanelDiv = document.getElementById('specimenPanel');
+  const postArea = document.getElementById('postExtractionArea');
+  const confirmBtn = document.getElementById('confirmSpecimenBtn');
   const stepDisplaySpan = document.getElementById('stepDisplay');
-  
-  function showToast(msg) {
-    let toastDiv = document.querySelector('.toast-custom');
-    if(!toastDiv) {
-      toastDiv = document.createElement('div');
-      toastDiv.className = 'toast-custom';
-      document.body.appendChild(toastDiv);
+
+  function showToast(msg, isError = false) {
+    const toast = document.getElementById('labToast');
+    toast.innerHTML = msg;
+    toast.className = isError ? 'toast-custom show danger' : 'toast-custom show';
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
+  function updateProgress(pct) { progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%'; }
+
+  // ----- SIMULATION PHASES -----
+  function renderPhase() {
+    if (!currentSpecimen) return;
+    const icon = currentSpecimen === 'onion' ? '🧅' : '🍓';
+    simArea.innerHTML = '';
+    if (filterInterval) clearInterval(filterInterval);
+    if (phase === 1) {  // Collect
+      stepDisplaySpan.innerText = `${icon} Phase 1: Harvest ${currentSpecimen}`;
+      simArea.innerHTML = `<p class="text-center text-dim">Click on floating ${currentSpecimen} pieces (collect ${targetCollect}).</p><div id="collectZone" style="position:relative; min-height:320px;"></div><div class="text-center fw-bold" id="collectCounter">0/${targetCollect}</div>`;
+      const zone = document.getElementById('collectZone');
+      for(let i=0;i<15;i++) spawnCollectable(zone);
+      updateProgress((collectCount/targetCollect)*100);
+    } else if (phase === 2) { // Grind
+      stepDisplaySpan.innerText = `${icon} Phase 2: Mechanical Lysis`;
+      simArea.innerHTML = `<div class="text-center mt-5"><h4>Grinding Tissue</h4><button class="mortar-btn" onclick="window.handleGrind()">🥣</button><div class="mt-4 fs-4" id="grindCount">${grindClicks}/${targetGrind}</div></div>`;
+      updateProgress((grindClicks/targetGrind)*100);
+    } else if (phase === 3) { // Lysis
+      stepDisplaySpan.innerText = `${icon} Phase 3: Chemical Lysis`;
+      simArea.innerHTML = `<div class="text-center mt-5"><h4>Breaking Membranes</h4><div class="d-flex justify-content-center gap-4"><button class="reagent-btn" id="btn-det" onclick="window.addLysis('detergent')">🧼<br>Detergent</button><button class="reagent-btn" id="btn-salt" onclick="window.addLysis('salt')">🧂<br>Salt</button></div><div class="mt-4 h5" id="lysisStatus">Reagents: ${lysisItems}/2</div></div>`;
+      updateProgress((lysisItems/2)*100);
+    } else if (phase === 4) { // Filtration
+      stepDisplaySpan.innerText = `${icon} Phase 4: Filtration`;
+      simArea.innerHTML = `<div class="text-center mt-5"><h4>Clarifying Extract</h4><div style="font-size:5rem; position:relative;">📄<div class="filter-drop" id="drip">💧</div></div><h2 id="timer">5</h2></div>`;
+      startFilterTimer();
+    } else if (phase === 5) { // Protease
+      stepDisplaySpan.innerText = `${icon} Phase 5: Protease Treatment`;
+      simArea.innerHTML = `<div class="text-center mt-5"><h4>Removing Proteins</h4><button class="reagent-btn" style="width:200px" onclick="window.addProtease()">🧬 Add Protease</button></div>`;
+    } else if (phase === 6) { // Alcohol
+      stepDisplaySpan.innerText = `${icon} Phase 6: Cold Precipitation`;
+      simArea.innerHTML = `<div class="mt-5 p-4"><h4 class="text-center">Layering Ice-Cold Alcohol</h4><input type="range" min="0" max="100" value="${lastSliderVal}" class="alcohol-slider" id="alcSlider" oninput="window.handleAlcohol(this.value)"><div class="text-center mt-3" id="alcFeedback">Interface: ${lastSliderVal}%</div></div>`;
+      const slider = document.getElementById('alcSlider');
+      if(slider) slider.value = lastSliderVal;
     }
-    toastDiv.textContent = msg;
-    toastDiv.classList.add('show');
-    setTimeout(() => toastDiv.classList.remove('show'), 2200);
   }
-  
-  function playBeep(freq, duration) {
-    try {
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.value = freq;
-      gain.gain.value = 0.1;
-      osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration/1000);
-      osc.stop(audioCtx.currentTime + duration/1000);
-    } catch(e) {}
+
+  function spawnCollectable(container) {
+    if (collectCount >= targetCollect || phase !== 1) return;
+    const item = document.createElement('div');
+    item.className = currentSpecimen === 'onion' ? 'onion-target' : 'strawberry-target';
+    item.innerHTML = currentSpecimen === 'onion' ? '🧅' : '🍓';
+    item.style.left = Math.random() * 80 + 5 + '%';
+    item.style.top = Math.random() * 70 + 15 + '%';
+    item.onclick = () => {
+      collectCount++;
+      const counter = document.getElementById('collectCounter');
+      if(counter) counter.innerText = `${collectCount}/${targetCollect}`;
+      updateProgress((collectCount/targetCollect)*100);
+      item.remove();
+      if(collectCount < targetCollect) spawnCollectable(container);
+      if(collectCount === targetCollect) {
+        showToast(`✅ ${targetCollect} samples collected! Now grind.`);
+        setTimeout(() => { phase = 2; grindClicks = 0; renderPhase(); }, 800);
+      }
+    };
+    container.appendChild(item);
   }
-  
-  function unlockStep() {
-    const enteredCode = passInput ? passInput.value.trim() : "";
-    if (enteredCode === CORRECT_PASSCODE) {
-      isUnlocked = true;
-      showToast("✅ Passcode correct! Step 1 is now unlocked.");
-      // Enable the continue link
-      if (continueLink) {
-        continueLink.style.pointerEvents = "auto";
-        continueLink.style.opacity = "1";
-        continueLink.style.borderColor = "var(--accent)";
-        continueLink.setAttribute('href', 'laboratory steps/step1.html');
+  window.handleGrind = function() {
+    if(phase !== 2) return;
+    grindClicks++;
+    const gc = document.getElementById('grindCount');
+    if(gc) gc.innerText = `${grindClicks}/${targetGrind}`;
+    updateProgress((grindClicks/targetGrind)*100);
+    if(grindClicks >= targetGrind) {
+      showToast("Grinding complete! Add lysis buffer (detergent + salt).");
+      setTimeout(() => { phase = 3; lysisItems = 0; renderPhase(); }, 1000);
+    }
+  };
+  window.addLysis = function(type) {
+    if(phase !== 3) return;
+    lysisItems++;
+    if(type === 'detergent') document.getElementById('btn-det').disabled = true;
+    if(type === 'salt') document.getElementById('btn-salt').disabled = true;
+    const statusSpan = document.getElementById('lysisStatus');
+    if(statusSpan) statusSpan.innerText = `Reagents: ${lysisItems}/2`;
+    updateProgress((lysisItems/2)*100);
+    if(lysisItems === 2) {
+      showToast("Lysis complete! Now filter the mixture.");
+      setTimeout(() => { phase = 4; renderPhase(); }, 1500);
+    }
+  };
+  function startFilterTimer() {
+    let timeLeft = 5;
+    const drip = document.getElementById('drip');
+    if(drip) drip.style.opacity = "1";
+    filterInterval = setInterval(() => {
+      timeLeft--;
+      const timerSpan = document.getElementById('timer');
+      if(timerSpan) timerSpan.innerText = timeLeft;
+      if(timeLeft <= 0) {
+        clearInterval(filterInterval);
+        showToast("Filtration done. Add protease for purity.");
+        phase = 5;
+        renderPhase();
       }
-      if (unlockBtn) {
-        unlockBtn.innerHTML = "✅ Unlocked! ✅";
-        unlockBtn.style.opacity = "0.8";
-        unlockBtn.style.cursor = "default";
-      }
-      if(passInput) passInput.style.borderColor = "var(--accent)";
-      playBeep(523, 150);
-      // Update step display
-      stepDisplaySpan.innerHTML = "📍 Step 1/7 (Unlocked)";
+    }, 1000);
+  }
+  window.addProtease = function() {
+    if(phase !== 5) return;
+    updateProgress(100);
+    showToast("Protease added. Now precipitate with ice-cold alcohol.");
+    setTimeout(() => { phase = 6; lastSliderVal = 0; renderPhase(); }, 1200);
+  };
+  window.handleAlcohol = function(val) {
+    if(phase !== 6) return;
+    const numericVal = parseInt(val);
+    const feedback = document.getElementById('alcFeedback');
+    if(numericVal > lastSliderVal + 15) {
+      feedback.innerText = "⚠️ Too fast! DNA shearing risk!";
+      progressFill.classList.add('fail');
+      showToast("Pour slowly to avoid breaking DNA strands.", true);
     } else {
-      isUnlocked = false;
-      showToast("❌ Incorrect passcode. Hint: DNA2025 (case-sensitive)");
-      if(continueLink) {
-        continueLink.style.pointerEvents = "none";
-        continueLink.style.opacity = "0.5";
-        continueLink.removeAttribute('href');
-      }
-      if(passInput) passInput.style.borderColor = "var(--danger)";
-      setTimeout(() => { if(passInput) passInput.style.borderColor = "var(--accent)"; }, 800);
-      playBeep(330, 200);
+      progressFill.classList.remove('fail');
+      feedback.innerText = `Interface: ${numericVal}%`;
     }
+    lastSliderVal = numericVal;
+    updateProgress(numericVal);
+    if(numericVal === 100) {
+      showToast(`🎉 Extraction complete! DNA precipitated. Answer quick quiz to unlock advanced module.`);
+      finishExtraction();
+    }
+  };
+  function finishExtraction() {
+    phase = 7;
+    simArea.innerHTML = `<div class="text-center py-5"><div style="font-size:5rem;">🧬✨</div><h2>${currentSpecimen === 'onion' ? 'Onion' : 'Strawberry'} DNA Extracted!</h2><p class="text-dim">White/cloudy DNA visible at alcohol interface.</p><button class="btn-outline-lab mt-2" onclick="location.reload()">Extract New Sample</button></div>`;
+    postArea.style.display = "block";
+    attachQuizListeners();
   }
-  
-  // Event listeners
-  if (unlockBtn) {
-    unlockBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      unlockStep();
+
+  // Quick MCQ Quiz
+  function attachQuizListeners() {
+    document.querySelectorAll('.quiz-option').forEach(opt => {
+      opt.removeEventListener('click', quizHandler);
+      opt.addEventListener('click', quizHandler);
     });
-  }
-  
-  if (passInput) {
-    passInput.addEventListener('keypress', (e) => {
-      if(e.key === 'Enter') {
-        e.preventDefault();
-        unlockStep();
+    document.getElementById('submitQuizBtn').onclick = () => {
+      const correct1 = (selectedQ1 === 'b');
+      const correct2 = (selectedQ2 === 'b');
+      if(correct1 && correct2) {
+        quizPassed = true;
+        document.getElementById('quizFeedback').innerHTML = "✅ Correct! Gatekeeper unlocked. Enter passcode: ALCOHOL";
+        showToast("Quiz passed! Use passcode ALCOHOL to unlock video & reflections.");
+        document.getElementById('step2Gatekeeper').style.display = "block";
+      } else {
+        document.getElementById('quizFeedback').innerHTML = "❌ Not quite. Hint: 60°C inactivates DNase; strawberry is octoploid.";
+        showToast("Review: Heat denatures nucleases; strawberry has 8x DNA copies.", true);
       }
+    };
+  }
+  function quizHandler(e) {
+    const target = e.currentTarget;
+    const q = target.getAttribute('data-q');
+    const val = target.getAttribute('data-val');
+    if(q === '1') { selectedQ1 = val; document.querySelectorAll('[data-q="1"]').forEach(o => o.classList.remove('selected')); target.classList.add('selected'); }
+    if(q === '2') { selectedQ2 = val; document.querySelectorAll('[data-q="2"]').forEach(o => o.classList.remove('selected')); target.classList.add('selected'); }
+    const submitBtn = document.getElementById('submitQuizBtn');
+    if(submitBtn) submitBtn.disabled = !(selectedQ1 && selectedQ2);
+  }
+
+  // ---------- ADVANCED UNLOCK (Passcode ALCOHOL) + DISTINCT VIDEO & OPEN-ENDED ----------
+  document.getElementById('unlockAdvancedBtn').addEventListener('click', () => {
+    const code = document.getElementById('passcodeInput').value.trim().toUpperCase();
+    if(code === "ALCOHOL" && quizPassed) {
+      advancedUnlocked = true;
+      document.getElementById('advancedVideoModule').style.display = "block";
+      // Set distinct video & label
+      const videoFrame = document.getElementById('protocolVideo');
+      const labelSpan = document.getElementById('specimenVideoLabel');
+      if(currentSpecimen === 'onion') {
+        videoFrame.src = ONION_VIDEO_URL;
+        labelSpan.innerText = "Onion DNA Extraction Protocol";
+      } else {
+        videoFrame.src = STRAWBERRY_VIDEO_URL;
+        labelSpan.innerText = "Strawberry DNA Extraction Protocol";
+      }
+      // fallback if youtube blocked
+      if(!videoFrame.src || videoFrame.src === "") videoFrame.src = FALLBACK_VIDEO;
+      showToast(`🔓 Advanced module unlocked: ${currentSpecimen === 'onion' ? 'Onion' : 'Strawberry'} specific video & questions.`);
+      // Load initial open-ended questions for this specimen
+      loadSpecimenQuestions();
+    } else if(!quizPassed) {
+      showToast("Please complete the quick quiz first.", true);
+    } else {
+      showToast("Invalid passcode. Hint: ALCOHOL (7 letters)", true);
+    }
+  });
+
+  function loadSpecimenQuestions() {
+    // display 2 random questions from the current specimen pool
+    shuffleAndDisplayQuestions();
+  }
+
+  function shuffleAndDisplayQuestions() {
+    if(!currentSpecimen) return;
+    const pool = currentSpecimen === 'onion' ? ONION_QUESTIONS : STRAWBERRY_QUESTIONS;
+    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 2);
+    const container = document.getElementById('quizQuestionsArea');
+    container.innerHTML = '';
+    selected.forEach((qText, idx) => {
+      container.innerHTML += `
+        <div class="mb-3">
+          <label class="small fw-bold mb-2 d-block text-dim">${idx+1}️⃣ ${qText}</label>
+          <textarea class="form-control bg-black text-white border-secondary reflection-answer" rows="2" placeholder="Record your observation or hypothesis..." data-qidx="${idx}"></textarea>
+        </div>
+      `;
     });
+    showToast(`📋 Loaded ${currentSpecimen === 'onion' ? 'onion-specific' : 'strawberry-specific'} reflection questions.`, false);
   }
-  
-  // Reset functionality (clears unlock state)
-  const resetBtn = document.getElementById('resetLabBtn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      isUnlocked = false;
-      if (passInput) passInput.value = "";
-      if (continueLink) {
-        continueLink.style.pointerEvents = "none";
-        continueLink.style.opacity = "0.5";
-        continueLink.removeAttribute('href');
-        continueLink.innerHTML = "⚡ Go to Step 1: Choose Sample →";
-      }
-      if (unlockBtn) {
-        unlockBtn.innerHTML = "🔓 Unlock Step 1 →";
-        unlockBtn.style.opacity = "1";
-      }
-      stepDisplaySpan.innerHTML = "📍 Step 0/7";
-      showToast("Lab reset. Passcode required again.");
-      if(passInput) passInput.style.borderColor = "var(--accent)";
+
+  document.getElementById('shuffleQuestionsBtn').addEventListener('click', () => {
+    if(advancedUnlocked && currentSpecimen) {
+      shuffleAndDisplayQuestions();
+    } else {
+      showToast("Unlock advanced module first with passcode.", true);
+    }
+  });
+
+  document.getElementById('submitReflectionsBtn').addEventListener('click', () => {
+    if(!advancedUnlocked) { showToast("Unlock the module first with passcode.", true); return; }
+    const textareas = document.querySelectorAll('#quizQuestionsArea .reflection-answer');
+    let allFilled = true;
+    let answers = [];
+    textareas.forEach(ta => {
+      if(!ta.value.trim()) allFilled = false;
+      answers.push(ta.value.trim());
     });
-  }
-  
-  // Stubs for other navbar buttons
-  document.getElementById('showGamesBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("🎮 Mini games page coming soon!"); });
-  document.getElementById('showQuestionsBtn')?.addEventListener('click', (e) => { e.preventDefault(); showToast("❓ Student Q&A section coming soon!"); });
-  
-  // Initial state: continue link is disabled
-  if (continueLink) {
-    continueLink.style.pointerEvents = "none";
-    continueLink.style.opacity = "0.5";
-    continueLink.removeAttribute('href');
-  }
-  stepDisplaySpan.innerHTML = "📍 Step 0/7";
+    if(!allFilled) {
+      showToast("Please answer both reflection questions before submitting.", true);
+      return;
+    }
+    showToast("📘 Reflections saved! Great scientific thinking. Check console for details.", false);
+    document.getElementById('reflectionFeedback').innerHTML = "✅ Thank you! Your specimen-specific reflections have been recorded.";
+    console.log(`[${currentSpecimen.toUpperCase()}] Reflections submitted:`, answers);
+  });
+
+  // Specimen selection
+  document.querySelectorAll('.specimen-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.specimen-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      currentSpecimen = card.getAttribute('data-specimen');
+      confirmBtn.disabled = false;
+    });
+  });
+  confirmBtn.addEventListener('click', () => {
+    if(!currentSpecimen) return;
+    specimenPanelDiv.style.display = 'none';
+    // reset all simulation counters
+    collectCount = 0; grindClicks = 0; lysisItems = 0; lastSliderVal = 0; phase = 1;
+    if(filterInterval) clearInterval(filterInterval);
+    postArea.style.display = "none";
+    document.getElementById('step2Gatekeeper').style.display = "none";
+    document.getElementById('advancedVideoModule').style.display = "none";
+    quizPassed = false; selectedQ1 = null; selectedQ2 = null; advancedUnlocked = false;
+    document.getElementById('passcodeInput').value = "";
+    renderPhase();
+  });
+
+  document.getElementById('showTipsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    showToast("💡 Detergent dissolves membranes, salt neutralizes DNA charge, cold alcohol precipitates. Onion has fibrous cell walls; strawberry is octoploid.");
+  });
+  document.getElementById('resetLabBtn').addEventListener('click', () => location.reload());
 </script>
 </body>
 </html>
