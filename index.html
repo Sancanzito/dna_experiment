@@ -59,6 +59,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarExtra">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="additional/chatbox.html" target="_blank" id="chatbox">💬 chatbox</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="additional/gel_electrophoresis.html" target="_blank" id="gelElectrophoresisBtn">⚡ gel electrophoresis</a></li>
           <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="showTipsBtn">📓 Science Tips</a></li>
           <li class="nav-item"><a class="nav-link nav-link-custom" href="#" id="resetLabBtn">🔄 Reset Lab</a></li>
         </ul>
@@ -123,7 +125,7 @@
             </div>
             <div id="quizQuestionsArea" class="mb-4"></div>
             <div class="text-center">
-              <button id="submitReflectionsBtn" class="btn-primary-lab">📝 Submit Reflections</button>
+              <button id="copyReflectionsBtn" class="btn-primary-lab">📋 Copy Questions & Answers</button>
             </div>
             <div id="reflectionFeedback" class="small text-center mt-3"></div>
           </div>
@@ -165,9 +167,9 @@
 
   // ======================= DISTINCT VIDEO URLs (educational, specimen-specific) =======================
   // Onion DNA extraction video (realistic lab demo)
-  const ONION_VIDEO_URL = "video/onion_extraction.mp4"; // Placeholder for a local video file or a distinct YouTube link
+  const ONION_VIDEO_URL = "videos/dna extraction from onion.mp4"; // Placeholder for a local video file or a distinct YouTube link
   // Strawberry DNA extraction video (classic classroom demo)
-  const STRAWBERRY_VIDEO_URL = "video/strawberry_extraction.mp4"; // Placeholder for a local video file or a distinct YouTube link
+  const STRAWBERRY_VIDEO_URL = "videos/strawberry.mp4"; // Placeholder for a local video file or a distinct YouTube link
   // Fallback / backup
   const FALLBACK_VIDEO = "https://www.youtube.com/embed/LxQnnmDIGsQ";
 
@@ -415,22 +417,32 @@
     }
   });
 
-  document.getElementById('submitReflectionsBtn').addEventListener('click', () => {
+  document.getElementById('copyReflectionsBtn').addEventListener('click', () => {
     if(!advancedUnlocked) { showToast("Unlock the module first with passcode.", true); return; }
+    
     const textareas = document.querySelectorAll('#quizQuestionsArea .reflection-answer');
+    const questionLabels = document.querySelectorAll('#quizQuestionsArea .small.fw-bold');
+    
     let allFilled = true;
-    let answers = [];
-    textareas.forEach(ta => {
+    let copyText = `🧬 ${currentSpecimen === 'onion' ? 'ONION' : 'STRAWBERRY'} DNA REFLECTIONS\n${'='.repeat(50)}\n\n`;
+    
+    textareas.forEach((ta, idx) => {
       if(!ta.value.trim()) allFilled = false;
-      answers.push(ta.value.trim());
+      const questionText = questionLabels[idx] ? questionLabels[idx].innerText : `Question ${idx+1}`;
+      copyText += `${questionText}\n📝 Answer: ${ta.value.trim() || '(empty)'}\n\n`;
     });
+    
     if(!allFilled) {
-      showToast("Please answer both reflection questions before submitting.", true);
+      showToast("Please answer both reflection questions before copying.", true);
       return;
     }
-    showToast("📘 Reflections saved! Great scientific thinking. Check console for details.", false);
-    document.getElementById('reflectionFeedback').innerHTML = "✅ Thank you! Your specimen-specific reflections have been recorded.";
-    console.log(`[${currentSpecimen.toUpperCase()}] Reflections submitted:`, answers);
+    
+    navigator.clipboard.writeText(copyText).then(() => {
+      showToast("📋 Questions & answers copied to clipboard!", false);
+      document.getElementById('reflectionFeedback').innerHTML = "✅ Copied! Your reflections are now in your clipboard.";
+    }).catch(() => {
+      showToast("Failed to copy. Please try again.", true);
+    });
   });
 
   // Specimen selection

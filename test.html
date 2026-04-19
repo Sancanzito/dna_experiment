@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gel Electrophoresis Lab Quest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --lab-blue: #004a99;
+            --dna-green: #2ecc71;
+            --pos-red: #e74c3c;
+        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .lab-container { max-width: 900px; margin: 2rem auto; }
+        .scene-card { min-height: 500px; transition: all 0.3s ease; }
+        .gel-box {
+            background: #e3f2fd;
+            border: 3px solid #90caf9;
+            height: 300px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .well {
+            width: 40px; height: 15px;
+            background: #64b5f6;
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+        .dna-band {
+            position: absolute;
+            height: 10px;
+            background: rgba(46, 204, 113, 0.8);
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+            transition: left 2s linear;
+        }
+        .terminal {
+            width: 10px; height: 100%;
+            position: absolute; top: 0;
+        }
+        .neg { left: 0; background: #333; }
+        .pos { right: 0; background: var(--pos-red); }
+        .instructor-avatar { width: 60px; height: 60px; border-radius: 50%; background: #ddd; }
+    </style>
+</head>
+<body>
+
+<div class="container lab-container">
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="display-5 fw-bold text-primary">DNA Lab Quest</h1>
+            <p class="lead">Interactive Electrophoresis Simulation</p>
+        </div>
+    </div>
+
+    <div class="card scene-card shadow-lg border-0">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class="instructor-avatar me-3 bg-primary d-flex align-items-center justify-content-center text-white fw-bold">Dr.N</div>
+                <div>
+                    <h5 class="mb-0" id="speaker-name">Dr. Nova</h5>
+                    <p class="text-muted small mb-0" id="dialogue-text">Welcome, scientist! Today, you’ll separate DNA fragments using electricity. Ready?</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body px-4" id="lab-workspace">
+            <div id="scene-content" class="text-center py-5">
+                <h3 class="mb-4">Question: What is the charge of DNA?</h3>
+                <div class="d-grid gap-3 col-md-6 mx-auto">
+                    <button class="btn btn-outline-primary py-3" onclick="checkCharge('pos')">DNA is positive</button>
+                    <button class="btn btn-outline-primary py-3" onclick="checkCharge('neg')">DNA is negative</button>
+                    <button class="btn btn-outline-primary py-3" onclick="checkCharge('none')">DNA has no charge</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-light p-3 text-end border-0">
+            <button class="btn btn-secondary me-2" onclick="resetLab()">Reset</button>
+            <button class="btn btn-primary d-none" id="next-btn" onclick="nextScene()">Next Phase →</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentScene = 1;
+
+    function updateDialogue(speaker, text) {
+        document.getElementById('speaker-name').innerText = speaker;
+        document.getElementById('dialogue-text').innerText = text;
+    }
+
+    function checkCharge(answer) {
+        if(answer === 'neg') {
+            updateDialogue("Byte", "Correct! DNA is negatively charged (thanks to phosphate!) and moves toward the positive side.");
+            document.getElementById('next-btn').classList.remove('d-none');
+        } else {
+            updateDialogue("Byte", "Try again—think about those phosphate groups in the backbone!");
+        }
+    }
+
+    function nextScene() {
+        currentScene++;
+        const workspace = document.getElementById('lab-workspace');
+        document.getElementById('next-btn').classList.add('d-none');
+
+        if(currentScene === 2) {
+            updateDialogue("Dr. Nova", "Samples loaded! Now, let's apply the current. Which way will the DNA move?");
+            workspace.innerHTML = `
+                <div class="gel-box mx-auto w-75">
+                    <div class="terminal neg text-white p-1 small">-</div>
+                    <div class="terminal pos text-white p-1 small">+</div>
+                    <div id="gel-area" style="position:relative; height:100%;">
+                        <div class="well" style="position:absolute; left:20px; top:50px;"></div>
+                        <div class="well" style="position:absolute; left:20px; top:120px;"></div>
+                        <div class="well" style="position:absolute; left:20px; top:190px;"></div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <button class="btn btn-danger btn-lg" onclick="runElectrophoresis()">Turn on Power ⚡</button>
+                </div>
+            `;
+        }
+    }
+
+    function runElectrophoresis() {
+        updateDialogue("Byte", "Look at them go! The smaller fragments are zooming ahead!");
+        const gel = document.getElementById('gel-area');
+        
+        // Define fragment sizes (Smaller = moves more)
+        const fragments = [
+            { id: 'f1', size: 200, top: 52 },
+            { id: 'f2', size: 800, top: 122 },
+            { id: 'f3', size: 50, top: 192 }
+        ];
+
+        fragments.forEach(frag => {
+            const div = document.createElement('div');
+            div.className = 'dna-band';
+            div.style.top = frag.top + 'px';
+            div.style.left = '25px';
+            div.style.width = '30px';
+            gel.appendChild(div);
+
+            // Calculate distance based on size (inverse relationship)
+            const distance = 600 - (frag.size / 2);
+            
+            setTimeout(() => {
+                div.style.left = (distance / 1.5) + 'px';
+            }, 100);
+        });
+
+        setTimeout(() => {
+            updateDialogue("Dr. Nova", "Science complete! Notice how the 50bp fragment traveled the furthest.");
+        }, 2100);
+    }
+
+    function resetLab() {
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
