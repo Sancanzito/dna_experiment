@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gel Electrophoresis Quiz | MCQ with Submit & Reveal + Open-Ended (Password)</title>
+  <!-- Bootstrap 5 CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #eef2f7 0%, #d4e0ec 100%);
+      font-family: 'Segoe UI', Roboto, system-ui;
+      padding: 2rem 0 3rem 0;
+    }
+    .quiz-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .mcq-card {
+      border: none;
+      border-radius: 1.5rem;
+      background: white;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+      transition: all 0.2s;
+      margin-bottom: 2rem;
+    }
+    .mcq-header {
+      background: #f1f6fd;
+      border-radius: 1.5rem 1.5rem 0 0;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid #cbdde9;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #0a4b6e;
+    }
+    .options-group {
+      padding: 1.2rem 1.8rem;
+      background: #ffffff;
+    }
+    .form-check {
+      margin-bottom: 0.8rem;
+      padding-left: 2rem;
+    }
+    .form-check-input {
+      cursor: pointer;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    .form-check-label {
+      font-size: 1rem;
+      margin-left: 0.3rem;
+      cursor: pointer;
+    }
+    .explanation-box {
+      background-color: #eef2fa;
+      border-left: 6px solid #0d6efd;
+      padding: 1rem 1.3rem;
+      border-radius: 1rem;
+      margin: 0 1.5rem 1.2rem 1.5rem;
+      font-size: 0.95rem;
+      color: #1e2f3f;
+      transition: all 0.2s;
+    }
+    .btn-submit-mcq {
+      background: #0d6efd;
+      color: white;
+      border-radius: 2rem;
+      padding: 0.5rem 1.8rem;
+      font-weight: 500;
+      margin: 0 1.5rem 1.2rem 1.5rem;
+      border: none;
+      transition: 0.2s;
+    }
+    .btn-submit-mcq:hover {
+      background: #0b5ed7;
+      transform: translateY(-1px);
+    }
+    .badge-question {
+      background-color: #1e6f5c;
+      color: white;
+      font-size: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2rem;
+    }
+    .open-ended-section {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+      margin-top: 2rem;
+    }
+    .accordion-button:not(.collapsed) {
+      background-color: #e2eaf1;
+      color: #0a4b6e;
+      font-weight: 600;
+    }
+    .accordion-item {
+      border: none;
+      margin-bottom: 1rem;
+      border-radius: 1rem !important;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .password-protect {
+      background: #f8f9fc;
+      border-radius: 1rem;
+      padding: 0.75rem;
+      margin-top: 0.75rem;
+      border: 1px solid #dce3ec;
+    }
+    .model-answer {
+      background: #e8f0e8;
+      padding: 0.75rem;
+      border-radius: 0.8rem;
+      margin-top: 0.5rem;
+      border-left: 4px solid #2c7a4d;
+      font-size: 0.9rem;
+    }
+    footer {
+      font-size: 0.85rem;
+      text-align: center;
+      margin-top: 2rem;
+      color: #2c4f6e;
+    }
+    .progress-indicator {
+      font-size: 0.85rem;
+      background: #e9ecef;
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 20px;
+    }
+    hr {
+      opacity: 0.4;
+    }
+
+    /* --- Inherited Navigation Styles --- */
+:root {
+  --bg-dark: #0f121c;
+  --surface: #181e2c;
+  --accent: #00e5a0;
+  --text-dim: #8d9bb0;
+}
+
+.lab-navbar { 
+  background: var(--surface) !important; 
+  border-bottom: 1px solid rgba(0,229,160,0.2); 
+}
+
+.brand-dna { 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 700; 
+  color: var(--accent) !important; 
+  text-decoration: none;
+}
+
+.nav-link-custom { 
+  color: var(--text-dim) !important; 
+  font-weight: 500; 
+  font-size: 0.9rem; 
+}
+
+.nav-link-custom:hover { 
+  color: var(--accent) !important; 
+}
+
+.badge-mini { 
+  background: #1f2537; 
+  border-radius: 40px; 
+  padding: 6px 12px; 
+  font-size: 0.7rem; 
+  font-weight: 600; 
+  color: var(--text-dim); 
+}
+
+/* Ensure the body padding accounts for the nav */
+body {
+  padding-top: 0 !important;
+}
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg lab-navbar py-2 px-3 mb-4">
+  <div class="container-fluid">
+    <a class="navbar-brand brand-dna fw-bold" href="index.html">
+      <span class="me-1">🧬</span> DNA Lab Studio <span class="text-white opacity-50 ms-2" style="font-size: 0.8rem;">| Quiz Mode</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra">
+      <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarExtra">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html">🏠 Home Lab</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="wiki.html">📖 Molecular Lexicon</a></li>
+      </ul>
+      <div class="d-flex gap-3 align-items-center">
+        <span class="badge-mini"><i class="fas fa-tasks me-1"></i> Mastery Quiz</span>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container quiz-container">
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold" style="color: #0b3b5f;"><i class="fas fa-dna me-2"></i>Gel Electrophoresis Mastery Quiz</h1>
+    <p class="lead">Multiple Choice: Select an answer, click <strong>"Submit & Reveal Explanation"</strong> for each question. <br> Then explore Open-Ended section (password protected model answers).</p>
+    <div class="d-flex justify-content-center gap-3 mt-2 flex-wrap">
+      <span class="badge-question"><i class="fas fa-check-circle me-1"></i> 10 MCQs (self-paced)</span>
+      <span class="badge-question bg-secondary"><i class="fas fa-pen-alt me-1"></i> 6 Open-ended</span>
+      <span class="badge-question bg-info"><i class="fas fa-lock me-1"></i> Password for answers: <kbd>gel electrophoresis</kbd></span>
+    </div>
+  </div>
+
+  <!-- ===================== MULTIPLE CHOICE SECTION (No accordion, each question with submit button) ===================== -->
+  <div id="mcqContainer">
+    <!-- MCQ data will be injected via JS but we'll build static structure for clarity & maintainability. 
+         However to keep code clean, we generate using JS but with full control. But also we need to ensure explanation appears after submit. -->
+  </div>
+
+  <!-- We'll build MCQs dynamically with JavaScript to keep HTML clean but with full functionality -->
+  
+  <!-- Open-Ended Section (static with password reveal) -->
+  <div class="open-ended-section mt-5" id="openEndedSection">
+    <h3 class="mb-3"><i class="fas fa-comment-dots me-2 text-success"></i>Open-Ended Questions</h3>
+    <p class="text-muted">Answer each question thoughtfully. To reveal a <strong>model answer</strong>, enter the password: <kbd>gel electrophoresis</kbd> (all lowercase, case-sensitive).</p>
+    
+    <div class="accordion" id="openAccordion">
+      <!-- OE 1 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#oe1">1. Explain, in your own words, what gel electrophoresis is and one real-world application mentioned in the video.</button></h2>
+        <div id="oe1" class="accordion-collapse collapse" data-bs-parent="#openAccordion">
+          <div class="accordion-body">
+            <textarea class="form-control" name="open1" rows="3" placeholder="Your answer: define gel electrophoresis and name a real-world application (e.g., DNA fingerprinting, forensics, paternity tests...)"></textarea>
+            <div class="password-protect mt-2">
+              <div class="input-group input-group-sm">
+                <input type="password" id="pw1" class="form-control" placeholder="Enter password">
+                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword(1)">
+                <i class="fas fa-eye" id="eyeIcon1"></i>
+              </div>
+            <button class="btn btn-outline-secondary" type="button" onclick="revealModelAnswer(1)">
+            <i class="fas fa-lock-open"></i> Reveal
+            </button>
+            </div>
+              <div id="modelAnswer1" class="model-answer d-none"><strong>📚 Model answer:</strong> Gel electrophoresis is a laboratory technique that separates DNA fragments by size using an electric field. The video mentions DNA fingerprinting (forensic analysis, paternity testing) as a real-world application where band patterns are compared.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- OE 2 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#oe2">2. What property of DNA causes the fragments to move when an electric field is applied? Explain why this happens.</button></h2>
+        <div id="oe2" class="accordion-collapse collapse"><div class="accordion-body"><textarea class="form-control" name="open2" rows="3" placeholder="Describe DNA charge and mechanism..."></textarea><div class="password-protect"><div class="input-group input-group-sm"><input type="password" id="pw2" class="form-control" placeholder="Password"><button class="btn btn-outline-secondary" onclick="revealModelAnswer(2)">Reveal</button></div><div id="modelAnswer2" class="model-answer d-none"><strong>✅ Model:</strong> DNA has a negatively charged phosphate backbone. When an electric field is applied, the negative charges are attracted to the positive electrode (anode), causing fragments to migrate through the gel.</div></div></div></div></div>
+      <!-- OE 3 -->
+      <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#oe3">3. After electrophoresis, why is staining necessary, and what does staining allow you to see?</button></h2>
+        <div id="oe3" class="accordion-collapse collapse"><div class="accordion-body"><textarea class="form-control" name="open3" rows="3" placeholder="Reason for staining..."></textarea><div class="password-protect"><div class="input-group input-group-sm"><input type="password" id="pw3" class="form-control" placeholder="Password"><button class="btn btn-outline-secondary" onclick="revealModelAnswer(3)">Reveal</button></div><div id="modelAnswer3" class="model-answer d-none"><strong>🔬 Model:</strong> DNA is invisible to the naked eye. Staining (e.g., with fluorescent dyes like GelRed) binds to DNA, allowing visualization of distinct bands under UV light, so we can analyze fragment sizes and patterns.</div></div></div></div></div>
+      <!-- OE 4 -->
+      <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#oe4">4. Based on the timing in the video, explain how you could tell whether a band represents a short fragment or a long fragment by looking at the gel. Include where each would be relative to the wells.</button></h2>
+        <div id="oe4" class="accordion-collapse collapse"><div class="accordion-body"><textarea class="form-control" name="open4" rows="3" placeholder="Short vs long fragment location..."></textarea><div class="password-protect"><div class="input-group input-group-sm"><input type="password" id="pw4" class="form-control" placeholder="Password"><button class="btn btn-outline-secondary" onclick="revealModelAnswer(4)">Reveal</button></div><div id="modelAnswer4" class="model-answer d-none"><strong>🧬 Model:</strong> Short fragments migrate farther from the wells (towards the bottom of the gel), while long fragments remain closer to the wells due to slower movement through gel pores.</div></div></div></div></div>
+      <!-- OE 5 -->
+      <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#oe5">5. If two side-by-side samples showed different migration patterns, what would indicate that one sample contains shorter fragments?</button></h2>
+        <div id="oe5" class="accordion-collapse collapse"><div class="accordion-body"><textarea class="form-control" name="open5" rows="3" placeholder="Observable difference..."></textarea><div class="password-protect"><div class="input-group input-group-sm"><input type="password" id="pw5" class="form-control" placeholder="Password"><button class="btn btn-outline-secondary" onclick="revealModelAnswer(5)">Reveal</button></div><div id="modelAnswer5" class="model-answer d-none"><strong>📊 Model:</strong> The sample whose bands have migrated farther from the wells (lower on the gel) contains overall shorter fragments compared to the sample with bands closer to the wells.</div></div></div></div></div>
+      <!-- OE 6 -->
+      <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#oe6">6. How can the pattern of bands be used to compare two DNA samples in DNA fingerprinting?</button></h2>
+        <div id="oe6" class="accordion-collapse collapse"><div class="accordion-body"><textarea class="form-control" name="open6" rows="3" placeholder="Explain band comparison..."></textarea><div class="password-protect"><div class="input-group input-group-sm"><input type="password" id="pw6" class="form-control" placeholder="Password"><button class="btn btn-outline-secondary" onclick="revealModelAnswer(6)">Reveal</button></div><div id="modelAnswer6" class="model-answer d-none"><strong>🧬 Model:</strong> By comparing the number and positions (size) of bands between two samples, identical or highly similar patterns indicate they likely come from the same individual or related sources, used in forensic or paternity analysis.</div></div></div></div></div>
+    </div>
+    <div class="mt-3 text-center small text-muted"><i class="fas fa-info-circle"></i> Open-ended answers are saved when you click "Submit All Answers" below.</div>
+  </div>
+
+  <!-- Global Submit button for all answers (MCQ + open-ended) -->
+  <div class="d-flex justify-content-center mt-5 mb-4">
+    <button type="button" id="submitAllBtn" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm"><i class="fas fa-save me-2"></i>Submit All Answers & Final Review</button>
+  </div>
+  <div id="resultAlert" class="alert alert-dark d-none" role="alert"></div>
+  
+  <footer>🔐 Open-ended model answers password: <strong>gel electrophoresis</strong> (all lowercase). Each MCQ reveals explanation individually after submission.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // MCQ Data: question text, options array, correct answer (letter), explanation text
+  const mcqData = [
+    { text: "Explain, in your own words, what gel electrophoresis is and one real-world application mentioned in the video.", 
+      options: ["A. A method to copy DNA; used in gene therapy", "B. A technique to separate DNA fragments by size; used in DNA fingerprinting", "C. A way to sequence DNA; used in whole-genome projects", "D. A chemical test for proteins; used in food testing"],
+      correct: "B", explanation: "✅ Gel electrophoresis separates DNA fragments by size. A major real-world application is DNA fingerprinting (forensics, paternity testing). Option B is correct." },
+    { text: "Describe the steps shown in the video for preparing the gel and loading samples.",
+      options: ["A. Heat the gel, pour into bottles, add samples directly to liquid gel", "B. Prepare a gel slab, form wells, load samples containing DNA fragments into the wells", "C. Freeze the gel, break into pieces, sprinkle DNA on top", "D. Mix DNA with dye and evaporate on a slide"],
+      correct: "B", explanation: "📌 Standard procedure: cast a gel slab, create wells using a comb, then carefully load DNA samples mixed with loading dye into the wells. Option B matches video steps." },
+    { text: "What property of DNA causes the fragments to move when an electric field is applied? Explain why this happens.",
+      options: ["A. DNA is positively charged and moves to the negative terminal", "B. DNA is neutral and drifts randomly", "C. DNA is negatively charged and moves toward the positive terminal", "D. DNA is magnetic and is attracted to magnets"],
+      correct: "C", explanation: "⚡ DNA has a negatively charged phosphate backbone. In an electric field, fragments migrate toward the positive electrode (anode). Answer C is correct." },
+    { text: "The video explains that fragments of different sizes move at different speeds. Describe how size affects migration and give a brief analogy that helps you remember this relationship.",
+      options: ["A. Larger fragments move faster than shorter fragments; like heavy trucks speeding by cars", "B. Shorter fragments move faster than longer fragments; like runners vs. someone carrying a heavy pack", "C. Size has no effect; all fragments move together", "D. Only color affects migration, not size"],
+      correct: "B", explanation: "🏃 Shorter (smaller) DNA fragments travel faster through gel matrix, like a runner without a heavy backpack. Larger fragments get entangled. Option B provides correct analogy." },
+    { text: "After electrophoresis, why is staining necessary, and what does staining allow you to see?",
+      options: ["A. Staining destroys the DNA so it can't be used later", "B. Staining makes the invisible DNA bands visible so they can be compared and analyzed", "C. Staining makes the gel taste better", "D. Staining warms the gel to speed up reactions"],
+      correct: "B", explanation: "🔬 DNA is invisible to the naked eye. Staining (e.g., Ethidium bromide or GelRed) binds to DNA and fluoresces under UV light, allowing us to visualize band patterns. Answer B." },
+    { text: "Based on the timing in the video, explain how you could tell whether a band represents a short fragment or a long fragment by looking at the gel. Include where each would be relative to the wells.",
+      options: ["A. Short fragments remain near the wells; long fragments travel farthest from the wells", "B. Short fragments travel farther from the wells; long fragments stay closer to the wells", "C. Both short and long fragments are randomly distributed", "D. Bands near the middle represent the shortest fragments"],
+      correct: "B", explanation: "🧬 Small fragments move faster, therefore they migrate further from the wells. Larger fragments remain nearer the wells. Correct: B." },
+    { text: "The video briefly mentions molecular spaces in the gel. Describe what these spaces do and how they affect DNA movement.",
+      options: ["A. They block all DNA movement so bands form immediately", "B. They allow DNA fragments to pass; smaller fragments move through more easily and faster than larger ones", "C. They are holes for inserting dyes only", "D. They explode when current is applied"],
+      correct: "B", explanation: "🧫 Agarose gel has a sieve-like matrix (pores). Smaller DNA fragments navigate pores faster, larger ones are slowed. Answer B explains separation mechanism." },
+    { text: "Imagine you ran two samples with different fragment sizes side by side. What observable pattern would indicate that one sample contains overall shorter fragments than the other? Describe what you would look for on the stained gel.",
+      options: ["A. The sample with shorter fragments would have bands closer to the wells than the other sample", "B. The sample with shorter fragments would have bands farther from the wells than the other sample", "C. The sample with shorter fragments would have no bands at all", "D. The sample with shorter fragments would change color completely"],
+      correct: "B", explanation: "📏 If a sample contains overall shorter fragments, its bands will have migrated farther from the wells compared to a sample with longer fragments. Correct: B." },
+    { text: "The video states that DNA fragments are separated into bands. Explain how you could use those bands to compare two DNA samples for similarity (for example, in DNA fingerprinting).",
+      options: ["A. Compare the number and positions of bands; matching patterns suggest similarity", "B. Compare the color of the gel around the bands only", "C. Count how many bubbles form during electrophoresis", "D. Measure how much dye was used, not the bands"],
+      correct: "A", explanation: "🧬 In DNA fingerprinting, banding patterns (size & position) are compared between samples. Identical or similar patterns indicate relatedness or same source. Answer A." },
+    { text: "Identify one potential source of error during gel electrophoresis (based on the video steps) and suggest a practical way to reduce that error in the lab.",
+      options: ["A. Loading samples into the wrong wells — reduce by labeling wells and using a steady hand or pipette guides", "B. DNA changing its chemical formula — reduce by heating the gel to high temperatures", "C. Electric field reversing because of sun exposure — reduce by working only at night", "D. Gel evaporating instantly — reduce by leaving gel in direct sunlight"],
+      correct: "A", explanation: "⚠️ Common error: loading samples into incorrect wells or cross-contamination. Mitigation: careful labeling, using a loading guide, steady hand. Option A is correct and practical." }
+  ];
+
+  // Store user selected answers (mcq values)
+  let userMcqSelections = new Array(10).fill(null);
+  // Track if explanation has been shown for each question (optional but nice)
+  
+  // Function to render all MCQ cards dynamically
+  function renderMCQs() {
+    const container = document.getElementById('mcqContainer');
+    container.innerHTML = '';
+    mcqData.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'mcq-card';
+      card.id = `mcqCard${idx}`;
+      // header + question
+      card.innerHTML = `
+        <div class="mcq-header">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="progress-indicator"><i class="fas fa-question-circle me-1"></i> Question ${idx+1} of ${mcqData.length}</span>
+            <span class="badge bg-secondary rounded-pill">Multiple Choice</span>
+          </div>
+          <div class="question-text mt-2">${idx+1}. ${item.text}</div>
+        </div>
+        <div class="options-group" id="optionsGroup${idx}">
+          ${item.options.map(opt => `
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="mcq${idx}" value="${opt.charAt(0)}" id="mcq${idx}_${opt.charAt(0)}">
+              <label class="form-check-label" for="mcq${idx}_${opt.charAt(0)}">${opt}</label>
+            </div>
+          `).join('')}
+        </div>
+        <div id="explanationArea${idx}" class="explanation-box d-none">
+          <i class="fas fa-lightbulb me-2"></i> ${item.explanation}
+        </div>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-submit-mcq" data-qidx="${idx}">Submit Answer & Reveal Explanation <i class="fas fa-arrow-right ms-1"></i></button>
+        </div>
+      `;
+      container.appendChild(card);
+      
+      // Attach event listener to the button
+      const btn = card.querySelector(`.btn-submit-mcq`);
+      btn.addEventListener('click', (e) => {
+        const qIdx = parseInt(btn.getAttribute('data-qidx'));
+        const selectedRadio = document.querySelector(`input[name="mcq${qIdx}"]:checked`);
+        if (!selectedRadio) {
+          alert(`Please select an answer for Question ${qIdx+1} before submitting.`);
+          return;
+        }
+        const selectedValue = selectedRadio.value;
+        userMcqSelections[qIdx] = selectedValue;
+        // Show explanation
+        const explanationDiv = document.getElementById(`explanationArea${qIdx}`);
+        explanationDiv.classList.remove('d-none');
+        // Optionally highlight correctness
+        const isCorrect = (selectedValue === mcqData[qIdx].correct);
+        if (!isCorrect) {
+          explanationDiv.style.borderLeftColor = "#dc3545";
+          explanationDiv.style.backgroundColor = "#fff0f0";
+          explanationDiv.innerHTML = `<i class="fas fa-times-circle me-2" style="color:#dc3545;"></i> <strong>Your answer: ${selectedValue}</strong> — ${mcqData[qIdx].explanation}`;
+        } else {
+          explanationDiv.style.borderLeftColor = "#198754";
+          explanationDiv.style.backgroundColor = "#e6f4ea";
+          explanationDiv.innerHTML = `<i class="fas fa-check-circle me-2" style="color:#198754;"></i> <strong>Correct (${selectedValue})!</strong> ${mcqData[qIdx].explanation}`;
+        }
+        // Disable all radio buttons for that question after submit? optional but we allow re-submit? Better to keep but if they change, explanation can be updated.
+        // But we can let them change and re-submit: explanation updates accordingly.
+        // We'll allow re-submit, so we don't disable radios.
+      });
+    });
+  }
+  
+  // Call render on load
+  renderMCQs();
+  
+  // Password reveal for open-ended (6 questions)
+  function revealModelAnswer(qNumber) {
+    const passwordField = document.getElementById(`pw${qNumber}`);
+    const modelDiv = document.getElementById(`modelAnswer${qNumber}`);
+    const enteredPassword = passwordField ? passwordField.value : "";
+    const correctPassword = "gel electrophoresis";
+    if (enteredPassword === correctPassword) {
+      if (modelDiv) {
+        modelDiv.classList.remove('d-none');
+        modelDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } else {
+      alert(`Incorrect password. Hint: It's the technique name (two words) shown in the title. Try: "gel electrophoresis" (lowercase).`);
+    }
+  }
+  
+  // Final Submit: gather all MCQ selections + open-ended answers
+  document.getElementById('submitAllBtn').addEventListener('click', function() {
+    // First ensure any unsaved MCQ selections are captured from current radio states
+    for (let i = 0; i < mcqData.length; i++) {
+      const selectedRadio = document.querySelector(`input[name="mcq${i}"]:checked`);
+      if (selectedRadio) {
+        userMcqSelections[i] = selectedRadio.value;
+      }
+    }
+    // Collect open-ended text answers
+    let openAnswers = [];
+    for(let i=1; i<=6; i++) {
+      let textVal = document.querySelector(`textarea[name="open${i}"]`)?.value.trim() || "(not answered)";
+      openAnswers.push(textVal);
+    }
+    
+    // Build result summary
+    let resultHtml = `<h5><i class="fas fa-clipboard-list"></i> Final Submission Summary</h5>
+    <div class="row"><div class="col-md-6"><strong>🧪 Multiple Choice (selected answers & correctness):</strong><ul>`;
+    for(let i=0; i<mcqData.length; i++) {
+      const userAns = userMcqSelections[i] || "Not answered";
+      const isCorrect = (userAns === mcqData[i].correct);
+      const statusIcon = isCorrect ? '✅ correct' : '❌ incorrect';
+      resultHtml += `<li><strong>Q${i+1}:</strong> ${userAns} — ${statusIcon} ${!isCorrect && userAns !== "Not answered" ? `(correct: ${mcqData[i].correct})` : ''} ${userAns === "Not answered" ? '(no answer selected)' : ''}</li>`;
+    }
+    resultHtml += `</ul></div><div class="col-md-6"><strong>📝 Open-ended responses (preview):</strong><ul>`;
+    const oeTitles = ["Gel electrophoresis & application", "Property causing movement", "Staining necessity", "Short vs long fragment location", "Pattern for shorter fragments", "DNA fingerprinting comparison"];
+    for(let i=0; i<openAnswers.length; i++) {
+      let preview = openAnswers[i].length > 80 ? openAnswers[i].substring(0,80)+"..." : openAnswers[i];
+      resultHtml += `<li><strong>${oeTitles[i]}</strong><br><span class="text-secondary">“${preview}”</span></li>`;
+    }
+    resultHtml += `</ul><hr><i class="fas fa-lock me-1"></i> <strong>Password-protected model answers</strong> are available in the open-ended section. Use password: <kbd>gel electrophoresis</kbd> to compare.<br>
+    <i class="fas fa-info-circle"></i> MCQ explanations are shown individually after each question's submit button.</div></div>`;
+    
+    const alertDiv = document.getElementById('resultAlert');
+    alertDiv.innerHTML = resultHtml;
+    alertDiv.classList.remove('d-none');
+    alertDiv.classList.add('show');
+    alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  
+  // expose reveal function globally for inline buttons
+  window.revealModelAnswer = revealModelAnswer;
+
+  function togglePassword(qNumber) {
+  const passwordField = document.getElementById(`pw${qNumber}`);
+  const eyeIcon = document.getElementById(`eyeIcon${qNumber}`);
+  
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    // Switch to 'eye-slash' icon when password is visible
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordField.type = "password";
+    // Switch back to 'eye' icon
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Semi-Wikipedia · DNA & Molecular Lexicon | Smart Media Panel</title>
+    <!-- Bootstrap 5 + Icons + Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #f0f4f9;
+            background-image: radial-gradient(circle at 15% 30%, rgba(180,210,230,0.2) 0%, #eef3fc 100%);
+            min-height: 100vh;
+        }
+        .hero-wiki {
+            background: linear-gradient(105deg, #0a2b33 0%, #155f6b 100%);
+            border-bottom: 4px solid #ffc857;
+            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.2);
+        }
+        .search-card {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            border: none;
+        }
+        .search-input-group {
+            border-radius: 60px;
+            overflow: hidden;
+            box-shadow: 0 5px 14px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .search-input-group:focus-within {
+            box-shadow: 0 8px 22px rgba(0,100,110,0.2);
+            transform: scale(1.01);
+        }
+        .search-input {
+            border: none;
+            padding: 0.9rem 1.5rem;
+            font-size: 1rem;
+            background: white;
+        }
+        .search-input:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        .search-btn {
+            background: #1c6d7c;
+            border: none;
+            padding: 0 1.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .search-btn:hover {
+            background: #0e4b57;
+            transform: scale(1.02);
+        }
+        .result-card {
+            background: white;
+            border-radius: 1.8rem;
+            border-left: 6px solid #ffc857;
+            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.12);
+            transition: all 0.2s;
+        }
+        .topic-badge {
+            background: #1c6d7c;
+            color: white;
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .definition-text {
+            font-size: 1.02rem;
+            line-height: 1.55;
+            color: #1f2f3a;
+        }
+        .analogy-box {
+            background: #fef7e0;
+            border-left: 4px solid #ffb347;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+        }
+        /* dedicated media panel - hidden by default, shown only when content exists */
+        .media-panel {
+            background: #f8fafd;
+            border-radius: 1.4rem;
+            padding: 0.9rem;
+            border: 1px solid #e2edf2;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+        .media-panel.hidden-media {
+            display: none;
+        }
+        .media-panel video, .media-panel iframe {
+            border-radius: 1rem;
+            width: 100%;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+        .media-panel img {
+            border-radius: 1rem;
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .suggestion-chip {
+            background: #e9f0f3;
+            padding: 0.45rem 1.1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #145c6b;
+            border: 1px solid #cbdde6;
+        }
+        .suggestion-chip:hover {
+            background: #1c6d7c;
+            color: white;
+            transform: translateY(-2px);
+            border-color: #1c6d7c;
+        }
+        .empty-state {
+            background: rgba(255,255,245,0.9);
+            border-radius: 1.8rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .footer-bio {
+            background: #e2eaf1;
+            border-top: 1px solid #cbdbe0;
+            font-size: 0.8rem;
+            color: #2c6070;
+        }
+        @media (max-width: 768px) {
+            .result-card {
+                padding: 1.2rem;
+            }
+            .media-panel {
+                padding: 0.6rem;
+            }
+        }
+
+        /* Add these variables to your :root or top of style tag */
+:root {
+  --bg-dark: #0f121c;
+  --surface: #181e2c;
+  --accent: #00e5a0;
+  --accent2: #00b8d4;
+  --text-dim: #8d9bb0;
+}
+
+/* New Navbar Styles to match index.html */
+.lab-navbar { 
+  background: var(--surface) !important; 
+  border-bottom: 1px solid rgba(0,229,160,0.2); 
+}
+.brand-dna { 
+  font-family: 'Inter', sans-serif; 
+  font-weight: 700; 
+  color: var(--accent) !important; 
+  text-decoration: none;
+}
+.nav-link-custom { 
+  color: var(--text-dim) !important; 
+  font-weight: 500; 
+  font-size: 0.9rem; 
+}
+.nav-link-custom:hover { 
+  color: var(--accent) !important; 
+}
+.badge-mini { 
+  background: #1f2537; 
+  border-radius: 40px; 
+  padding: 6px 12px; 
+  font-size: 0.7rem; 
+  font-weight: 600; 
+  color: var(--text-dim); 
+}
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg lab-navbar py-2 px-3">
+  <div class="container-fluid">
+    <a class="navbar-brand brand-dna fw-bold" href="index.html">
+      <span class="me-1">🧬</span> DNA Lab Studio <span class="text-white opacity-50 ms-2" style="font-size: 0.8rem;">| Semi-pedia</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarExtra">
+      <span class="navbar-toggler-icon" style="filter: invert(0.9);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarExtra">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="../index.html">🏠 Home Lab</a></li>
+        <li class="nav-item"><a class="nav-link nav-link-custom" href="questions.html" target="_blank">❓ gel electrophoresis questions</a></li>
+      </ul>
+      <div class="d-flex gap-3 align-items-center">
+        <span class="badge-mini"><i class="bi bi-book me-1"></i> Molecular Lexicon</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="py-4 text-white" style="background: linear-gradient(180deg, #181e2c 0%, #0f121c 100%);">
+    <div class="container text-center">
+        <h1 class="display-6 fw-bold mb-0">Molecular Lexicon</h1>
+        <p class="mb-0 opacity-75">Smart search for DNA extraction & analysis terms</p>
+    </div>
+</header>
+
+<main class="container my-4 my-md-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-12">
+            <!-- search card -->
+            <div class="search-card p-4 p-md-5 mb-5">
+                <div class="text-center mb-3">
+                    <i class="bi bi-search-heart fs-2 text-primary"></i>
+                    <h2 class="h4 fw-semibold mt-2">Molecular Lexicon + Optional Media</h2>
+                    <p class="text-secondary">Each term can include a <strong>videoReference (YouTube/mp4)</strong> or an <strong>imageReference</strong> — the media panel appears <strong>only when a valid path is provided</strong>.<br>Leave fields as <code>""</code> (empty string) and the div stays hidden.</p>
+                </div>
+                <div class="search-input-group bg-white d-flex rounded-pill w-100">
+                    <input type="text" id="searchInput" class="form-control search-input rounded-pill" placeholder="e.g., Gel Electrophoresis, DNA Ladder, Micropipette, UV Transilluminator ..." aria-label="Search term">
+                    <button class="btn search-btn text-white rounded-pill px-4" id="searchBtn">
+                        <i class="bi bi-search"></i> Explain
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                    <span class="suggestion-chip" data-term="DNA">🧬 DNA</span>
+                    <span class="suggestion-chip" data-term="Gel Electrophoresis">⚡ Gel Electrophoresis</span>
+                    <span class="suggestion-chip" data-term="Agarose Gel">🧫 Agarose Gel</span>
+                    <span class="suggestion-chip" data-term="Micropipette">📌 Micropipette</span>
+                    <span class="suggestion-chip" data-term="DNA Ladder">📏 DNA Ladder</span>
+                    <span class="suggestion-chip" data-term="Staining Dye">🎨 Staining Dye</span>
+                    <span class="suggestion-chip" data-term="UV Transilluminator">💡 UV Transilluminator</span>
+                    <span class="suggestion-chip" data-term="Cell Lysis">🔬 Cell Lysis</span>
+                </div>
+            </div>
+
+            <!-- dynamic result area (definition + optional media panel) -->
+            <div id="resultContainer">
+                <div class="empty-state">
+                    <i class="bi bi-camera-reels display-4 text-secondary"></i>
+                    <h4 class="mt-3 fw-semibold">Search any molecular term</h4>
+                    <p class="text-muted">Instant short explanations + analogies. If a term contains a valid <strong>videoReference</strong> or <strong>imageReference</strong> inside the nested array, a dedicated media div appears. Otherwise, the media div stays <strong>completely hidden</strong>.</p>
+                    <div class="mt-2 small text-info"><i class="bi bi-play-btn"></i> Try "DNA Extraction Demo" (has video) or "Agarose Gel" (has image) — media panel visible. "DNA Profiling" (media fields blank) → no media div.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer-bio py-4 mt-3">
+    <div class="container text-center">
+        <p class="mb-1"><i class="bi bi-wikipedia"></i> Semi‑Wikipedia — nested array with <strong>videoReference / imageReference</strong> fields (can be blank). The media panel is conditionally rendered: hidden when both fields are empty.</p>
+        <p class="small mb-0">📚 DNA extraction · Gel electrophoresis · smart conditional media container</p>
+    </div>
+</footer>
+
+<script>
+    // ============================================================
+    // MOLECULAR WIKI DATA — NESTED ARRAY (enhanced with video/image fields)
+    // videoReference & imageReference can be:
+    //   - a valid URL (YouTube, mp4, image link)
+    //   - empty string "" → media panel will be hidden
+    // The media div appears ONLY when there is actual content.
+    // ============================================================
+    const molecularWiki = [
+        { 
+            id: 1, term: "DNA", 
+            shortExplanation: "DNA (Deoxyribonucleic Acid) is the fundamental molecule carrying genetic instructions for growth, development, reproduction, and functioning of all known living organisms. It consists of two strands forming a double helix.", 
+            analogy: "Like a blueprint stored inside every cell that tells the body how to build and maintain itself.", 
+            tags: ["genetics", "molecule", "heredity", "double helix"], 
+            category: "molecular basics",
+            videoReference: "",   // blank → no video
+            imageReference: ""  // image present
+        },
+        { 
+            id: 2, term: "Gel Electrophoresis", 
+            shortExplanation: "Gel electrophoresis uses an electric current to separate DNA fragments based on size. Negatively charged DNA moves toward the positive electrode; smaller fragments travel faster and farther.", 
+            analogy: "A race through a thick forest; small, nimble runners (short DNA) get through faster than large, bulky runners (long DNA).", 
+            tags: ["electrophoresis", "DNA separation", "size separation", "password: gel electrophoresis"], 
+            category: "gel equipment",
+            videoReference: "../videos/gel.mp4",   // valid YouTube
+            imageReference: ""
+        },
+        { 
+            id: 3, term: "DNA Ladder", 
+            shortExplanation: "A DNA ladder (molecular weight marker) contains DNA fragments of known, precise sizes used as a reference to estimate sample fragment sizes.", 
+            analogy: "A ruler held up next to your samples to see how 'tall' (long) they are — you compare bands to known markers.", 
+            tags: ["marker", "size standard", "molecular weight marker"], 
+            category: "analysis",
+            videoReference: "",
+            imageReference: ""
+        },
+        { 
+            id: 4, term: "Micropipette", 
+            shortExplanation: "A micropipette is a high-precision tool used to measure and transfer tiny volumes of liquid (1–1000 µL) in molecular biology labs.", 
+            analogy: "Like a miniature syringe with digital accuracy — it ensures you pick up the exact drop needed.", 
+            tags: ["pipetting", "lab instrument", "volume measurement"], 
+            category: "equipment",
+            videoReference: "",  // video present
+            imageReference: ""
+        },
+        { 
+            id: 5, term: "UV Transilluminator", 
+            shortExplanation: "A UV transilluminator emits ultraviolet light to visualize stained DNA bands after electrophoresis, making DNA-dye complexes glow.", 
+            analogy: "Like a special 'glow scope' — you place the gel on the box, turn on UV, and DNA bands appear like glowing fingerprints.", 
+            tags: ["UV light", "gel documentation", "imaging"], 
+            category: "visualization",
+            videoReference: "",
+            imageReference: ""
+        },
+        { 
+            id: 6, term: "Cell Lysis", 
+            shortExplanation: "Cell lysis is the process of breaking down the cell membrane to release internal contents including DNA, proteins, and organelles.", 
+            analogy: "Like cracking an eggshell to get to the yolk inside — you disrupt the outer barrier to access what's inside.", 
+            tags: ["lysis", "cell disruption", "detergent", "extraction"], 
+            category: "extraction",
+            videoReference: "",   // cell lysis animation
+            imageReference: ""
+        },
+        { 
+            id: 7, term: "Agarose Gel", 
+            shortExplanation: "Agarose gel is a porous, jelly-like substance derived from seaweed that acts as a molecular sieve during electrophoresis.", 
+            analogy: "Like a 3D spiderweb — small pieces slip through easily, large fragments get tangled and move slowly.", 
+            tags: ["agarose", "gel matrix", "electrophoresis gel"], 
+            category: "gel equipment",
+            videoReference: "",   // intentionally blank, only image
+            imageReference: ""
+        },
+        { 
+            id: 8, term: "Staining Dye (Ethidium Bromide)", 
+            shortExplanation: "Staining dye binds specifically to DNA and fluoresces under UV light, making DNA bands visible. Ethidium Bromide is a classic stain.", 
+            analogy: "Like a highlighter that attaches only to DNA — under a blacklight, your writing glows bright.", 
+            tags: ["ethidium bromide", "fluorescence", "visualization"], 
+            category: "visualization",
+            videoReference: "",
+            imageReference: ""
+        },
+        { 
+            id: 9, term: "DNA Extraction Demo", 
+            shortExplanation: "DNA extraction involves cell lysis, precipitation, and isolation to obtain pure DNA from samples like cheek cells or strawberries.", 
+            analogy: "A three-step recipe: break cells (lysis), separate DNA (precipitation), wash away impurities (isolation).", 
+            tags: ["extraction", "experiment", "isolation"], 
+            category: "protocol",
+            videoReference: "../videos/dna.mp4",   // strawberry DNA extraction (video)
+            imageReference: ""
+        },
+        { 
+            id: 10, term: "Buffer Solution (TAE/TBE)", 
+            shortExplanation: "Buffer solution conducts electricity and maintains stable pH during electrophoresis, preserving DNA integrity and migration consistency.", 
+            analogy: "The 'saltwater' in a pool that allows an electric motor to work while keeping water chemistry safe for swimmers.", 
+            tags: ["TAE", "TBE", "conductivity", "pH stability"], 
+            category: "reagents",
+            videoReference: "",
+            imageReference: ""
+        },
+        { 
+            id: 11, term: "DNA Profiling", 
+            shortExplanation: "DNA profiling analyzes unique patterns in DNA to identify individuals — widely used in forensics, paternity tests, and genetic studies.", 
+            analogy: "Like a genetic barcode — each person (except identical twins) has a distinctive pattern of fragment lengths.", 
+            tags: ["forensics", "genetic fingerprint", "identification"], 
+            category: "applications",
+            videoReference: "",   // BOTH blank → media panel will be completely hidden
+            imageReference: ""
+        },
+        { 
+            id: 12, term: "Precipitation (DNA)", 
+            shortExplanation: "Precipitation is a chemical step using alcohol to make DNA clump together and become visible as a solid, separating it from solution.", 
+            analogy: "Like adding a clump-inducing powder to a foggy liquid to make the sediment drop to the bottom.", 
+            tags: ["ethanol precipitation", "isopropanol", "DNA extraction"], 
+            category: "extraction",
+            videoReference: "",    // blank
+            imageReference: ""     // blank → no media div
+        }
+    ];
+
+    // helper: check if media should be shown (has valid non-empty URL)
+    function hasValidMedia(entry) {
+        if (!entry) return false;
+        const hasVideo = entry.videoReference && typeof entry.videoReference === 'string' && entry.videoReference.trim() !== "";
+        const hasImage = entry.imageReference && typeof entry.imageReference === 'string' && entry.imageReference.trim() !== "";
+        return hasVideo || hasImage;
+    }
+
+    // convert videoReference to embeddable HTML (YouTube or direct mp4)
+    function getVideoEmbedHtml(videoUrl) {
+        if (!videoUrl) return null;
+        const trimmed = videoUrl.trim();
+        // YouTube pattern
+        const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/;
+        const match = trimmed.match(youtubeRegex);
+        if (match && match[1]) {
+            const embedUrl = `https://www.youtube.com/embed/${match[1]}?autoplay=0&rel=0&modestbranding=1`;
+            return `
+                <div class="ratio ratio-16x9">
+                    <iframe src="${embedUrl}" title="YouTube video explanation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="small text-muted mt-2"><i class="bi bi-youtube"></i> Video reference · semi‑pedia</div>
+            `;
+        }
+        // direct .mp4 / .webm
+        if (trimmed.endsWith('.mp4') || trimmed.includes('.mp4?') || trimmed.includes('.webm') || trimmed.includes('/sample/')) {
+            return `
+                <video controls style="width:100%; max-height: 280px;" preload="metadata">
+                    <source src="${trimmed}" type="video/mp4">
+                    Your browser does not support video tag.
+                </video>
+                <div class="small text-muted mt-2"><i class="bi bi-camera-reels"></i> Direct media reference</div>
+            `;
+        }
+        // fallback: try generic link
+        return `<div class="alert alert-light small"><i class="bi bi-link"></i> <a href="${trimmed}" target="_blank">Open video resource</a></div>`;
+    }
+
+    // generate media panel: returns HTML only if media exists, otherwise returns empty string (panel hidden)
+    function getConditionalMediaPanel(entry) {
+        if (!hasValidMedia(entry)) {
+            return '';  // completely empty → the media div won't be rendered at all
+        }
+        
+        // priority: if videoReference exists -> show video, else if imageReference exists -> show image
+        if (entry.videoReference && entry.videoReference.trim() !== "") {
+            const videoHtml = getVideoEmbedHtml(entry.videoReference);
+            if (videoHtml) {
+                return `<div class="media-panel"><div class="fw-semibold mb-2"><i class="bi bi-play-circle-fill text-danger"></i> 📽️ Media content (video)</div>${videoHtml}</div>`;
+            }
+        }
+        
+        if (entry.imageReference && entry.imageReference.trim() !== "") {
+            return `<div class="media-panel"><div class="fw-semibold mb-2"><i class="bi bi-image-fill text-primary"></i> 🖼️ Illustration / diagram</div><img src="${entry.imageReference}" alt="${entry.term} visual" loading="lazy" onerror="this.onerror=null;this.src='https://picsum.photos/id/20/400/200';" class="img-fluid rounded-3"></div>`;
+        }
+        
+        return ''; // fallback: nothing
+    }
+
+    // search & matching logic (case-insensitive, tags included)
+    function findBestMatch(query) {
+        if (!query || query.trim() === "") return null;
+        const lowerQuery = query.trim().toLowerCase();
+        let bestMatch = null;
+        let bestScore = -1;
+
+        for (const entry of molecularWiki) {
+            let score = 0;
+            const termLower = entry.term.toLowerCase();
+            if (termLower === lowerQuery) score = 100;
+            else if (termLower.startsWith(lowerQuery)) score = 85;
+            else if (termLower.includes(lowerQuery)) score = 70;
+            else if (entry.tags && entry.tags.some(tag => tag.toLowerCase() === lowerQuery)) score = 90;
+            else if (entry.tags && entry.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) score = 60;
+            
+            const words = lowerQuery.split(/\s+/);
+            for (let w of words) {
+                if (w.length > 2 && termLower.includes(w)) score += 12;
+                if (entry.tags && entry.tags.some(t => t.toLowerCase().includes(w))) score += 8;
+            }
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = entry;
+            }
+        }
+        return (bestMatch && bestScore > 0) ? bestMatch : null;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderResult(entry, searchRaw) {
+        const container = document.getElementById('resultContainer');
+        if (!entry) {
+            container.innerHTML = `
+                <div class="empty-state text-center p-4 shadow-sm">
+                    <i class="bi bi-database-slash fs-1 text-secondary"></i>
+                    <h5 class="mt-3">No definition found for "<strong>${escapeHtml(searchRaw)}</strong>"</h5>
+                    <p class="text-muted">Try: Gel Electrophoresis, DNA Ladder, Micropipette, or any term from molecular biology.</p>
+                    <div class="mt-2"><span class="badge bg-info">🧬 media panel auto-hides when fields are blank</span></div>
+                </div>
+            `;
+            return;
+        }
+
+        // analogy block
+        let analogyHtml = '';
+        if (entry.analogy && entry.analogy.trim() !== "") {
+            analogyHtml = `<div class="analogy-box mt-3"><i class="bi bi-lightbulb-fill text-warning me-2"></i><strong>💡 Analogy:</strong> ${escapeHtml(entry.analogy)}</div>`;
+        }
+
+        // tags
+        let tagsHtml = '';
+        if (entry.tags && entry.tags.length) {
+            tagsHtml = `<div class="mt-3 d-flex flex-wrap gap-2 align-items-center"><span class="small fw-semibold text-secondary">🔖 related:</span> ${entry.tags.slice(0,5).map(t => `<span class="badge bg-light text-dark border">${escapeHtml(t)}</span>`).join(' ')}</div>`;
+        }
+
+        // CRITICAL: conditional media panel — returns empty string if no video/image path is provided
+        const mediaHtml = getConditionalMediaPanel(entry);
+        
+        // media panel note: if mediaHtml is empty, the entire media div is omitted (not just hidden with CSS, but not rendered at all)
+        const mediaSection = mediaHtml ? `<div class="mt-4">${mediaHtml}</div>` : '';
+
+        const resultCard = `
+            <div class="result-card p-4 p-md-5">
+                <div class="d-flex justify-content-between flex-wrap align-items-start gap-2">
+                    <h2 class="h2 fw-bold" style="color: #0f4c5c;">${escapeHtml(entry.term)}</h2>
+                    <span class="topic-badge"><i class="bi bi-bookmark-check"></i> ${entry.category || "molecular concept"}</span>
+                </div>
+                <div class="definition-text mt-3">
+                    <p>${escapeHtml(entry.shortExplanation)}</p>
+                </div>
+                ${analogyHtml}
+                ${tagsHtml}
+                ${mediaSection}
+                <hr class="my-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap small text-muted">
+                    <span><i class="bi bi-database-fill"></i> nested data · video/image optional (blank = hidden)</span>
+                    <span><i class="bi bi-search"></i> matched: "${escapeHtml(searchRaw)}"</span>
+                </div>
+            </div>
+        `;
+        container.innerHTML = resultCard;
+    }
+
+    function performSearch() {
+        const inputEl = document.getElementById('searchInput');
+        let query = inputEl.value.trim();
+        if (query === "") {
+            document.getElementById('resultContainer').innerHTML = `
+                <div class="empty-state">
+                    <i class="bi bi-camera-reels fs-2 text-info"></i>
+                    <h5 class="mt-2">Enter a molecular term to see definition + optional media</h5>
+                    <p class="text-secondary">Examples: DNA Ladder (image), Gel Electrophoresis (video), DNA Profiling (no media → div hidden)</p>
+                    <div class="mt-2 small"><strong>✨ Smart behavior:</strong> media div only appears when videoReference or imageReference has a valid path. Leave as "" to hide.</div>
+                </div>
+            `;
+            return;
+        }
+        const matched = findBestMatch(query);
+        renderResult(matched, query);
+    }
+
+    // event binding
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+        
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+        
+        const chips = document.querySelectorAll('.suggestion-chip');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const term = chip.getAttribute('data-term');
+                if (term) {
+                    searchInput.value = term;
+                    performSearch();
+                    document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        console.log(`Semi-Wikipedia ready — ${molecularWiki.length} entries. Media panel shows ONLY if videoReference/imageReference is non-empty.`);
+    });
+</script>
+</body>
+</html>
