@@ -92,11 +92,11 @@
           <div class="instruction-card mb-3" style="border-left: 4px solid var(--accent2); background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 20px;">
             <h5 class="fw-bold">📝 Quick Check</h5>
           </div>
-          <div class="mb-3"><p class="fw-semibold">1️⃣ Why is 60°C heat treatment recommended after blending?</p>
-            <div id="q1Options"><div class="quiz-option" data-q="1" data-val="a">A) Evaporate water</div><div class="quiz-option" data-q="1" data-val="b">B) Denature DNase enzymes</div><div class="quiz-option" data-q="1" data-val="c">C) Melt cell wall</div></div>
+          <div class="mb-3"><p class="fw-semibold">1️⃣ Why lysing the dna important?</p>
+            <div id="q1Options"><div class="quiz-option" data-q="1" data-val="a">A) Evaporate water</div><div class="quiz-option" data-q="1" data-val="b">B) To break outer rigid structure</div><div class="quiz-option" data-q="1" data-val="c">C) To release the nucleus</div></div>
           </div>
-          <div class="mb-3"><p class="fw-semibold">2️⃣ Why does strawberry yield so much visible DNA?</p>
-            <div id="q2Options"><div class="quiz-option" data-q="2" data-val="a">A) High sugar</div><div class="quiz-option" data-q="2" data-val="b">B) Octoploid genome (8 copies)</div><div class="quiz-option" data-q="2" data-val="c">C) More water</div></div>
+          <div class="mb-3"><p class="fw-semibold">2️⃣ Why it is important to have proper hygiene when doing experiments?</p>
+            <div id="q2Options"><div class="quiz-option" data-q="2" data-val="a">A) To have fun</div><div class="quiz-option" data-q="2" data-val="b">B) To prevent contamination</div><div class="quiz-option" data-q="2" data-val="c">C) To save time</div></div>
           </div>
           <div class="text-center"><button id="submitQuizBtn" class="btn-primary-lab" disabled>✅ Validate</button></div>
           <div id="quizFeedback" class="small text-center mt-2"></div>
@@ -222,7 +222,7 @@
       updateProgress((lysisItems/2)*100);
     } else if (phase === 4) { // Filtration
       stepDisplaySpan.innerText = `${icon} Phase 4: Filtration`;
-      simArea.innerHTML = `<div class="text-center mt-5"><h4>Clarifying Extract</h4><div style="font-size:5rem; position:relative;">📄<div class="filter-drop" id="drip">💧</div></div><h2 id="timer">5</h2></div>`;
+      simArea.innerHTML = `<div class="text-center mt-5"><h4>Clarifying Extract by filtering the solution through a filter paper</h4><div style="font-size:5rem; position:relative;">📄<div class="filter-drop" id="drip">💧</div></div><h2 id="timer">5</h2></div>`;
       startFilterTimer();
     } else if (phase === 5) { // Protease
       stepDisplaySpan.innerText = `${icon} Phase 5: Protease Treatment`;
@@ -321,9 +321,46 @@
       finishExtraction();
     }
   };
-  function finishExtraction() {
+ function finishExtraction() {
     phase = 7;
-    simArea.innerHTML = `<div class="text-center py-5"><div style="font-size:5rem;">🧬✨</div><h2>${currentSpecimen === 'onion' ? 'Onion' : 'Strawberry'} DNA Extracted!</h2><p class="text-dim">White/cloudy DNA visible at alcohol interface.</p><button class="btn-outline-lab mt-2" onclick="location.reload()">Extract New Sample</button></div>`;
+    
+    const extractionData = {
+      onion: {
+        title: "Onion DNA Extracted!",
+        description: "Notice the thin, translucent fibers. As a diploid organism, the onion yields a lighter, more delicate DNA mass.",
+        accentColor: "rgba(0, 229, 160, 0.5)",
+        dnaImage: "videos/onion_dna.jpg" 
+      },
+      strawberry: {
+        title: "Strawberry DNA Extracted!",
+        description: "A massive, cloudy yield! Because strawberries are octoploid (8n), they produce much more visible DNA than the onion.",
+        accentColor: "rgba(255, 94, 126, 0.5)",
+        dnaImage: "videos/strawberry.jpg"
+      }
+    };
+
+    const data = extractionData[currentSpecimen];
+
+    simArea.innerHTML = `
+      <div class="text-center py-4">
+        <div id="dnaVisual" class="mx-auto d-flex align-items-center justify-content-center" 
+             style="width: 240px; height: 240px; border-radius: 24px; 
+                    background: var(--surface); border: 3px solid ${data.accentColor};
+                    box-shadow: 0 0 30px ${data.accentColor}; margin-bottom: 2rem;
+                    overflow: hidden;">
+          <img src="${data.dnaImage}" 
+               alt="${data.title}" 
+               style="width: 100%; height: 100%; object-バランス: cover;"
+               onerror="this.parentElement.innerHTML='<div style=\'font-size:1rem; padding:10px;\'>⚠️ Image not found at:<br>${data.dnaImage}</div>'">
+        </div>
+
+        <h2 class="fw-bold mb-3" style="color: ${data.accentColor.replace('0.5', '1')}">${data.title}</h2>
+        <p class="text-dim px-4 mb-4">${data.description}</p>
+        
+        <button class="btn-outline-lab" onclick="location.reload()">🔄 Extract New Specimen</button>
+      </div>
+    `;
+
     postArea.style.display = "block";
     attachQuizListeners();
   }
